@@ -47,6 +47,7 @@ const BookDetail = (props) => {
         axios.get(`http://localhost:8000/api/books/${id}`)
             .then(res => {
                 setOneBook(res.data.book)
+                console.log(res.data.book._id)
             })
             .catch(err => console.log(err))
 
@@ -56,7 +57,7 @@ const BookDetail = (props) => {
     const removeBook = () => {
         axios.delete(`http://localhost:8000/api/books/${id}`)
             .then(res => {
-                navigate("/dashboard")
+                navigate("/bookClub")
                 toastDelete()
             })
             .catch(err => console.log(err))
@@ -91,30 +92,30 @@ const BookDetail = (props) => {
         <div className='mt-5'>
             <h1>Book Details</h1>
 
-            <button className="btn btn-primary" onClick={() => (navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
+            <button className="btn btn-primary" onClick={() => (navigate('/bookClub'))}>Book Club</button>&nbsp;&nbsp;
             { // fav/unfav
                 bookFavByContainsLoggedInUser
                     ? <><button className="btn btn-danger" onClick={unfavoriteBook}>Unfavorite Book</button>&nbsp;&nbsp;</>
                     : <><button className="btn btn-success" onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
             }
             { // edit
-                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
+                (welcome === (oneBook?.addedBy?.name + " (@" + oneBook?.addedBy?.displayName + ")")) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
             }
             { // delete
-                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
+                (welcome === (oneBook?.addedBy?.name + " (@" + oneBook?.addedBy?.displayName + ")") || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
             }
 
             <br />
             <h2>Book Title: {oneBook?.title}</h2>
             <h3>Book Author: {oneBook?.author}</h3>
             <h4><a href={`https://www.google.com/search?q=${oneBook?.title} by ${oneBook?.author}`} target='_blank' rel="noreferrer">Find this book online</a></h4>
-            <h4 style={{ display: "inline" }}>Added by: </h4> {oneBook?.addedBy?.firstName ? <h4 style={{ display: "inline" }}><Link to={`/users/${oneBook?.addedBy?._id}`}>{oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</Link></h4> : <h4 style={{ display: "inline" }}>Deleted User</h4>}
+            <h4 style={{ display: "inline" }}>Added by: </h4> {oneBook?.addedBy?.name ? <h4 style={{ display: "inline" }}><Link to={`/users/${oneBook?.addedBy?._id}`}>{oneBook?.addedBy?.name} (@{oneBook?.addedBy?.displayName})</Link></h4> : <h4 style={{ display: "inline" }}>Deleted User</h4>}
             <h6>Added on: {new Date(oneBook?.createdAt).toLocaleString()}</h6>
             <h6>Last Updated on: {new Date(oneBook?.updatedAt).toLocaleString()}</h6>
             <h4>Favorited By:</h4>
             {
                 oneBook.favoritedBy?.map((booksFavedBy, i) => {
-                    return <h5 key={i}><Link to={`/users/${booksFavedBy?._id}`}>{booksFavedBy.firstName} {booksFavedBy.lastName}</Link></h5>
+                    return <h5 key={i}><Link to={`/users/${booksFavedBy?._id}`}>{booksFavedBy.name} (@{booksFavedBy.displayName})</Link></h5>
                 })
             }
         </div>

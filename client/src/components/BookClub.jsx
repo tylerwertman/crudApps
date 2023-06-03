@@ -153,6 +153,7 @@ const BookClub = (props) => {
 
     return (
         <div>
+            <br />
             <h1 className='mt-5'>Welcome to the Book Club</h1>
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
                 <div>
@@ -189,15 +190,16 @@ const BookClub = (props) => {
                         </thead>
                         <tbody>
                             {sortedBooks.map((book, index) => {
+                                console.log(book[index])
                                 return (
                                     <tr className="mt-4" key={book._id}>
                                         <td className={darkMode ? "lightText" : null}><><Link to={`/books/${book?._id}`}>{book?.title}</Link></></td>
                                         <td className={darkMode ? "lightText" : null}>{book.author}</td>
-                                        <td className={darkMode ? "lightText" : null}>{bookList[index]?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${bookList[index]?.addedBy?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link></p> : <p>(added by Deleted User)</p>}</td>
+                                        <td className={darkMode ? "lightText" : null}>{book?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${book?.addedBy?._id}`}>@{book?.addedBy?.displayName}</Link></p> : <p>(added by Deleted User)</p>}</td>
                                         <td className={darkMode ? "lightText" : null}>{new Date(book.updatedAt).toLocaleString()}</td>
                                         <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
-                                                bookList[index].favoritedBy.some(bookObj => bookObj._id === user?._id)
+                                                sortedBooks[index].favoritedBy.some(bookObj => bookObj._id === user?._id)
                                                     ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button>&nbsp;&nbsp;</>
                                                     : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>★</button>&nbsp;&nbsp;</>
                                             }

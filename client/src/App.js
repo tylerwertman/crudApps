@@ -10,12 +10,13 @@ import Footer from './components/Footer';
 import RegLog from './components/RegLog';
 import LandingPage from './components/LandingPage';
 import NotFound from './components/NotFound';
-import BrightIdeas from './components/BrightIdeas';
 import BookClub from './components/BookClub';
+import BrightIdeas from './components/BrightIdeas';
 import UserDetail from './components/UserDetail';
-import IdeaDetail from './components/IdeaDetail'
 import BookDetail from './components/BookDetail';
-// import EditIdea from './components/EditIdea';
+import IdeaDetail from './components/IdeaDetail'
+import EditBook from './components/EditBook';
+import EditIdea from './components/EditIdea';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -46,12 +47,13 @@ function App() {
       <Routes>
         <Route path="/" element={<RegLog setLoggedIn={setLoggedIn} count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} />}/>
         <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome}/>}/>
-        <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome}/>}/>
         <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome}/>}/>
+        <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome}/>}/>
         <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode}/>}/>
-        <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode}/>}/>
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode}/>}/>
-        {/* <Route path="/ideas/:id/edit" element={<EditIdea/>}/> */}
+        <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode}/>}/>
+        <Route path="/books/:id/edit" element={<EditBook/>}/>
+        <Route path="/ideas/:id/edit" element={<EditIdea/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
       <Footer darkMode={darkMode}/>

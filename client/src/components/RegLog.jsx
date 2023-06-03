@@ -45,11 +45,6 @@ const RegisterForm = (props) => {
             .catch(err => {
                 console.log(`submit errer`, err)
                 setErrors({
-                    // name: err.response.data.errors.name,
-                    // displayName: err.response.data.errors.displayName,
-                    // email: err.response.data.errors.email,
-                    // password: err.response.data.errors.password,
-                    // confirmPassword: err.response.data.errors.confirmPassword,
                     reg: err.response.data
                 })
                 console.log(errors)

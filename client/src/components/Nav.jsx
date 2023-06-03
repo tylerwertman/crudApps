@@ -11,7 +11,6 @@ const Nav = (props) => {
     useEffect(() => {
         if (cookieValue) {
             setWelcome(jwtdecode(cookieValue).name + " (@" + jwtdecode(cookieValue).displayName + ")")
-            console.log(jwtdecode(cookieValue).displayName)
         }
         // eslint-disable-next-line
     }, [count])

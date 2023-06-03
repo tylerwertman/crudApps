@@ -6,14 +6,38 @@ import withAuth from './WithAuth'
 const UserDetail = (props) => {
     const { id } = useParams()
     const { welcome, setWelcome, count, user, setLoggedIn, darkMode } = props
-    // const [booksFavorited, setBooksFavorited] = useState([])
     const navigate = useNavigate();
     const [oneUser, setOneUser] = useState({})
-    // const [favs, setFavs] = useState([])
+    const [currentTab, setCurrentTab] = useState(0)
+    const [clickClass, setClickClass] = useState("tab")
+    const [allTabs, setAllTabs] = useState([
+        { tab: "Books Added", tabContent: "tab 1 content", active: false },
+        { tab: "Books Favorited", tabContent: "tab 2 content", active: false },
+        { tab: "Ideas Added", tabContent: "tab 3 content", active: false },
+        { tab: "Ideas Favorited", tabContent: "tab 4 content", active: false }
+    ])
+
+    const selectedTab = (idx) => {
+        setCurrentTab(idx);
+
+        console.log(allTabs[currentTab]) // test this
+        console.log(currentTab) // test this
+        if ((allTabs[currentTab].active === false)) {
+            setClickClass("tab")
+            allTabs[currentTab].active = true
+            // console.log("if",allTabs[currentTab].active)
+
+        } else {
+            setClickClass("tab clicked")
+            allTabs[currentTab].active = false
+            // console.log("else",allTabs[currentTab].active)
+        }
+    }
     useEffect(() => {
         axios.get(`http://localhost:8000/api/users/${id}`)
             .then(res => {
                 setOneUser(res.data.user)
+                console.log(res.data.user)
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
@@ -38,23 +62,57 @@ const UserDetail = (props) => {
     }
     return (
         <div className={darkMode ? "mainDivDark mt-5" : "mainDivLight mt-5"}>
-            <h2>User Details for: {oneUser?.firstName} {oneUser?.lastName}</h2>
-            <div className='flex'>
-                <div className='col-md-3 offset-3'>
-                    <h4>Favorite Books:</h4>
-                    {oneUser?.booksFavorited?.map((usersFavBooks) => {
-                        return <h6 key={usersFavBooks._id}><Link to={`/books/${usersFavBooks?._id}`}>{usersFavBooks?.title}</Link></h6>
-                    })}
-                </div>
-                <div className='col-md-3'>
-                    <h4>Added Books:</h4>
-                    {oneUser?.booksAdded?.map((usersAddedBooks) => {
-                        return <h6 key={usersAddedBooks._id}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6>
-                    })}
-                </div>
-            </div>
+            <br />
+            <br />
+            <h2>User Details for: {oneUser?.name} (@{oneUser?.displayName})</h2>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
+            <br />
+            <table className={darkMode ? 'mx-auto tableDark' : 'mx-auto'}>
+                <thead>
+                    <tr className={darkMode ? 'flex tableDark' : 'flex'}>
+                        {allTabs.map((tabs, i) =>
+                            <th className={currentTab === i && darkMode ? "tab clicked tableDark" : currentTab === i ? "tab clicked" : "tab"} key={i} onClick={() => selectedTab(i)}>
+                                <h5>{tabs.tab}</h5>
+                            </th>
+                        )}
+                    </tr>
+                </thead>
+            </table>
+            <br />
+            <div className='flex mx-auto'>
+                {
+                    currentTab === 0 ?
+                        <div className='col-md-6 mx-auto'>
+                            <h4>Added Books:</h4>
+                            {oneUser?.booksAdded?.map((usersAddedBooks) => {
+                                return <h6 key={usersAddedBooks._id}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6>
+                            })}
+                        </div>
+                        : currentTab === 1 ?
+                            <div className='col-md-6 mx-auto'>
+                                <h4>Favorite Books:</h4>
+                                {oneUser?.booksFavorited?.map((usersFavBooks) => {
+                                    return <h6 key={usersFavBooks._id}><Link to={`/books/${usersFavBooks?._id}`}>{usersFavBooks?.title}</Link></h6>
+                                })}
+                            </div>
+                            : currentTab === 2 ?
+                                <div className='col-md-6 mx-auto'>
+                                    <h4>Added Ideas:</h4>
+                                    {oneUser?.ideasAdded?.map((usersAddedIdeas) => {
+                                        return <h6 key={usersAddedIdeas._id}><Link to={`/ideas/${usersAddedIdeas?._id}`}>{usersAddedIdeas?.idea}</Link></h6>
+                                    })}
+                                </div>
+                                : currentTab === 3 ?
+                                    <div className='col-md-6 mx-auto'>
+                                        <h4>Favorite Ideas:</h4>
+                                        {oneUser?.ideasFavorited?.map((usersFavIdeas) => {
+                                            return <h6 key={usersFavIdeas._id}><Link to={`/ideas/${usersFavIdeas?._id}`}>{usersFavIdeas?.idea}</Link></h6>
+                                        })}
+                                    </div>
+                                    : null
+                }
+            </div>
             {welcome === (user?.firstName + " " + user?.lastName) ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={deleteAccount}>Delete Account</button> : null}
             <br /><br /><br /><br />
         </div>
