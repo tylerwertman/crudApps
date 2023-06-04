@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import withAuth from './WithAuth'
 
 const LandingPage = (props) => {
     const { darkMode } = props
     return (
         <div className='mt-5'>
-            <br />
-            <br />
-            <h1>Welcome to an assortment of TWD CRUD apps!</h1>
-            <div className={darkMode ? "section projectsDark" : "section projects"} id="projects">
+
+            <h1 style={{padding:"30px 30px 10px"}}>Welcome to an assortment of TWD CRUD apps!</h1>
+            <div className={darkMode ? "projectsDark" : "projects"}>
                 <div className={darkMode ? "contentDark mb-3" : "content mb-3"}>
                     <Link to={"/bookClub"}><h3>Book Club</h3></Link>
                     <p>Built with: Mongoose, Express, React, Node, Bootstrap</p>
@@ -26,4 +26,4 @@ const LandingPage = (props) => {
     )
 }
 
-export default LandingPage
+export default withAuth(LandingPage)

@@ -99,14 +99,14 @@ const IdeaDetail = (props) => {
             <br />
             <h1 className='text-start mt-5'>Idea Details</h1>
 
-            <button className="btn btn-primary" onClick={() => (navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
+            <button className="btn btn-primary" onClick={() => (navigate('/brightIdeas'))}>Bright Ideas</button>&nbsp;&nbsp;
             { // fav/unfav
                 ideaFavByContainsLoggedInUser
                     ? <><button className="btn btn-danger" onClick={unfavoriteIdea}>Unfavorite Idea</button>&nbsp;&nbsp;</>
                     : <><button className="btn btn-success" onClick={favoriteIdea}>Favorite Idea</button>&nbsp;&nbsp;</>
             }
             { // edit
-                (welcome === (oneIdea.addedBy?.name + " (@" + oneIdea.addedBy?.displayName) + ")") ? <><button className='btn btn-warning' onClick={editIdea}>Edit Idea</button>&nbsp;&nbsp;</> : null
+                // (welcome === (oneIdea.addedBy?.name + " (@" + oneIdea.addedBy?.displayName) + ")") ? <><button className='btn btn-warning' onClick={editIdea}>Edit Idea</button>&nbsp;&nbsp;</> : null
             }
             { // delete
                 (welcome === (oneIdea.addedBy?.name + " (@" + oneIdea.addedBy?.displayName + ")") || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={removeIdea}>Delete Idea</button>&nbsp;&nbsp;</> : null

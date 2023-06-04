@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import io from 'socket.io-client';
 import { Link } from 'react-router-dom'
 // import jwtdecode from 'jwt-decode'
 import withAuth from './WithAuth'
@@ -8,11 +9,13 @@ import { toast } from 'react-toastify';
 
 const BookClub = (props) => {
     const { count, setCount, user, welcome, darkMode } = props
+    const [socket] = useState(() => io(':8000'));
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({ title: "", author: "" })
     const [errors, setErrors] = useState({})
     const [sortColumn, setSortColumn] = useState('')
     const [sortDirection, setSortDirection] = useState('asc')
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -54,13 +57,39 @@ const BookClub = (props) => {
         theme: darkMode ? "dark" : "light"
     });
 
+    
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
-            .then(res => {
-                setBookList(res.data.book)
-            })
-            .catch(err => console.log(err))
+        .then(res => {
+            setBookList(res.data.book)
+        })
+        .catch(err => console.log(err))
     }, [count]);
+
+    useEffect(() => {
+        // Event handler for 'bookAdded' event
+        const handleBookAdded = (newBook) => {
+            setBookList((sortedBooks) => [newBook, ...sortedBooks]);
+        };
+
+        // Subscribe to 'bookAdded' event
+        socket.on('bookAdded', handleBookAdded);
+
+        // Clean up the event listener on component unmount
+        return () => {
+            socket.off('bookAdded', handleBookAdded);
+        };
+    }, [socket]);
 
     const changeHandler = (e) => {
         setOneBook({
@@ -83,13 +112,17 @@ const BookClub = (props) => {
                     title: "",
                     author: ""
                 })
+                socket.emit('bookAdded', oneBook);
+                setCount(count+1)
             })
             .catch(err => {
                 console.log(`submit errer`, err)
-                setErrors({
-                    title: err.response.data.error.errors.title,
-                    author: err.response.data.error.errors.author
-                })
+                if (err === 'AxiosError') {
+                    setErrors({
+                        title: err.response.data.error.errors.title,
+                        author: err.response.data.error.errors.author
+                    })
+                }
                 console.log(errors)
             })
     }
@@ -117,6 +150,8 @@ const BookClub = (props) => {
             .then(res => {
                 setCount(count + 1)
                 toastDelete(book.title)
+                // socket.emit('bookRemoved', bookList);
+
             })
             .catch(err => console.log(err))
     }
@@ -161,24 +196,24 @@ const BookClub = (props) => {
                     <form className={darkMode ? "col-md-4 offset-1 bg-dark mx-auto text-light" : "col-md-4 offset-1 mx-auto"} onSubmit={submitHandler}>
                         {oneBook.title && oneBook.title?.length < 2 ? <p className="text-danger">Title must be at least 2 characters</p> : null}
                         {errors.title ? <p className="text-danger">{errors.title.message}</p> : null}
-                        <div className="form-group">
+                        <div className="form-group col-10 mx-auto">
                             <label className='form-label'>Title</label>
                             <input type="text" className="form-control" name="title" value={oneBook.title} onChange={changeHandler} />
                         </div>
                         {oneBook.author && oneBook.author?.length < 2 ? <p className="text-danger">Author must be at least 2 characters</p> : null}
                         {errors.author ? <p className="text-danger">{errors.author.message}</p> : null}
-                        <div className="form-group">
+                        <div className="form-group col-10 mx-auto">
                             <label className='form-label'>Author</label>
                             <input type="text" className="form-control" name="author" value={oneBook.author} onChange={changeHandler} />
                         </div>
                         <div className="form-group">
-                            <button type="submit" className='btn btn-success mt-3 mb-3'>Add Book</button>
+                            <button type="submit" className='btn btn-success col-10 mt-3 mb-3'>Add Book</button>
                         </div>
                     </form>
                 </div>
                 <div>
                     <h3>All Books</h3>
-                    <table className='mx-auto mb-3'>
+                    <table className='mx-auto mb-3' style={windowWidth < "500px" ? { width: "100%" } : null}>
                         <thead>
                             <tr>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('title')}>Title {sortDirection === 'asc' && sortColumn === "title" ? "🔼" : sortDirection === 'desc' && sortColumn === "title" ? "🔽" : null}</th>
@@ -190,7 +225,6 @@ const BookClub = (props) => {
                         </thead>
                         <tbody>
                             {sortedBooks.map((book, index) => {
-                                console.log(book[index])
                                 return (
                                     <tr className="mt-4" key={book._id}>
                                         <td className={darkMode ? "lightText" : null}><><Link to={`/books/${book?._id}`}>{book?.title}</Link></></td>
@@ -199,12 +233,12 @@ const BookClub = (props) => {
                                         <td className={darkMode ? "lightText" : null}>{new Date(book.updatedAt).toLocaleString()}</td>
                                         <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
-                                                sortedBooks[index].favoritedBy.some(bookObj => bookObj._id === user?._id)
-                                                    ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button>&nbsp;&nbsp;</>
-                                                    : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>★</button>&nbsp;&nbsp;</>
+                                                sortedBooks[index]?.favoritedBy?.some(bookObj => bookObj._id === user?._id)
+                                                    ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button></>
+                                                    : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>★</button></>
                                             }
                                             { // delete if logged in user or 'admin' email user
-                                                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button>&nbsp;&nbsp;</> : null
+                                                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button></> : null
                                             }
                                         </td>
                                     </tr>
@@ -215,9 +249,8 @@ const BookClub = (props) => {
                     <br /><br />
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
 export default withAuth(BookClub)
-// export default Dashboard

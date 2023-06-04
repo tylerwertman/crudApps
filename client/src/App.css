@@ -104,7 +104,6 @@ nav ul {
 .content {
   margin: 0 auto;
   text-align: center;
-  width: 560px;
   background-color: lightgrey;
   padding: 20px;
   border-radius: 50px;
@@ -113,7 +112,6 @@ nav ul {
 .contentDark {
   margin: 0 auto;
   text-align: center;
-  width: 560px;
   background-color: rgb(50, 50, 50);
   color: lightgrey;
   padding: 20px;
@@ -154,7 +152,7 @@ table, th, td {
   padding: 10px;
   /* margin: auto */
 }
-.tableDark {
+.tableDark th {
   border: 1px solid white;
 }
 
@@ -174,7 +172,7 @@ table, th, td {
 }
 
 .tab {
-  border: 2px solid black;
+  /* border: 2px solid black; */
   /* width: 100px; */
   /* height: 30px; */
   display: flex;
@@ -185,7 +183,6 @@ table, th, td {
   background-color: seagreen;
   color: white;
 }
-
 .MQHide {
   display: none
 }
@@ -201,5 +198,25 @@ table, th, td {
 @media (width < 900px) {
   .ideaList {
     margin-left: 10%;
+  }
+}
+@media (width > 900px) {
+  .content {
+    width: 500px;
+  }
+  .contentDark {
+    width: 500px;
+  }
+}
+
+@media (width < 500px) {
+  table, th, td {
+    font-size: 14px;
+    width: 100%;
+    /* padding: 10px; */
+    /* margin: auto */
+  }
+  .tableDark th {
+    font-size: 10px;
   }
 }

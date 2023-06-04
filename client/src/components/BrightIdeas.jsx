@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import io from 'socket.io-client';
 import { Link } from 'react-router-dom'
-// import jwtdecode from 'jwt-decode'
 import withAuth from './WithAuth'
 import { toast } from 'react-toastify';
 
 
 const BrightIdeas = (props) => {
     const { count, setCount, user, welcome, darkMode } = props
+    const [socket] = useState(() => io(':8000'));
     const [ideaList, setIdeaList] = useState([])
     const [oneIdea, setOneIdea] = useState({ idea: "" })
     const [errors, setErrors] = useState({})
@@ -71,14 +72,28 @@ const BrightIdeas = (props) => {
                 // setIdeaList(res.data.idea)
             })
             .catch(err => console.log(err))
-        // sort()
         // eslint-disable-next-line
     }, [count]);
 
     useEffect(() => {
-        // sort()
-        // eslint-disable-next-line
-    }, []);
+        // Event handler for 'bookAdded' event
+        const handleIdeaAdded = (newIdea) => {
+            setIdeaList((ideaList)=>{
+                const socketSortedList = [...ideaList, newIdea]
+                socketSortedList.sort((a,b)=>b?.favoritedBy?.length - a?.favoritedBy?.length)
+                return socketSortedList
+            })
+            setIdeaList((ideaList) => [newIdea, ...ideaList]);
+        };
+
+        // Subscribe to 'bookAdded' event
+        socket.on('ideaAdded', handleIdeaAdded);
+
+        // Clean up the event listener on component unmount
+        return () => {
+            socket.off('ideaAdded', handleIdeaAdded);
+        };
+    }, [socket]);
 
     const changeHandler = (e) => {
         setOneIdea({
@@ -99,7 +114,7 @@ const BrightIdeas = (props) => {
                 setErrors({
                     idea: "",
                 })
-                // sort()
+                socket.emit('ideaAdded', oneIdea);
             })
             .catch(err => {
                 console.log(`submit errer`, err)
@@ -195,17 +210,17 @@ const BrightIdeas = (props) => {
                                 <p className="idea" style={{ border: "1px solid", padding: "5px 10px" }}>{idea.idea}</p>
                                 <span className='text-end'>
                                     {
-                                        ideaList[index].favoritedBy.length === 0 ?
+                                        ideaList[index]?.favoritedBy?.length === 0 ?
                                             null :
-                                            ideaList[index].favoritedBy.length === 1 ?
-                                                <><span>Liked by </span><Link to={`/ideas/${idea._id}`}>{ideaList[index].favoritedBy.length}</Link><span> user  </span></> :
-                                                <><span>Liked by </span><Link to={`/ideas/${idea._id}`}>{ideaList[index].favoritedBy.length}</Link><span> users  </span></>
+                                            ideaList[index]?.favoritedBy?.length === 1 ?
+                                                <><span>Liked by </span><Link to={`/ideas/${idea._id}`}>{ideaList[index].favoritedBy?.length}</Link><span> user  </span></> :
+                                                <><span>Liked by </span><Link to={`/ideas/${idea._id}`}>{ideaList[index].favoritedBy?.length}</Link><span> users  </span></>
                                     }
                                 </span>
                                 <br className='MQHide' />
                                 { // fav/unfav
-                                    ideaList[index].favoritedBy.some(ideaObj => ideaObj._id === user?._id) && darkMode ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteIdea(idea)}>✩</button>&nbsp;</> :
-                                        ideaList[index].favoritedBy.some(ideaObj => ideaObj._id === user?._id) ? <><button className="btn btn-danger" onClick={() => unfavoriteIdea(idea)}>✩</button>&nbsp;</> :
+                                    ideaList[index]?.favoritedBy?.some(ideaObj => ideaObj._id === user?._id) && darkMode ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteIdea(idea)}>✩</button>&nbsp;</> :
+                                        ideaList[index]?.favoritedBy?.some(ideaObj => ideaObj._id === user?._id) ? <><button className="btn btn-danger" onClick={() => unfavoriteIdea(idea)}>✩</button>&nbsp;</> :
                                             darkMode ? <><button className="btn btn-outline-success" onClick={() => favoriteIdea(idea)}>★</button>&nbsp;</> :
                                                 <><button className="btn btn-success" onClick={() => favoriteIdea(idea)}>★</button>&nbsp;</>
                                 }

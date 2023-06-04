@@ -9,12 +9,11 @@ const UserDetail = (props) => {
     const navigate = useNavigate();
     const [oneUser, setOneUser] = useState({})
     const [currentTab, setCurrentTab] = useState(0)
-    const [clickClass, setClickClass] = useState("tab")
     const [allTabs, setAllTabs] = useState([
-        { tab: "Books Added", tabContent: "tab 1 content", active: false },
-        { tab: "Books Favorited", tabContent: "tab 2 content", active: false },
-        { tab: "Ideas Added", tabContent: "tab 3 content", active: false },
-        { tab: "Ideas Favorited", tabContent: "tab 4 content", active: false }
+        { tab: "Books Added", active: false },
+        { tab: "Books Favorited", active: false },
+        { tab: "Ideas Added", active: false },
+        { tab: "Ideas Favorited", active: false }
     ])
 
     const selectedTab = (idx) => {
@@ -23,12 +22,10 @@ const UserDetail = (props) => {
         console.log(allTabs[currentTab]) // test this
         console.log(currentTab) // test this
         if ((allTabs[currentTab].active === false)) {
-            setClickClass("tab")
             allTabs[currentTab].active = true
             // console.log("if",allTabs[currentTab].active)
 
         } else {
-            setClickClass("tab clicked")
             allTabs[currentTab].active = false
             // console.log("else",allTabs[currentTab].active)
         }
