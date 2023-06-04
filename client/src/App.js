@@ -45,7 +45,7 @@ function App() {
       <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode}/>
       <ToastContainer transition={Slide}/>
       <Routes>
-        <Route path="/" element={<RegLog setLoggedIn={setLoggedIn} count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} />}/>
+        <Route path="/" element={<RegLog setLoggedIn={setLoggedIn} count={count} setCount={setCount} />}/>
         <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome}/>}/>
         <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome}/>}/>
         <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome}/>}/>

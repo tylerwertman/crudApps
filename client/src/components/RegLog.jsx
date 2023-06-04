@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-const RegLog = (props) => {
+const Reglog = (props) => {
     const { setLoggedIn, count, setCount } = props
+    console.log("hey",setLoggedIn,setCount)
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
     const [userInfoReg, setUserInfoReg] = useState({
@@ -45,7 +46,7 @@ const RegLog = (props) => {
             .catch(err => {
                 console.log(`submit errer`, err)
                 setErrors({
-                    reg: err.response.data
+                    regErr: err.response?.data
                 })
             })
     }
@@ -62,7 +63,7 @@ const RegLog = (props) => {
             .catch(err => {
                 console.log(`login errer`, err)
                 setErrors({
-                    login: err.response.data.message
+                    logErr: err.response?.data?.logErrMsg
                 })
             })
     }
@@ -75,29 +76,29 @@ const RegLog = (props) => {
                     <h3>Register</h3>
                     <div className="form-group">
                         <label className='form-label'>Name</label>
-                        {errors.reg?.errors?.name ? <p className="text-danger">{errors.reg.errors.name.message}</p> : null}
+                        {errors?.regErr?.errors?.name ? <p className="text-danger">{errors?.regErr.errors.name.message}</p> : null}
                         <input type="text" className="form-control" name="name" value={userInfoReg.name} onChange={regChange} />
                     </div>
                     <div className="form-group">
                         <label className='form-label'>Display Name</label>
-                        {errors.reg ? <p className="text-danger">{errors.reg.displayNameMsg}</p> : null}
-                        {errors.reg?.errors?.displayName ? <p className="text-danger">{errors.reg.errors.displayName.message}</p> : null}
+                        {errors?.regErr ? <p className="text-danger">{errors?.regErr.displayNameMsg}</p> : null}
+                        {errors?.regErr?.errors?.displayName ? <p className="text-danger">{errors?.regErr.errors.displayName.message}</p> : null}
                         <input type="text" className="form-control" name="displayName" value={userInfoReg.displayName} onChange={regChange} />
                     </div>
                     <div className="form-group">
                         <label className='form-label'>Email</label>
-                        {errors.reg ? <p className="text-danger">{errors.reg.emailMsg}</p> : null}
-                        {errors.reg?.errors?.email ? <p className="text-danger">{errors.reg.errors.email.message}</p> : null}
+                        {errors?.regErr ? <p className="text-danger">{errors?.regErr.emailMsg}</p> : null}
+                        {errors?.regErr?.errors?.email ? <p className="text-danger">{errors?.regErr.errors.email.message}</p> : null}
                         <input type="email" className="form-control" name="email" value={userInfoReg.email} onChange={regChange} />
                     </div>
                     <div className="form-group">
                         <label className='form-label'>Password</label>
-                        {errors.reg?.errors?.password ? <p className="text-danger">{errors.reg.errors.password.message}</p> : null}
+                        {errors?.regErr?.errors?.password ? <p className="text-danger">{errors?.regErr.errors.password.message}</p> : null}
                         <input type="password" className="form-control" name="password" value={userInfoReg.password} onChange={regChange} />
                     </div>
                     <div className="form-group">
                         <label className='form-label'>Confirm Password</label>
-                        {errors.reg?.errors?.confirmPassword ? <p className="text-danger">{errors.reg.errors.confirmPassword.message}</p> : null}
+                        {errors?.regErr?.errors?.confirmPassword ? <p className="text-danger">{errors?.regErr.errors.confirmPassword.message}</p> : null}
                         <input type="password" className="form-control" name="confirmPassword" value={userInfoReg.confirmPassword} onChange={regChange} />
                     </div>
                     <div className="form-group">
@@ -108,7 +109,7 @@ const RegLog = (props) => {
             <div className='col'>
                 <form className="regLog" onSubmit={logSubmit}>
                     <h3>Login</h3>
-                    {errors.login ? <p className="text-danger">{errors.login}</p> : null}
+                    {errors.logErr ? <p className="text-danger">{errors.logErr}</p> : null}
                     <div className="form-group">
                         <label className='form-label'>Email</label>
                         <input type="email" className="form-control" name="email" value={userInfoLog.email} onChange={logChange} />
@@ -126,4 +127,4 @@ const RegLog = (props) => {
     )
 }
 
-export default RegLog
+export default Reglog
