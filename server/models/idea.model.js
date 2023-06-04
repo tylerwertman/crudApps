@@ -4,7 +4,7 @@ const { findOneUser } = require('../controllers/user.controller');
 const IdeaSchema = new mongoose.Schema({
     idea: {
         type: String,
-        required: [true, "Idea is required"],
+        required: [true, "Idea can not be empty"],
         minlength: [2, "Idea must be at least 2 characters"]
     },
     addedBy: {

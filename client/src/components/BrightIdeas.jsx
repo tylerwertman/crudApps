@@ -54,6 +54,7 @@ const BrightIdeas = (props) => {
         theme: darkMode ? "dark" : "light"
     });
 
+    // UE for tracking window size
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
@@ -64,34 +65,68 @@ const BrightIdeas = (props) => {
         };
     }, []);
 
+    // UE for sorting ideas by favorites. The Fav & Unfav FN update count to trigger this UE
     useEffect(() => {
         axios.get(`http://localhost:8000/api/ideas`)
             .then(res => {
                 const sortedIdeas = res.data.idea.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length);
                 setIdeaList(sortedIdeas)
-                // setIdeaList(res.data.idea)
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
     }, [count]);
 
+    // UE for socket.io
     useEffect(() => {
-        // Event handler for 'bookAdded' event
+        // Event handler for 'ideaAdded' event
         const handleIdeaAdded = (newIdea) => {
-            setIdeaList((ideaList)=>{
+            setIdeaList((ideaList) => {
                 const socketSortedList = [...ideaList, newIdea]
-                socketSortedList.sort((a,b)=>b?.favoritedBy?.length - a?.favoritedBy?.length)
+                socketSortedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
                 return socketSortedList
             })
-            setIdeaList((ideaList) => [newIdea, ...ideaList]);
         };
+        //Event handler for 'ideaFavorited' event
+        const handleIdeaFavorited = (updatedIdea) => {
+            setIdeaList((ideaList) => {
+                const updatedList = ideaList.map((idea) => {
+                    if (idea._id === updatedIdea._id) {
+                        return updatedIdea;
+                    }
+                    return idea;
+                });
+                return [...updatedList];
+            })
+        }
+        //Event handler for 'ideaUnfavorited' event
+        const handleIdeaUnfavorited = (updatedIdea) => {
+            setIdeaList((ideaList) => {
+                const updatedList = ideaList.map((idea) => {
+                    if (idea._id === updatedIdea._id) {
+                        return updatedIdea
+                    }
+                    return idea
+                })
+                return [...updatedList]
+            })
+        }
+        //Event handler for 'ideaDeleted' event
+        const handleIdeaDeleted = (deletedIdea) => {
+            setIdeaList((ideaList) => ideaList.filter((idea) => idea._id !== deletedIdea._id));
+        }
 
-        // Subscribe to 'bookAdded' event
+        // Subscribe to events
         socket.on('ideaAdded', handleIdeaAdded);
+        socket.on('ideaFavorited', handleIdeaFavorited)
+        socket.on('ideaUnfavorited', handleIdeaUnfavorited)
+        socket.on('ideaDeleted', handleIdeaDeleted)
 
         // Clean up the event listener on component unmount
         return () => {
             socket.off('ideaAdded', handleIdeaAdded);
+            socket.off('ideaFavorited', handleIdeaFavorited)
+            socket.off('ideaUnfavorited', handleIdeaUnfavorited)
+            socket.off('ideaDeleted', handleIdeaDeleted)
         };
     }, [socket]);
 
@@ -106,15 +141,16 @@ const BrightIdeas = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/ideas', oneIdea, { withCredentials: true })
             .then(res => {
-                setIdeaList([...ideaList, res.data.idea])
-                toastAdded()
+                const newIdea = res.data.idea;
+                setIdeaList([newIdea, ...ideaList]);
+                toastAdded();
                 setOneIdea({
                     idea: "",
-                })
+                });
                 setErrors({
                     idea: "",
-                })
-                socket.emit('ideaAdded', oneIdea);
+                });
+                socket.emit('ideaAdded', newIdea);
             })
             .catch(err => {
                 console.log(`submit errer`, err)
@@ -128,9 +164,17 @@ const BrightIdeas = (props) => {
     const favoriteIdea = (idea) => {
         axios.post(`http://localhost:8000/api/ideas/${idea._id}/favorite`, {}, { withCredentials: true })
             .then(res => {
+                const updatedIdea = res.data.idea
+                const updatedIdeaList = ideaList.map(list => {
+                    if (list._id === updatedIdea._id) {
+                        return updatedIdea
+                    }
+                    return list
+                })
+                setIdeaList(updatedIdeaList)
                 setCount(count + 1)
                 toastFav(idea.idea)
-                // sort()
+                socket.emit('ideaFavorited', updatedIdea);
             })
             .catch(err => console.log(`FAV error`, err))
     }
@@ -138,9 +182,17 @@ const BrightIdeas = (props) => {
     const unfavoriteIdea = (idea) => {
         axios.post(`http://localhost:8000/api/ideas/${idea._id}/unfavorite`, {}, { withCredentials: true })
             .then(res => {
+                const updatedIdea = res.data.idea
+                const updatedIdeaList = ideaList.map(list => {
+                    if (list._id === updatedIdea._id) {
+                        return updatedIdea
+                    }
+                    return list
+                })
+                setIdeaList(updatedIdeaList)
                 setCount(count + 1)
                 toastUnfav(idea.idea)
-                // sort()
+                socket.emit('ideaUnfavorited', updatedIdea);
             })
             .catch(err => console.log(`UNfav error`, err))
     }
@@ -150,15 +202,11 @@ const BrightIdeas = (props) => {
             .then(res => {
                 setCount(count + 1)
                 toastDelete(idea.idea)
+                socket.emit('ideaDeleted', idea);
+
             })
             .catch(err => console.log(err))
     }
-
-    // const sort = () => {
-    //     const sortedArray = [...ideaList].sort((a, b) => b.favoritedBy.length - a.favoritedBy.length);
-    //     setIdeaList(sortedArray)
-    //     console.log('sorting...')
-    // }
 
     const options = {
         weekday: "long",
@@ -188,18 +236,17 @@ const BrightIdeas = (props) => {
                         (<form className={darkMode ? "mx-auto bg-dark text-light mt-5" : "mx-auto mt-5"} onSubmit={submitHandler}>
                             {oneIdea.idea && oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
                             {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
-                                <div className="form-floating col-10 mx-auto">
-                                    <input type="text" className="form-control" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
-                                    <label className="darkText" htmlFor="idea">Add a new idea!</label>
-                                </div>
-                                <button type="submit" className="input-group-text btn btn-success mt-3 col-10" onSubmit={submitHandler}>Add idea!</button>
+                            <div className="form-floating col-10 mx-auto">
+                                <input type="text" className="form-control" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
+                                <label className="darkText" htmlFor="idea">Add a new idea!</label>
+                            </div>
+                            <button type="submit" className="input-group-text btn btn-success mt-3 col-10" onSubmit={submitHandler}>Add idea!</button>
                         </form>)}
                 </div>
                 <h3 className='mt-3'>All Ideas</h3>
                 <div className='col-8 mx-auto text-start ideaList'>
                     {ideaList.map((idea, index) => {
                         return (
-
                             <div className='mt-5' key={idea._id}>
                                 {
                                     idea?.addedBy ?

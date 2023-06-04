@@ -38,10 +38,28 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('bookAdded', book);
     });
     // Handle 'ideaAdded' event
-    socket.on('ideaAdded', (idea) => {
-        console.log('Idea added:', idea);
+    socket.on('ideaAdded', (newIdea) => {
+        console.log('Idea added:', newIdea);
         // Emit the 'ideaAdded' event to all connected clients except the sender
-        socket.broadcast.emit('ideaAdded', idea);
+        socket.broadcast.emit('ideaAdded', newIdea);
+    });
+    // Handle 'ideaFavorited' event
+    socket.on('ideaFavorited', (updatedIdea) => {
+        console.log('Idea Favorited:', updatedIdea);
+        // Emit the 'ideaAdded' event to all connected clients except the sender
+        socket.broadcast.emit('ideaFavorited', updatedIdea);
+    });
+    // Handle 'ideaUnfavorited' event
+    socket.on('ideaUnfavorited', (updatedIdea) => {
+        console.log('Idea Unfavorited:', updatedIdea);
+        // Emit the 'ideaAdded' event to all connected clients except the sender
+        socket.broadcast.emit('ideaUnfavorited', updatedIdea);
+    });
+    // Handle 'ideaDeleted' event
+    socket.on('ideaDeleted', (deletedIdea) => {
+        console.log('Idea Deleted:', deletedIdea);
+        // Emit the 'ideaAdded' event to all connected clients except the sender
+        socket.broadcast.emit('ideaDeleted', deletedIdea);
     });
 
 
