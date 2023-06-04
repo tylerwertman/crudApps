@@ -19,15 +19,12 @@ const UserDetail = (props) => {
     const selectedTab = (idx) => {
         setCurrentTab(idx);
 
-        console.log(allTabs[currentTab]) // test this
-        console.log(currentTab) // test this
+        console.log(allTabs[currentTab])
+        console.log(currentTab)
         if ((allTabs[currentTab].active === false)) {
             allTabs[currentTab].active = true
-            // console.log("if",allTabs[currentTab].active)
-
         } else {
             allTabs[currentTab].active = false
-            // console.log("else",allTabs[currentTab].active)
         }
     }
     useEffect(() => {

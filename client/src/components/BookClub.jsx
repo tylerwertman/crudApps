@@ -57,7 +57,7 @@ const BookClub = (props) => {
         theme: darkMode ? "dark" : "light"
     });
 
-    
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
@@ -70,10 +70,10 @@ const BookClub = (props) => {
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
-        .then(res => {
-            setBookList(res.data.book)
-        })
-        .catch(err => console.log(err))
+            .then(res => {
+                setBookList(res.data.book)
+            })
+            .catch(err => console.log(err))
     }, [count]);
 
     useEffect(() => {
@@ -113,7 +113,7 @@ const BookClub = (props) => {
                     author: ""
                 })
                 socket.emit('bookAdded', oneBook);
-                setCount(count+1)
+                setCount(count + 1)
             })
             .catch(err => {
                 console.log(`submit errer`, err)

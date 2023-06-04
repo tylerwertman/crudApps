@@ -116,8 +116,8 @@ const IdeaDetail = (props) => {
                 <br />
                 {
                     oneIdea?.addedBy ?
-                    <><span>On {new Date(oneIdea.createdAt).toLocaleString("en-US", options)} at {new Date(oneIdea.createdAt).toLocaleString([], { timeStyle: 'short' })}, </span><Link to={`/users/${oneIdea.addedBy._id}`}>@{oneIdea?.addedBy.displayName}</Link><span> said:</span>&nbsp;</> :
-                    <span>Deleted User said: </span>
+                        <><span>On {new Date(oneIdea.createdAt).toLocaleString("en-US", options)} at {new Date(oneIdea.createdAt).toLocaleString([], { timeStyle: 'short' })}, </span><Link to={`/users/${oneIdea.addedBy._id}`}>@{oneIdea?.addedBy.displayName}</Link><span> said:</span>&nbsp;</> :
+                        <span>Deleted User said: </span>
                 }
                 <p className="idea" style={{ border: "1px solid", padding: "5px 10px" }}>{oneIdea.idea}</p>
                 {/* <p>at {new Date(oneIdea?.createdAt).toLocaleString()}</p> */}

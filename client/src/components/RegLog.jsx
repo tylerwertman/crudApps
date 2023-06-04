@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-const RegisterForm = (props) => {
+const RegLog = (props) => {
     const { setLoggedIn, count, setCount } = props
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
@@ -47,7 +47,6 @@ const RegisterForm = (props) => {
                 setErrors({
                     reg: err.response.data
                 })
-                console.log(errors)
             })
     }
 
@@ -63,9 +62,8 @@ const RegisterForm = (props) => {
             .catch(err => {
                 console.log(`login errer`, err)
                 setErrors({
-                    login: err.response.data.msg
+                    login: err.response.data.message
                 })
-                console.log(errors)
             })
     }
 
@@ -128,4 +126,4 @@ const RegisterForm = (props) => {
     )
 }
 
-export default RegisterForm
+export default RegLog
