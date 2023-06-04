@@ -81,7 +81,7 @@ const BrightIdeas = (props) => {
         // Event handler for 'ideaAdded' event
         const handleIdeaAdded = (newIdea) => {
             setIdeaList((ideaList) => {
-                const socketSortedList = [...ideaList, newIdea]
+                const socketSortedList = [newIdea, ...ideaList]
                 socketSortedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
                 return socketSortedList
             })
@@ -95,7 +95,8 @@ const BrightIdeas = (props) => {
                     }
                     return idea;
                 });
-                return [...updatedList];
+                const socketSortedList = updatedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
+                return socketSortedList;
             })
         }
         //Event handler for 'ideaUnfavorited' event
@@ -107,7 +108,8 @@ const BrightIdeas = (props) => {
                     }
                     return idea
                 })
-                return [...updatedList]
+                const socketSortedList = updatedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
+                return socketSortedList;
             })
         }
         //Event handler for 'ideaDeleted' event
