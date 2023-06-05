@@ -220,7 +220,7 @@ const BookClub = (props) => {
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('author')}>Author {sortDirection === 'asc' && sortColumn === "author" ? "🔼" : sortDirection === 'desc' && sortColumn === "author" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('addedBy')}>Added By {sortDirection === 'asc' && sortColumn === "addedBy" ? "🔼" : sortDirection === 'desc' && sortColumn === "addedBy" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('createdAt')}>Date Added {sortDirection === 'asc' && sortColumn === "createdAt" ? "🔼" : sortDirection === 'desc' && sortColumn === "createdAt" ? "🔽" : null}</th>
-                                <th className={darkMode ? "lightText" : null}>Actions</th>
+                                {windowWidth > "500" ? <th className={darkMode ? "lightText" : null}>Actions</th> : null}
                             </tr>
                         </thead>
                         <tbody>
@@ -231,7 +231,7 @@ const BookClub = (props) => {
                                         <td className={darkMode ? "lightText" : null}>{book.author}</td>
                                         <td className={darkMode ? "lightText" : null}>{book?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${book?.addedBy?._id}`}>@{book?.addedBy?.displayName}</Link></p> : <p>(added by Deleted User)</p>}</td>
                                         <td className={darkMode ? "lightText" : null}>{new Date(book.updatedAt).toLocaleString()}</td>
-                                        <td className={darkMode ? "lightText" : null}>
+                                        {windowWidth > "500" ? <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
                                                 sortedBooks[index]?.favoritedBy?.some(bookObj => bookObj._id === user?._id)
                                                     ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button></>
@@ -240,7 +240,7 @@ const BookClub = (props) => {
                                             { // delete if logged in user or 'admin' email user
                                                 (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button></> : null
                                             }
-                                        </td>
+                                        </td> : null}
                                     </tr>
                                 )
                             })}

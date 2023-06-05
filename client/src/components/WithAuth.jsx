@@ -8,9 +8,7 @@ const WithAuth = (Component) => {
     const WithAuthComponent = (props) => {
         const navigate = useNavigate();
 
-        // const { darkMode } = props;
         const cookieValue = Cookies.get('userToken');
-        console.log(cookieValue)
 
         let isAuthenticated
 
