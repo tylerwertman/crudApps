@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import io from 'socket.io-client';
+import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
 import withAuth from './WithAuth'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 
 const BrightIdeas = (props) => {
     const { count, setCount, user, welcome, darkMode } = props
-    const [socket] = useState(() => io(':8000'));
+    const [socket] = useState(() => io(':8000'))
     const [ideaList, setIdeaList] = useState([])
     const [oneIdea, setOneIdea] = useState({ idea: "" })
     const [errors, setErrors] = useState({})
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    const [currentPage, setCurrentPage] = useState(1)
+
     const toastAdded = () => toast.success(`➕ You added an idea`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -22,7 +24,7 @@ const BrightIdeas = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastFav = (id) => toast.success(`👍 You favorited an idea`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -32,7 +34,7 @@ const BrightIdeas = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastUnfav = (id) => toast.error(`👎 You unfavorited an idea`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -42,7 +44,7 @@ const BrightIdeas = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastDelete = (id) => toast.error(`🗑 You deleted ${id}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -52,29 +54,29 @@ const BrightIdeas = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
 
     // UE for tracking window size
     useEffect(() => {
         const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-        window.addEventListener('resize', handleResize);
+            setWindowWidth(window.innerWidth)
+        }
+        window.addEventListener('resize', handleResize)
         return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
 
     // UE for sorting ideas by favorites. The Fav & Unfav FN update count to trigger this UE
     useEffect(() => {
         axios.get(`http://localhost:8000/api/ideas`)
             .then(res => {
-                const sortedIdeas = res.data.idea.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length);
+                const sortedIdeas = res.data.idea.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length)
                 setIdeaList(sortedIdeas)
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
-    }, [count]);
+    }, [count])
 
     // UE for socket.io
     useEffect(() => {
@@ -85,18 +87,18 @@ const BrightIdeas = (props) => {
                 socketSortedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
                 return socketSortedList
             })
-        };
+        }
         //Event handler for 'ideaFavorited' event
         const handleIdeaFavorited = (updatedIdea) => {
             setIdeaList((ideaList) => {
                 const updatedList = ideaList.map((idea) => {
                     if (idea._id === updatedIdea._id) {
-                        return updatedIdea;
+                        return updatedIdea
                     }
-                    return idea;
-                });
+                    return idea
+                })
                 const socketSortedList = updatedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
-                return socketSortedList;
+                return socketSortedList
             })
         }
         //Event handler for 'ideaUnfavorited' event
@@ -109,28 +111,28 @@ const BrightIdeas = (props) => {
                     return idea
                 })
                 const socketSortedList = updatedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
-                return socketSortedList;
+                return socketSortedList
             })
         }
         //Event handler for 'ideaDeleted' event
         const handleIdeaDeleted = (deletedIdea) => {
-            setIdeaList((ideaList) => ideaList.filter((idea) => idea._id !== deletedIdea._id));
+            setIdeaList((ideaList) => ideaList.filter((idea) => idea._id !== deletedIdea._id))
         }
 
         // Subscribe to events
-        socket.on('ideaAdded', handleIdeaAdded);
+        socket.on('ideaAdded', handleIdeaAdded)
         socket.on('ideaFavorited', handleIdeaFavorited)
         socket.on('ideaUnfavorited', handleIdeaUnfavorited)
         socket.on('ideaDeleted', handleIdeaDeleted)
 
         // Clean up the event listener on component unmount
         return () => {
-            socket.off('ideaAdded', handleIdeaAdded);
+            socket.off('ideaAdded', handleIdeaAdded)
             socket.off('ideaFavorited', handleIdeaFavorited)
             socket.off('ideaUnfavorited', handleIdeaUnfavorited)
             socket.off('ideaDeleted', handleIdeaDeleted)
-        };
-    }, [socket]);
+        }
+    }, [socket])
 
     const changeHandler = (e) => {
         setOneIdea({
@@ -143,18 +145,18 @@ const BrightIdeas = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/ideas', oneIdea, { withCredentials: true })
             .then(res => {
-                const newIdea = res.data.idea;
+                const newIdea = res.data.idea
                 const list = [newIdea, ...ideaList]
                 const sortedList = list.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
-                setIdeaList(sortedList);
-                toastAdded();
+                setIdeaList(sortedList)
+                toastAdded()
                 setOneIdea({
                     idea: "",
-                });
+                })
                 setErrors({
                     idea: "",
-                });
-                socket.emit('ideaAdded', newIdea);
+                })
+                socket.emit('ideaAdded', newIdea)
             })
             .catch(err => {
                 console.log(`submit errer`, err)
@@ -178,7 +180,7 @@ const BrightIdeas = (props) => {
                 setIdeaList(updatedIdeaList)
                 setCount(count + 1)
                 toastFav(idea.idea)
-                socket.emit('ideaFavorited', updatedIdea);
+                socket.emit('ideaFavorited', updatedIdea)
             })
             .catch(err => console.log(`FAV error`, err))
     }
@@ -196,7 +198,7 @@ const BrightIdeas = (props) => {
                 setIdeaList(updatedIdeaList)
                 setCount(count + 1)
                 toastUnfav(idea.idea)
-                socket.emit('ideaUnfavorited', updatedIdea);
+                socket.emit('ideaUnfavorited', updatedIdea)
             })
             .catch(err => console.log(`UNfav error`, err))
     }
@@ -206,10 +208,27 @@ const BrightIdeas = (props) => {
             .then(res => {
                 setCount(count + 1)
                 toastDelete(idea.idea)
-                socket.emit('ideaDeleted', idea);
+                socket.emit('ideaDeleted', idea)
 
             })
             .catch(err => console.log(err))
+    }
+
+    // Pagination
+    const itemsPerPage = 5
+    const totalPages = Math.ceil(ideaList.length / itemsPerPage)
+    const pageNumbers = []
+
+    for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i)
+    }
+
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = ideaList.slice(indexOfFirstItem, indexOfLastItem)
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber)
     }
 
     const options = {
@@ -217,7 +236,7 @@ const BrightIdeas = (props) => {
         year: "numeric",
         month: "long",
         day: "numeric",
-    };
+    }
 
     return (
         <div>
@@ -249,7 +268,7 @@ const BrightIdeas = (props) => {
                 </div>
                 <h3 className='mt-3'>All Ideas</h3>
                 <div className='col-8 mx-auto text-start ideaList'>
-                    {ideaList.map((idea, index) => {
+                    {currentItems.map((idea, index) => {
                         return (
                             <div className='mt-5' key={idea._id}>
                                 {
@@ -261,17 +280,17 @@ const BrightIdeas = (props) => {
                                 <p className="idea" style={{ border: "1px solid", padding: "5px 10px" }}>{idea.idea}</p>
                                 <span className='text-end'>
                                     {
-                                        ideaList[index]?.favoritedBy?.length === 0 ?
+                                        currentItems[index]?.favoritedBy?.length === 0 ?
                                             null :
-                                            ideaList[index]?.favoritedBy?.length === 1 ?
-                                                <><span>Liked by </span><Link to={`/ideas/${idea._id}`}>{ideaList[index].favoritedBy?.length}</Link><span> user  </span></> :
-                                                <><span>Liked by </span><Link to={`/ideas/${idea._id}`}>{ideaList[index].favoritedBy?.length}</Link><span> users  </span></>
+                                            currentItems[index]?.favoritedBy?.length === 1 ?
+                                                <><span>Liked by </span><Link to={`/ideas/${idea._id}`}>{currentItems[index].favoritedBy?.length}</Link><span> user  </span></> :
+                                                <><span>Liked by </span><Link to={`/ideas/${idea._id}`}>{currentItems[index].favoritedBy?.length}</Link><span> users  </span></>
                                     }
                                 </span>
                                 <br className='MQHide' />
                                 { // fav/unfav
-                                    ideaList[index]?.favoritedBy?.some(ideaObj => ideaObj._id === user?._id) && darkMode ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteIdea(idea)}>✩</button>&nbsp;</> :
-                                        ideaList[index]?.favoritedBy?.some(ideaObj => ideaObj._id === user?._id) ? <><button className="btn btn-danger" onClick={() => unfavoriteIdea(idea)}>✩</button>&nbsp;</> :
+                                    currentItems[index]?.favoritedBy?.some(ideaObj => ideaObj._id === user?._id) && darkMode ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteIdea(idea)}>✩</button>&nbsp;</> :
+                                        currentItems[index]?.favoritedBy?.some(ideaObj => ideaObj._id === user?._id) ? <><button className="btn btn-danger" onClick={() => unfavoriteIdea(idea)}>✩</button>&nbsp;</> :
                                             darkMode ? <><button className="btn btn-outline-success" onClick={() => favoriteIdea(idea)}>★</button>&nbsp;</> :
                                                 <><button className="btn btn-success" onClick={() => favoriteIdea(idea)}>★</button>&nbsp;</>
                                 }
@@ -281,6 +300,17 @@ const BrightIdeas = (props) => {
                             </div>
                         )
                     })}
+                    <div className="custom-pagination">
+                        <div className="pagination justify-content-center">
+                            {pageNumbers.map((number) => (
+                                <div key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+                                    <button className="page-link" onClick={() => paginate(number)}>
+                                        {number}
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                     <br /><br /><br />
                 </div>
             </div>

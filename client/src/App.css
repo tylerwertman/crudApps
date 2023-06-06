@@ -22,7 +22,7 @@ body {
   color:white
 }
 .AppLight a {
-  color:#009050
+  color:seagreen
 }
 
 nav {
@@ -136,7 +136,7 @@ nav ul {
 }
 
 .mainDivLight a {
-  color: #009050;
+  color: seagreen;
 }
 
 .mainDivDark a {
@@ -201,7 +201,7 @@ table, th, td {
 
 /* Custom pagination colors */
 .custom-pagination .page-link {
-  color: #009050;
+  color: seagreen;
   /* background-color: #00ff11;
   border-color: #04ff00; */
 }
@@ -214,14 +214,14 @@ table, th, td {
 
 .custom-pagination .page-link:focus {
   color: #fff;
-  background-color: #009050;
+  background-color: seagreen;
   border-color: #000;
   box-shadow: 0 0 0 0.2rem rgba(38, 255, 49, 0.5);
 }
 
 .custom-pagination .page-item.active .page-link {
   color: #fff;
-  background-color: #009050;
+  background-color: seagreen;
   border-color: #000;
 }
 

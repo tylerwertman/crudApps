@@ -78,7 +78,7 @@ const BookClub = (props) => {
     useEffect(() => {
         // Event handler for 'bookAdded' event
         const handleBookAdded = (newBook) => {
-            setBookList((sortedBooks) => [newBook, ...sortedBooks])
+            setBookList((bookList) => [newBook, ...bookList])
         }
 
         //Event handler for 'bookDeleted' event
@@ -226,11 +226,11 @@ const BookClub = (props) => {
                         {oneBook.author && oneBook.author?.length < 2 ? <p className="text-danger">Author must be at least 2 characters</p> : null}
                         {errors.author ? <p className="text-danger">{errors.author.message}</p> : null}
                         <div className="form-floating col-10 mx-auto mb-3">
-                            <input type="text" className="form-control custom-input" name="author" value={oneBook.author} onChange={changeHandler} placeholder='Author'/>
+                            <input type="text" className="form-control custom-input" name="author" value={oneBook.author} onChange={changeHandler} placeholder='Author' />
                             <label className='form-label'>Author</label>
                         </div>
                         <div className="form-group">
-                            <button type="submit" className='btn btn-success col-10 mt-3 mb-3'>Add Book</button>
+                            <button type="submit" className='btn btn-success col-10 mb-3'>Add Book</button>
                         </div>
                     </form>
                 </div>
@@ -270,7 +270,6 @@ const BookClub = (props) => {
                         </tbody>
                     </table>
                     <div className="custom-pagination">
-
                         <div className="pagination justify-content-center">
                             {pageNumbers.map((number) => (
                                 <div key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
