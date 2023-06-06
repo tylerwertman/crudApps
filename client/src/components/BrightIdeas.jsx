@@ -144,7 +144,9 @@ const BrightIdeas = (props) => {
         axios.post('http://localhost:8000/api/ideas', oneIdea, { withCredentials: true })
             .then(res => {
                 const newIdea = res.data.idea;
-                setIdeaList([newIdea, ...ideaList]);
+                const list = [newIdea, ...ideaList]
+                const sortedList = list.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
+                setIdeaList(sortedList);
                 toastAdded();
                 setOneIdea({
                     idea: "",
