@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import io from 'socket.io-client';
+import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
-// import jwtdecode from 'jwt-decode'
 import withAuth from './WithAuth'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 
 const BookClub = (props) => {
     const { count, setCount, user, welcome, darkMode } = props
-    const [socket] = useState(() => io(':8000'));
+    const [socket] = useState(() => io(':8000'))
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({ title: "", author: "" })
     const [errors, setErrors] = useState({})
     const [sortColumn, setSortColumn] = useState('')
     const [sortDirection, setSortDirection] = useState('asc')
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    const [currentPage, setCurrentPage] = useState(1)
     const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -25,7 +25,7 @@ const BookClub = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastFav = (id) => toast.success(`👍 You favorited ${id}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -35,7 +35,7 @@ const BookClub = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastUnfav = (id) => toast.error(`👎 You unfavorited ${id}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -45,7 +45,7 @@ const BookClub = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastDelete = (id) => toast.error(`🗑 You deleted ${id}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -55,18 +55,17 @@ const BookClub = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
-
+    })
 
     useEffect(() => {
         const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-        window.addEventListener('resize', handleResize);
+            setWindowWidth(window.innerWidth)
+        }
+        window.addEventListener('resize', handleResize)
         return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
@@ -74,29 +73,29 @@ const BookClub = (props) => {
                 setBookList(res.data.book)
             })
             .catch(err => console.log(err))
-    }, [count]);
+    }, [count])
 
     useEffect(() => {
         // Event handler for 'bookAdded' event
         const handleBookAdded = (newBook) => {
-            setBookList((sortedBooks) => [newBook, ...sortedBooks]);
-        };
+            setBookList((sortedBooks) => [newBook, ...sortedBooks])
+        }
 
         //Event handler for 'bookDeleted' event
         const handleBookDeleted = (deletedBook) => {
-            setBookList((bookList) => bookList.filter((book) => book._id !== deletedBook._id));
+            setBookList((bookList) => bookList.filter((book) => book._id !== deletedBook._id))
         }
 
         // Subscribe to 'bookAdded' event
-        socket.on('bookAdded', handleBookAdded);
-        socket.on('bookDeleted', handleBookDeleted);
+        socket.on('bookAdded', handleBookAdded)
+        socket.on('bookDeleted', handleBookDeleted)
 
         // Clean up the event listener on component unmount
         return () => {
-            socket.off('bookAdded', handleBookAdded);
-            socket.off('bookDeleted', handleBookDeleted);
-        };
-    }, [socket]);
+            socket.off('bookAdded', handleBookAdded)
+            socket.off('bookDeleted', handleBookDeleted)
+        }
+    }, [socket])
 
     const changeHandler = (e) => {
         setOneBook({
@@ -119,7 +118,7 @@ const BookClub = (props) => {
                     title: "",
                     author: ""
                 })
-                socket.emit('bookAdded', res.data.book);
+                socket.emit('bookAdded', res.data.book)
                 setCount(count + 1)
             })
             .catch(err => {
@@ -157,7 +156,7 @@ const BookClub = (props) => {
             .then(res => {
                 setCount(count + 1)
                 toastDelete(book.title)
-                socket.emit('bookDeleted', book);
+                socket.emit('bookDeleted', book)
 
             })
             .catch(err => console.log(err))
@@ -166,11 +165,11 @@ const BookClub = (props) => {
     const handleSort = (column) => {
         if (column === sortColumn) {
             // If the same column is clicked again, toggle the sort direction
-            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
         } else {
             // If a different column is clicked, set it as the new sort column and reset the sort direction
-            setSortColumn(column);
-            setSortDirection('asc');
+            setSortColumn(column)
+            setSortDirection('asc')
         }
     }
 
@@ -184,14 +183,31 @@ const BookClub = (props) => {
             const authorB = b.author.toLowerCase()
             return sortDirection === 'asc' ? authorA.localeCompare(authorB) : authorB.localeCompare(authorA)
         } else if (sortColumn === 'addedBy') {
-            const addedByA = a.addedBy.firstName.toLowerCase()
-            const addedByB = b.addedBy.firstName.toLowerCase()
+            const addedByA = a.addedBy.name.toLowerCase()
+            const addedByB = b.addedBy.name.toLowerCase()
             return sortDirection === 'asc' ? addedByA.localeCompare(addedByB) : addedByB.localeCompare(addedByA)
         } else if (sortColumn === 'createdAt') {
-            return sortDirection === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt);
+            return sortDirection === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt)
         }
-        return 0;
+        return 0
     })
+
+    // Pagination
+    const itemsPerPage = 5
+    const totalPages = Math.ceil(bookList.length / itemsPerPage)
+    const pageNumbers = []
+
+    for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i)
+    }
+
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = sortedBooks.slice(indexOfFirstItem, indexOfLastItem)
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
 
     return (
         <div>
@@ -231,7 +247,7 @@ const BookClub = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedBooks.map((book, index) => {
+                            {currentItems.map((book, index) => {
                                 return (
                                     <tr className="mt-4" key={book._id}>
                                         <td className={darkMode ? "lightText" : null}><><Link to={`/books/${book?._id}`}>{book?.title}</Link></></td>
@@ -240,7 +256,7 @@ const BookClub = (props) => {
                                         <td className={darkMode ? "lightText" : null}>{new Date(book.updatedAt).toLocaleString()}</td>
                                         {windowWidth > "420" ? <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
-                                                sortedBooks[index]?.favoritedBy?.some(bookObj => bookObj._id === user?._id)
+                                                currentItems[index]?.favoritedBy?.some(bookObj => bookObj._id === user?._id)
                                                     ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button></>
                                                     : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>★</button></>
                                             }
@@ -253,6 +269,18 @@ const BookClub = (props) => {
                             })}
                         </tbody>
                     </table>
+                    <div className="custom-pagination">
+
+                        <div className="pagination justify-content-center">
+                            {pageNumbers.map((number) => (
+                                <div key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+                                    <button className="page-link" onClick={() => paginate(number)}>
+                                        {number}
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                     <br /><br />
                 </div>
             </div>
