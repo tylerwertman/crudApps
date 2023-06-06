@@ -223,10 +223,10 @@ const BrightIdeas = (props) => {
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
                 {/* <button className="btn btn-danger" onClick={() => sort()}>Sort</button> */}
                 <div className={darkMode ? "col-sm-8 mx-auto bg-dark text-light" : "col-sm-8 mx-auto"}>
-                    {windowWidth > 575 ?
-                        (<form className={darkMode ? "mx-auto bg-dark text-light mt-5" : "mx-auto mt-5"} onSubmit={submitHandler}>
-                            {oneIdea.idea && oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
-                            {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
+                    <form className={darkMode ? "mx-auto bg-dark text-light mt-5" : "mx-auto mt-5"} onSubmit={submitHandler}>
+                        {oneIdea.idea && oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
+                        {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
+                        {windowWidth > 575 ?
                             <div className="input-group col-10">
                                 <div className="form-floating">
                                     <input type="text" className="form-control" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
@@ -234,16 +234,16 @@ const BrightIdeas = (props) => {
                                 </div>
                                 <button type="submit" className="input-group-text btn btn-success" onSubmit={submitHandler}>Add idea!</button>
                             </div>
-                        </form>) :
-                        (<form className={darkMode ? "mx-auto bg-dark text-light mt-5" : "mx-auto mt-5"} onSubmit={submitHandler}>
-                            {oneIdea.idea && oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
-                            {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
-                            <div className="form-floating col-10 mx-auto">
-                                <input type="text" className="form-control" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
-                                <label className="darkText" htmlFor="idea">Add a new idea!</label>
+                            :
+                            <div>
+                                <div className="form-floating col-10 mx-auto">
+                                    <input type="text" className="form-control" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
+                                    <label className="darkText" htmlFor="idea">Add a new idea!</label>
+                                </div>
+                                <button type="submit" className="input-group-text btn btn-success mt-3 col-10" onSubmit={submitHandler}>Add idea!</button>
                             </div>
-                            <button type="submit" className="input-group-text btn btn-success mt-3 col-10" onSubmit={submitHandler}>Add idea!</button>
-                        </form>)}
+                        }
+                    </form>
                 </div>
                 <h3 className='mt-3'>All Ideas</h3>
                 <div className='col-8 mx-auto text-start ideaList'>

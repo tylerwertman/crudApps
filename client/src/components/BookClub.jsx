@@ -193,7 +193,7 @@ const BookClub = (props) => {
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
                 <div>
                     <h3>Add a new book</h3>
-                    <form className={darkMode ? "col-md-4 offset-1 bg-dark mx-auto text-light" : "col-md-4 offset-1 mx-auto"} onSubmit={submitHandler}>
+                    <form className={darkMode ? "col-md-4 bg-dark offset-1 mx-auto text-light" : "col-md-4 offset-1 mx-auto"} onSubmit={submitHandler}>
                         {oneBook.title && oneBook.title?.length < 2 ? <p className="text-danger">Title must be at least 2 characters</p> : null}
                         {errors.title ? <p className="text-danger">{errors.title.message}</p> : null}
                         <div className="form-group col-10 mx-auto">
@@ -220,7 +220,7 @@ const BookClub = (props) => {
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('author')}>Author {sortDirection === 'asc' && sortColumn === "author" ? "🔼" : sortDirection === 'desc' && sortColumn === "author" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('addedBy')}>Added By {sortDirection === 'asc' && sortColumn === "addedBy" ? "🔼" : sortDirection === 'desc' && sortColumn === "addedBy" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('createdAt')}>Date Added {sortDirection === 'asc' && sortColumn === "createdAt" ? "🔼" : sortDirection === 'desc' && sortColumn === "createdAt" ? "🔽" : null}</th>
-                                {windowWidth > "500" ? <th className={darkMode ? "lightText" : null}>Actions</th> : null}
+                                {windowWidth > "420" ? <th className={darkMode ? "lightText" : null}>Actions</th> : null}
                             </tr>
                         </thead>
                         <tbody>
@@ -231,7 +231,7 @@ const BookClub = (props) => {
                                         <td className={darkMode ? "lightText" : null}>{book.author}</td>
                                         <td className={darkMode ? "lightText" : null}>{book?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${book?.addedBy?._id}`}>@{book?.addedBy?.displayName}</Link></p> : <p>(added by Deleted User)</p>}</td>
                                         <td className={darkMode ? "lightText" : null}>{new Date(book.updatedAt).toLocaleString()}</td>
-                                        {windowWidth > "500" ? <td className={darkMode ? "lightText" : null}>
+                                        {windowWidth > "420" ? <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
                                                 sortedBooks[index]?.favoritedBy?.some(bookObj => bookObj._id === user?._id)
                                                     ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button></>
