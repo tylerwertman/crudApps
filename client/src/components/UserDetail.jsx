@@ -55,7 +55,7 @@ const UserDetail = (props) => {
         <div className={darkMode ? "mainDivDark mt-5" : "mainDivLight mt-5"}>
             <br />
             <br />
-            <div className={'popup mx-auto'} style={{ display: showDeletePopup ? "block" : "none" }}>
+            <div className={'popup mx-auto'} style={{ display: showDeletePopup ? "block" : "none", color: "white" }}>
                 <h2>Are you sure you want to delete your account?</h2>
                 <button className='btn btn-success' onClick={deleteAccount}>Yes</button>&nbsp;&nbsp;
                 <button className='btn btn-danger' onClick={() => setShowDeletePopup(false)}>No</button>
