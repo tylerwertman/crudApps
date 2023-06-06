@@ -35,16 +35,6 @@ io.on('connection', (socket) => {
         console.log('Book added:', newBook);
         socket.broadcast.emit('bookAdded', newBook);
     });
-    // Handle 'bookFavorited' event
-    socket.on('bookFavorited', (updatedBook) => {
-        console.log('Book Favorited:', updatedBook);
-        socket.broadcast.emit('bookFavorited', updatedBook);
-    });
-    // Handle 'bookUnfavorited' event
-    socket.on('bookUnfavorited', (updatedBook) => {
-        console.log('Book Unfavorited:', updatedBook);
-        socket.broadcast.emit('bookUnfavorited', updatedBook);
-    });
     // Handle 'bookDeleted' event
     socket.on('bookDeleted', (deletedBook) => {
         console.log('Book Deleted:', deletedBook);

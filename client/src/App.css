@@ -213,12 +213,6 @@ table, th, td {
   }
 }
 @media (width > 900px) {
-  .content {
-    width: 500px;
-  }
-  .contentDark {
-    width: 500px;
-  }
   .popup {
     width: 500px;
   }

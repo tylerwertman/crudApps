@@ -82,12 +82,19 @@ const BookClub = (props) => {
             setBookList((sortedBooks) => [newBook, ...sortedBooks]);
         };
 
+        //Event handler for 'bookDeleted' event
+        const handleBookDeleted = (deletedBook) => {
+            setBookList((bookList) => bookList.filter((book) => book._id !== deletedBook._id));
+        }
+
         // Subscribe to 'bookAdded' event
         socket.on('bookAdded', handleBookAdded);
+        socket.on('bookDeleted', handleBookDeleted);
 
         // Clean up the event listener on component unmount
         return () => {
             socket.off('bookAdded', handleBookAdded);
+            socket.off('bookDeleted', handleBookDeleted);
         };
     }, [socket]);
 
@@ -112,7 +119,7 @@ const BookClub = (props) => {
                     title: "",
                     author: ""
                 })
-                socket.emit('bookAdded', oneBook);
+                socket.emit('bookAdded', res.data.book);
                 setCount(count + 1)
             })
             .catch(err => {
@@ -150,7 +157,7 @@ const BookClub = (props) => {
             .then(res => {
                 setCount(count + 1)
                 toastDelete(book.title)
-                // socket.emit('bookRemoved', bookList);
+                socket.emit('bookDeleted', book);
 
             })
             .catch(err => console.log(err))
