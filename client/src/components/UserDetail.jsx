@@ -30,7 +30,7 @@ const UserDetail = (props) => {
         axios.get(`http://localhost:8000/api/users/${id}`)
             .then(res => {
                 setOneUser(res.data.user)
-                console.log(res.data.user)
+                // console.log(res.data.user)
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
@@ -43,12 +43,10 @@ const UserDetail = (props) => {
                 setWelcome("Guest")
                 axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
                     .then(res => {
-                        navigate('/')
-                        setWelcome("Guest")
                         setLoggedIn(false)
                     })
                     .catch(err => console.log(err))
-                console.log("logging out")
+                console.log("Deleting account & logging out")
             })
             .catch(err => console.log(err))
 

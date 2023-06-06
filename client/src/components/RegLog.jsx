@@ -4,7 +4,6 @@ import axios from 'axios'
 
 const Reglog = (props) => {
     const { setLoggedIn, count, setCount } = props
-    console.log("hey",setLoggedIn,setCount)
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
     const [userInfoReg, setUserInfoReg] = useState({
