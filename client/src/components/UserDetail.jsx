@@ -7,6 +7,7 @@ const UserDetail = (props) => {
     const { id } = useParams()
     const { welcome, setWelcome, count, user, setLoggedIn, darkMode } = props
     const navigate = useNavigate();
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
     const [oneUser, setOneUser] = useState({})
     const [currentTab, setCurrentTab] = useState(0)
     const allTabs = [
@@ -56,6 +57,11 @@ const UserDetail = (props) => {
         <div className={darkMode ? "mainDivDark mt-5" : "mainDivLight mt-5"}>
             <br />
             <br />
+            <div className={'popup mx-auto'} style={{ display: showDeletePopup ? "block" : "none" }}>
+                <h2>Are you sure you want to delete your account?</h2>
+                <button className='btn btn-success' onClick={deleteAccount}>Yes</button>&nbsp;&nbsp;
+                <button className='btn btn-danger' onClick={() => setShowDeletePopup(false)}>No</button>
+            </div>
             <h2>User Details for: {oneUser?.name} (@{oneUser?.displayName})</h2>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
@@ -105,8 +111,8 @@ const UserDetail = (props) => {
                                     : null
                 }
             </div>
-            {welcome === (user?.firstName + " " + user?.lastName) ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={deleteAccount}>Delete Account</button> : null}
-            <br /><br /><br /><br />
+            {welcome === (user?.name + " (@" + user?.displayName + ")") ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
+            <br /><br /><br />
         </div>
     )
 }
