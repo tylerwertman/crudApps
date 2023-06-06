@@ -9,18 +9,16 @@ const UserDetail = (props) => {
     const navigate = useNavigate();
     const [oneUser, setOneUser] = useState({})
     const [currentTab, setCurrentTab] = useState(0)
-    const [allTabs, setAllTabs] = useState([
+    const allTabs = [
         { tab: "Books Added", active: false },
         { tab: "Books Favorited", active: false },
         { tab: "Ideas Added", active: false },
         { tab: "Ideas Favorited", active: false }
-    ])
+    ]
 
     const selectedTab = (idx) => {
         setCurrentTab(idx);
 
-        console.log(allTabs[currentTab])
-        console.log(currentTab)
         if ((allTabs[currentTab].active === false)) {
             allTabs[currentTab].active = true
         } else {
