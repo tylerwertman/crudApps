@@ -231,7 +231,7 @@ const BrightIdeas = (props) => {
                         {windowWidth > 575 ?
                             <div className="input-group col-10">
                                 <div className="form-floating">
-                                    <input type="text" className="form-control" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
+                                    <input type="text" className="form-control custom-input" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
                                     <label className="darkText" htmlFor="idea">Add a new idea!</label>
                                 </div>
                                 <button type="submit" className="input-group-text btn btn-success" onSubmit={submitHandler}>Add idea!</button>
@@ -239,7 +239,7 @@ const BrightIdeas = (props) => {
                             :
                             <div>
                                 <div className="form-floating col-10 mx-auto">
-                                    <input type="text" className="form-control" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
+                                    <input type="text" className="form-control custom-input" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
                                     <label className="darkText" htmlFor="idea">Add a new idea!</label>
                                 </div>
                                 <button type="submit" className="input-group-text btn btn-success mt-3 col-10" onSubmit={submitHandler}>Add idea!</button>
