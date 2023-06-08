@@ -229,6 +229,10 @@ table, th, td {
   border-color: #80ff8d;
   box-shadow: 0 0 0 0.2rem rgba(0, 255, 13, 0.25);
 }
+.landingPage {
+  width: 300px;
+  margin: 0 auto
+}
 @media (width < 900px) {
   .MQHide {
     display: block
@@ -246,6 +250,13 @@ table, th, td {
 @media (width > 900px) {
   .popup {
     width: 500px;
+  }
+  .content {
+    width: 750px;
+  }
+  .landingPage {
+    width: 750px;
+    margin: 0 auto
   }
 }
 
