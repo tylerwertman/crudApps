@@ -75,8 +75,9 @@ module.exports.addProfilePicture = async (req, res) => {
     try {
         const id = req.params.id
         const { profilePicture } = req.body
-
         const user = await User.findByIdAndUpdate(id, { profilePicture }, { new: true })
+        // const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true }) // Same as above 3 lines
+
         if (!user) {
             return res.status(404).json({ error: 'User not found' })
         }
