@@ -1,14 +1,14 @@
 
-import React from 'react';
-import Cookies from 'js-cookie';
+import React from 'react'
+import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom'
 
 
 const WithAuth = (Component) => {
     const WithAuthComponent = (props) => {
-        const navigate = useNavigate();
+        const navigate = useNavigate()
 
-        const cookieValue = Cookies.get('userToken');
+        const cookieValue = Cookies.get('userToken')
 
         let isAuthenticated
 
@@ -18,13 +18,13 @@ const WithAuth = (Component) => {
             isAuthenticated = false
         }
         if (isAuthenticated) {
-            return <Component {...props} />;
+            return <Component {...props} />
         } else {
             navigate("/")
         }
-    };
+    }
 
-    return WithAuthComponent;
-};
+    return WithAuthComponent
+}
 
-export default WithAuth;
+export default WithAuth

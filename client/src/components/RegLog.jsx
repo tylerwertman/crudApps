@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const Reglog = (props) => {
     const { setLoggedIn, count, setCount } = props
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [errors, setErrors] = useState({})
     const [userInfoReg, setUserInfoReg] = useState({
         name: "",
@@ -35,7 +35,7 @@ const Reglog = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/register', userInfoReg, { withCredentials: true })
             .then(res => {
-                // console.log(res);
+                // console.log(res)
                 setCount(count + 1) //update nav username & logout button
                 navigate('/landing')
                 setLoggedIn(true)

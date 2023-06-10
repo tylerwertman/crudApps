@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import withAuth from './WithAuth'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 
 const EditIdea = (props) => {
@@ -22,7 +22,7 @@ const EditIdea = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/ideas/${id}`)
@@ -32,11 +32,11 @@ const EditIdea = (props) => {
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
-    }, []);
+    }, [])
 
 
     const editIdea = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         axios.put(`http://localhost:8000/api/ideas/${id}`, oneIdea)
             .then(res => {
                 navigate(`/ideas/${id}`)

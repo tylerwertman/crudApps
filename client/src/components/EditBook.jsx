@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import withAuth from './WithAuth'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 
 const EditBook = (props) => {
@@ -22,7 +22,7 @@ const EditBook = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books/${id}`)
@@ -32,11 +32,11 @@ const EditBook = (props) => {
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
-    }, []);
+    }, [])
 
 
     const editBook = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         axios.put(`http://localhost:8000/api/books/${id}`, oneBook)
             .then(res => {
                 navigate(`/books/${id}`)

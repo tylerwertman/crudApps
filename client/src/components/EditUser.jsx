@@ -51,24 +51,26 @@ const EditUser = (props) => {
     }, [])
 
     const handleFileChange = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        const filename = jwtdecode(cookieValue).displayName + '-' + Date.now() + '-' + e.target.files[0].name;
-        formData.append('photo', e.target.files[0], filename);
+        e.preventDefault()
+        const formData = new FormData()
+        const filename = jwtdecode(cookieValue).displayName + '-' + Date.now() + '-' + e.target.files[0].name
+        formData.append('photo', e.target.files[0], filename)
 
         try {
-            const uploadResponse = await axios.post('http://localhost:8000/api/save', formData);
+            const uploadResponse = await axios.post('http://localhost:8000/api/save', formData)
 
-            const uploadedPhotoUrl = `http://localhost:8000/uploads/${uploadResponse.data.photo}`;
+            const uploadedPhotoUrl = `http://localhost:8000/uploads/${uploadResponse.data.photo}`
 
-            await axios.patch(`http://localhost:8000/api/users/${id}/addProfilePicture`, { profilePicture: uploadedPhotoUrl });
+            await axios.patch(`http://localhost:8000/api/users/${id}/addProfilePicture`, { profilePicture: uploadedPhotoUrl })
 
-            navigate(`/users/${id}`);
-            setCount(count + 1);
+            navigate(`/users/${id}`)
+            setCount(count + 1)
+            console.log("Successfully updated profile picture!")
         } catch (error) {
-            console.error('Error uploading file:', error);
+            console.error('Error uploading file:', error)
+            window.alert("Error uploading profile picture. Please make sure it is an image type of .PNG, .JPG, or .JPEG")
         }
-    };
+    }
 
 
     // const handleEdit = (e) => {
@@ -147,14 +149,9 @@ const EditUser = (props) => {
             </form> */}
             <div className='col-md-6 mx-auto'>
                 <h1>Upload a profile picture</h1>
-                <label className='button' htmlFor="filePicker">
-                    {/* <AiFillPlusCircle /> */}
-                    <input type="file" name="filePicker" id="filePicker" onChange={(e) => handleFileChange(e)} />
-                </label>
-                {/* <div className="input-group">
-                    <input type="file" className="form-control custom-input col-md-6" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" onChange={(e) => handleFileChange(e)} />
-                    <button className="btn btn-success" type="button" id="inputGroupFileAddon04" >Upload</button>
-                </div> */}
+                <div class="mb-3">
+                    <input className="form-control custom-input" type="file" id="formFile" onChange={(e) => handleFileChange(e)} />
+                </div>
             </div>
         </div>
     )

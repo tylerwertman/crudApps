@@ -6,8 +6,8 @@ import withAuth from './WithAuth'
 const UserDetail = (props) => {
     const { id } = useParams()
     const { welcome, setWelcome, count, user, setLoggedIn, darkMode } = props
-    const navigate = useNavigate();
-    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const navigate = useNavigate()
+    const [showDeletePopup, setShowDeletePopup] = useState(false)
     const [oneUser, setOneUser] = useState({})
     const [currentTab, setCurrentTab] = useState(0)
     const allTabs = [
@@ -18,7 +18,7 @@ const UserDetail = (props) => {
     ]
 
     const selectedTab = (idx) => {
-        setCurrentTab(idx);
+        setCurrentTab(idx)
 
         if ((allTabs[currentTab].active === false)) {
             allTabs[currentTab].active = true
@@ -33,7 +33,7 @@ const UserDetail = (props) => {
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
-    }, [count]);
+    }, [count])
 
     const deleteAccount = () => {
         axios.delete(`http://localhost:8000/api/users/${id}`)

@@ -43,7 +43,7 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Idea"
     }]
-}, { timestamps: true });
+}, { timestamps: true })
 
 UserSchema.virtual('confirmPassword')
     .get(()=>this.confirmPassword)
@@ -59,7 +59,7 @@ UserSchema.pre('validate', function(next) {
 UserSchema.pre('save', function(next) {
     bcrypt.hash(this.password, 10)
         .then(hash=>{
-            this.password = hash;
+            this.password = hash
             next()
         })
     })

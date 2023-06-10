@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import withAuth from './WithAuth'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 
 const BookDetail = (props) => {
     const { welcome, user, darkMode } = props
     const { id } = useParams()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [oneBook, setOneBook] = useState({})
-    const bookFavByContainsLoggedInUser = oneBook.favoritedBy ? oneBook.favoritedBy.some(bookObj => bookObj._id === user._id) : false;
+    const bookFavByContainsLoggedInUser = oneBook.favoritedBy ? oneBook.favoritedBy.some(bookObj => bookObj._id === user._id) : false
     const toastFav = () => toast.success(`💚 You favorited ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -20,7 +20,7 @@ const BookDetail = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastUnfav = () => toast.error(`🚫 You unfavorited ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -30,7 +30,7 @@ const BookDetail = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastDelete = () => toast.error(`🗑 You deleted ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -40,7 +40,7 @@ const BookDetail = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
 
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const BookDetail = (props) => {
             .catch(err => console.log(err))
 
         // eslint-disable-next-line
-    }, []);
+    }, [])
 
     const removeBook = () => {
         axios.delete(`http://localhost:8000/api/books/${id}`)

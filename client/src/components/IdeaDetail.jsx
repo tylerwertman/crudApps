@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import withAuth from './WithAuth'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 
 const IdeaDetail = (props) => {
     const { welcome, user, darkMode } = props
     const { id } = useParams()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [oneIdea, setOneIdea] = useState({})
-    const ideaFavByContainsLoggedInUser = oneIdea.favoritedBy ? oneIdea.favoritedBy.some(ideaObj => ideaObj._id === user._id) : false;
+    const ideaFavByContainsLoggedInUser = oneIdea.favoritedBy ? oneIdea.favoritedBy.some(ideaObj => ideaObj._id === user._id) : false
     const toastFav = () => toast.success(`💚 You favorited an idea`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -20,7 +20,7 @@ const IdeaDetail = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastUnfav = () => toast.error(`🚫 You unfavorited an idea`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -30,7 +30,7 @@ const IdeaDetail = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
     const toastDelete = () => toast.error(`🗑 You deleted an idea`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -40,7 +40,7 @@ const IdeaDetail = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
 
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const IdeaDetail = (props) => {
             .catch(err => console.log(err))
 
         // eslint-disable-next-line
-    }, []);
+    }, [])
 
     const removeIdea = () => {
         axios.delete(`http://localhost:8000/api/ideas/${id}`)
@@ -92,7 +92,7 @@ const IdeaDetail = (props) => {
         year: "numeric",
         month: "long",
         day: "numeric",
-    };
+    }
 
     return (
         <div className='text-start col-8 offset-2'>

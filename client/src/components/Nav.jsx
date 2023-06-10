@@ -16,21 +16,21 @@ const Nav = (props) => {
     }, [count])
 
     useEffect(() => {
-        const darkModeCookie = Cookies.get('darkMode');
-        setDarkMode(darkModeCookie === "true");
-        if (darkModeCookie === "true") document.body.style.background = 'rgb(33, 37, 41)';
-        else document.body.style.background = 'white';
+        const darkModeCookie = Cookies.get('darkMode')
+        setDarkMode(darkModeCookie === "true")
+        if (darkModeCookie === "true") document.body.style.background = 'rgb(33, 37, 41)'
+        else document.body.style.background = 'white'
 
         // eslint-disable-next-line
     }, [])
 
     const colorToggle = () => {
-        const updatedDarkMode = !darkMode;
-        setDarkMode(updatedDarkMode);
-        Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 });
+        const updatedDarkMode = !darkMode
+        setDarkMode(updatedDarkMode)
+        Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 })
 
-        if (updatedDarkMode) document.body.style.background = 'rgb(33, 37, 41)';
-        else document.body.style.background = 'white';
+        if (updatedDarkMode) document.body.style.background = 'rgb(33, 37, 41)'
+        else document.body.style.background = 'white'
 
     }
 
