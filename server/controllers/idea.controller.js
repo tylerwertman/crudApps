@@ -17,11 +17,11 @@ module.exports.findOneIdea = (req, res) => {
         .catch(err => res.status(400).json({ message: "Something went worng finding one idea", error: err }))
 }
 module.exports.createIdea = async (req, res) => {
-    const {_id} = jwt.verify(req.cookies.userToken, secret)
-    const myIdea = new Idea(req.body)
-    myIdea.addedBy = _id
-    myIdea.favoritedBy.push(_id)
     try {
+        const {_id} = jwt.verify(req.cookies.userToken, secret)
+        const myIdea = new Idea(req.body)
+        myIdea.addedBy = _id
+        myIdea.favoritedBy.push(_id)
         let newIdea = await myIdea.save()
         await newIdea.populate("addedBy favoritedBy")
         await User.findByIdAndUpdate(newIdea.addedBy, {$push: {ideasAdded: newIdea._id, ideasFavorited: newIdea._id}})
@@ -29,7 +29,7 @@ module.exports.createIdea = async (req, res) => {
         // console.log("inside try")
     }catch(err){
         console.log(`inside controller catch`, err)
-        res.status(400).json({ message: "Something went worng creating a idea", error: err }) //error isnt specific to either try line
+        res.status(400).json({ message: "Something went worng creating a idea", error: err })
     }
 }
 module.exports.updateIdea = (req, res) => {

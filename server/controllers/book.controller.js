@@ -17,13 +17,13 @@ module.exports.findOneBook = (req, res) => {
         .catch(err => res.status(400).json({ message: "Something went worng finding one book", error: err }))
 }
 module.exports.createBook = async (req, res) => {
-    const {_id, displayName} = jwt.verify(req.cookies.userToken, secret)
-    const myBook = new Book(req.body)
-    console.log(req.body)
-    myBook.addedBy = _id
-    myBook.addedByString = displayName
-    myBook.favoritedBy.push(_id)
     try {
+        const {_id, displayName} = jwt.verify(req.cookies.userToken, secret)
+        const myBook = new Book(req.body)
+        console.log(req.body)
+        myBook.addedBy = _id
+        myBook.addedByString = displayName
+        myBook.favoritedBy.push(_id)
         let newBook = await myBook.save()
         await newBook.populate("addedBy favoritedBy")
         await User.findByIdAndUpdate(newBook.addedBy, {$push: {booksAdded: newBook._id, booksFavorited: newBook._id}})

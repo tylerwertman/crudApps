@@ -62,7 +62,7 @@ const UserDetail = (props) => {
                 <button className='btn btn-success' onClick={deleteAccount}>Yes</button>&nbsp;&nbsp;
                 <button className='btn btn-danger' onClick={() => setShowDeletePopup(false)}>No</button>
             </div>
-            <h2>User Details for: {oneUser?.name} (@{oneUser?.displayName}) <img src={oneUser.profilePicture} alt="" style={{width:"50px", height:"50px"}}/></h2>
+            <h2>User Details for: {oneUser?.name} (@{oneUser?.displayName}) <img src={oneUser?.profilePicture} alt="" style={{width:"50px", height:"50px"}}/></h2>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
             <br />
