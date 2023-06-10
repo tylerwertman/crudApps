@@ -273,7 +273,7 @@ const BrightIdeas = (props) => {
                             <div className='mt-5' key={idea._id}>
                                 {
                                     idea?.addedBy ?
-                                        <><span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, </span><Link to={`/users/${idea.addedBy._id}`}>@{idea?.addedBy.displayName}</Link><span> said:</span>&nbsp;</> :
+                                        <><span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, </span><img className="profilePicture" src={`${idea.addedBy?.profilePicture}`} alt="" style={{width:"35px", height:"35px"}}/> <Link to={`/users/${idea.addedBy._id}`}>@{idea?.addedBy.displayName}</Link><span> said:</span>&nbsp;</> :
                                         <span>Deleted User says: </span>
                                 }
                                 <br className="MQHide" />

@@ -233,6 +233,10 @@ table, th, td {
   width: 300px;
   margin: 0 auto
 }
+
+.profilePicture {
+  border-radius: 100%;
+}
 @media (width < 900px) {
   .MQHide {
     display: block
