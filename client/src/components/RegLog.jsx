@@ -43,7 +43,7 @@ const Reglog = (props) => {
 
             })
             .catch(err => {
-                console.log(`submit errer`, err)
+                console.log(`reg errer`, err)
                 setErrors({
                     regErr: err.response?.data
                 })

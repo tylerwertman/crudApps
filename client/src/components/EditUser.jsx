@@ -149,7 +149,7 @@ const EditUser = (props) => {
             </form> */}
             <div className='col-md-6 mx-auto'>
                 <h1>Upload a profile picture</h1>
-                <div class="mb-3">
+                <div className="mb-3">
                     <input className="form-control custom-input" type="file" id="formFile" onChange={(e) => handleFileChange(e)} />
                 </div>
             </div>

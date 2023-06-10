@@ -73,16 +73,13 @@ module.exports.updateUser = (req, res) => {
 }
 module.exports.addProfilePicture = async (req, res) => {
     try {
-        const id = req.params
+        const id = req.params.id
         const { profilePicture } = req.body
 
-        const user = await User.findById(id.id)
+        const user = await User.findByIdAndUpdate(id, { profilePicture }, { new: true })
         if (!user) {
             return res.status(404).json({ error: 'User not found' })
         }
-        user.profilePicture = profilePicture
-        user.confirmPassword = user.password // Set confirmPassword to match password
-        await user.save()
 
         res.status(200).json(user)
     } catch (error) {
