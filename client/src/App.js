@@ -15,6 +15,7 @@ import BrightIdeas from './components/BrightIdeas';
 import UserDetail from './components/UserDetail';
 import BookDetail from './components/BookDetail';
 import IdeaDetail from './components/IdeaDetail'
+import EditUser from './components/EditUser';
 import EditBook from './components/EditBook';
 import EditIdea from './components/EditIdea';
 
@@ -52,6 +53,7 @@ function App() {
         <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode}/>}/>
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode}/>}/>
         <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode}/>}/>
+        <Route path="/users/:id/edit" element={<EditUser/>}/>
         <Route path="/books/:id/edit" element={<EditBook/>}/>
         <Route path="/ideas/:id/edit" element={<EditIdea/>}/>
         <Route path="*" element={<NotFound/>}/>

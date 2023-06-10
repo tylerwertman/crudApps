@@ -12,6 +12,9 @@ const BookSchema = new mongoose.Schema({
         required: [true, "Author is required"],
         minlength: [2, "Author must be at least 2 characters"]
     },
+    addedByString: {
+        type: String
+    },
     addedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

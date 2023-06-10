@@ -69,18 +69,18 @@ const BookClub = (props) => {
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
-            .then(res => {
-                setBookList(res.data.book)
-            })
-            .catch(err => console.log(err))
+        .then(res => {
+            setBookList(res.data.book)
+        })
+        .catch(err => console.log(err))
     }, [count])
-
+    
     useEffect(() => {
         // Event handler for 'bookAdded' event
         const handleBookAdded = (newBook) => {
             setBookList((bookList) => [newBook, ...bookList])
         }
-
+        
         //Event handler for 'bookDeleted' event
         const handleBookDeleted = (deletedBook) => {
             setBookList((bookList) => bookList.filter((book) => book._id !== deletedBook._id))
@@ -183,9 +183,10 @@ const BookClub = (props) => {
             const authorB = b.author.toLowerCase()
             return sortDirection === 'asc' ? authorA.localeCompare(authorB) : authorB.localeCompare(authorA)
         } else if (sortColumn === 'addedBy') {
-            const addedByA = a.addedBy.name.toLowerCase()
-            const addedByB = b.addedBy.name.toLowerCase()
-            return sortDirection === 'asc' ? addedByA.localeCompare(addedByB) : addedByB.localeCompare(addedByA)
+            const addedByStringA = a.addedByString?.toLowerCase()
+            const addedByStringB = b.addedByString?.toLowerCase()
+            console.log(addedByStringA)
+            return sortDirection === 'asc' ? addedByStringA?.localeCompare(addedByStringB) : addedByStringB?.localeCompare(addedByStringA)
         } else if (sortColumn === 'createdAt') {
             return sortDirection === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt)
         }
@@ -252,8 +253,8 @@ const BookClub = (props) => {
                                     <tr className="mt-4" key={book._id}>
                                         <td className={darkMode ? "lightText" : null}><><Link to={`/books/${book?._id}`}>{book?.title}</Link></></td>
                                         <td className={darkMode ? "lightText" : null}>{book.author}</td>
-                                        <td className={darkMode ? "lightText" : null}>{book?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${book?.addedBy?._id}`}>@{book?.addedBy?.displayName}</Link></p> : <p>(added by Deleted User)</p>}</td>
-                                        <td className={darkMode ? "lightText" : null}>{new Date(book.updatedAt).toLocaleString()}</td>
+                                        <td className={darkMode ? "lightText" : null}>{book?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${book?.addedBy?._id}`}>@{book?.addedBy?.displayName}</Link></p> : <p>(added by Deleted User @{book?.addedByString})</p>}</td>
+                                        <td className={darkMode ? "lightText" : null}>{new Date(book.createdAt).toLocaleString()}</td>
                                         {windowWidth > "420" ? <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
                                                 currentItems[index]?.favoritedBy?.some(bookObj => bookObj._id === user?._id)
@@ -261,7 +262,7 @@ const BookClub = (props) => {
                                                     : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>★</button></>
                                             }
                                             { // delete if logged in user or 'admin' email user
-                                                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button></> : null
+                                                    (welcome === (currentItems[index]?.addedBy?.name + " (@" + currentItems[index]?.addedBy?.displayName + ")") || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button></> : null
                                             }
                                         </td> : null}
                                     </tr>

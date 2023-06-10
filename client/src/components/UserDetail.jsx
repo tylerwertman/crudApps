@@ -49,7 +49,10 @@ const UserDetail = (props) => {
                 console.log("Deleting account & logging out")
             })
             .catch(err => console.log(err))
+    }
 
+    const editAccount = () => {
+        navigate(`/users/${user._id}/edit`)
     }
     return (
         <div className={darkMode ? "mainDivDark mt-5" : "mainDivLight mt-5"}>
@@ -110,6 +113,7 @@ const UserDetail = (props) => {
                 }
             </div>
             {welcome === (user?.name + " (@" + user?.displayName + ")") ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
+            {/* &nbsp;&nbsp;{welcome === (user?.name + " (@" + user?.displayName + ")") ? <button className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null} */}
             <br /><br /><br />
         </div>
     )
