@@ -50,37 +50,26 @@ const EditUser = (props) => {
         // eslint-disable-next-line
     }, [])
 
-    const addProfilePictureToUser = async (userId, profilePicture) => {
+    const handleFileChange = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        const filename = jwtdecode(cookieValue).displayName + '-' + Date.now() + '-' + e.target.files[0].name;
+        formData.append('photo', e.target.files[0], filename);
+
         try {
-            await axios.patch(`http://localhost:8000/api/users/${userId}/addProfilePicture`, {
-                profilePicture
-            })
-            console.log(profilePicture)
+            const uploadResponse = await axios.post('http://localhost:8000/api/save', formData);
+
+            const uploadedPhotoUrl = `http://localhost:8000/uploads/${uploadResponse.data.photo}`;
+
+            await axios.patch(`http://localhost:8000/api/users/${id}/addProfilePicture`, { profilePicture: uploadedPhotoUrl });
+
+            navigate(`/users/${id}`);
+            setCount(count + 1);
         } catch (error) {
-            console.error('Error adding profile picture:', error)
+            console.error('Error uploading file:', error);
         }
-    }
+    };
 
-    const handleFileChange = (e) => {
-        e.preventDefault()
-        const formData = new FormData()
-        const filename = jwtdecode(cookieValue).displayName + '-' + Date.now() + '-' + e.target.files[0].name
-        formData.append("photo", e.target.files[0], filename)
-
-        axios.post("http://localhost:8000/api/save", formData)
-            .then((res) => {
-                console.log(res)
-                navigate(`/users/${id}`)
-                setCount(count + 1)
-            })
-            .catch((err) => console.log(err))
-
-        const searchString = `${jwtdecode(cookieValue).displayName}`;
-        const userImg = photos.find(obj => obj.photo.includes(searchString));
-        if (userImg) {
-            addProfilePictureToUser(jwtdecode(cookieValue)._id, `http://localhost:8000/uploads/${userImg.photo}`);
-        }
-    }
 
     // const handleEdit = (e) => {
     //     setUserInfoEdit({
