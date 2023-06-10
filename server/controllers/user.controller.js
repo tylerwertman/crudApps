@@ -1,6 +1,6 @@
 const User = require("../models/user.model")
-const jwt = require("jsonwebtoken");
-const secret = process.env.FIRST_SECRET_KEY;
+const jwt = require("jsonwebtoken")
+const secret = process.env.FIRST_SECRET_KEY
 const bcrypt = require('bcrypt')
 
 
@@ -13,13 +13,13 @@ module.exports = {
                 res.status(400).json({ emailMsg: "Email exists" })
             } else if (potentialUser2) {
                 res.status(400).json({ displayNameMsg: "Display Name exists" })
-            }else {
-                const newUser = await User.create(req.body);
-                const userToken = jwt.sign({ _id: newUser.id, email: newUser.email, name: newUser.name, displayName: newUser.displayName }, secret, { expiresIn: "1d" });
+            } else {
+                const newUser = await User.create(req.body)
+                const userToken = jwt.sign({ _id: newUser.id, email: newUser.email, name: newUser.name, displayName: newUser.displayName }, secret, { expiresIn: "1d" })
                 res.cookie("userToken", userToken, { httpOnly: false }).json({ msg: "Create new userToken success!", user: newUser })
             }
         } catch (err) {
-            console.log(err);
+            console.log(err)
             return res.status(400).json(err)
         }
     },
@@ -29,7 +29,7 @@ module.exports = {
             if (user) {
                 const passwordMatch = await bcrypt.compare(req.body.password, user.password)
                 if (passwordMatch) {
-                    const userToken = jwt.sign({ _id: user.id, email: user.email, name: user.name, displayName: user.displayName }, secret, { expiresIn: "1d" });
+                    const userToken = jwt.sign({ _id: user.id, email: user.email, name: user.name, displayName: user.displayName }, secret, { expiresIn: "1d" })
                     res.cookie("userToken", userToken, { httpOnly: false }).json({ msg: "Login success!", user: user })
                 } else {
                     res.status(400).json({ logErrMsg: "Invalid login attempt" })
@@ -38,12 +38,12 @@ module.exports = {
                 res.status(400).json({ logErrMsg: "Invalid login attempt" })
             }
         } catch (err) {
-            console.log(err);
+            console.log(err)
             return res.status(400).json(err)
         }
     },
     logout: (req, res) => {
-        res.clearCookie("userToken").json({ message: "Logout success!" });
+        res.clearCookie("userToken").json({ message: "Logout success!" })
     }
 }
 
@@ -70,6 +70,26 @@ module.exports.updateUser = (req, res) => {
         .populate("booksAdded booksFavorited ideasAdded ideasFavorited")
         .then(updatedUser => res.json({ user: updatedUser }))
         .catch(err => res.status(400).json({ message: "Something went worng updating a user", error: err }))
+}
+module.exports.addProfilePicture = async (req, res) => {
+    try {
+        const id = req.params
+        const { profilePicture } = req.body
+
+        const user = await User.findById(id.id)
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+        user.profilePicture = profilePicture
+        user.confirmPassword = user.password // Set confirmPassword to match password
+        await user.save()
+
+        res.status(200).json(user)
+    } catch (error) {
+        console.log('Controller: error adding profile picture:', error)
+        res.status(500).json({ error: 'Controller: failed to add profile picture' })
+    }
+
 }
 module.exports.deleteUser = (req, res) => {
     User.findByIdAndDelete(req.params.id)

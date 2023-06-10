@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import jwtdecode from 'jwt-decode'
 import Cookies from 'js-cookie'
 
 const Nav = (props) => {
-    const { cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, count, darkMode, setDarkMode } = props
+    const { cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, darkMode, setDarkMode } = props
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -57,6 +57,10 @@ const Nav = (props) => {
         }
     }
 
+    const navToUser = () => {
+        navigate(`/users/${user?._id}`)
+        setCount(count+1)
+    }
 
     return (
         <nav className={darkMode ? "navDark" : "navLight"}>
@@ -65,7 +69,7 @@ const Nav = (props) => {
                 <br className='MQHide' />
                 {
                     welcome !== "Guest" ?
-                        <span><h4 style={{ display: 'inline' }}>Welcome, </h4><Link to={`/users/${user?._id}`}>{welcome}</Link></span> :
+                        <span onClick={()=>navToUser()}><h4 style={{ display: 'inline' }}>Welcome, {welcome}</h4></span> :
                         <h4 style={{ display: 'inline' }}>Welcome, Guest</h4>
                 }
             </div>

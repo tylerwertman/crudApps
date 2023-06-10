@@ -8,5 +8,6 @@ module.exports = app => {
     app.get('/api/users/:id', UserController.findOneUser);
     app.put('/api/users/:id', UserController.updateUser);
     app.patch('/api/users/:id', UserController.updateUser);
+    app.patch('/api/users/:id/addProfilePicture', UserController.addProfilePicture);
     app.delete('/api/users/:id', UserController.deleteUser);
 }

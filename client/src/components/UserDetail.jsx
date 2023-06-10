@@ -30,7 +30,6 @@ const UserDetail = (props) => {
         axios.get(`http://localhost:8000/api/users/${id}`)
             .then(res => {
                 setOneUser(res.data.user)
-                // console.log(res.data.user)
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
@@ -63,7 +62,7 @@ const UserDetail = (props) => {
                 <button className='btn btn-success' onClick={deleteAccount}>Yes</button>&nbsp;&nbsp;
                 <button className='btn btn-danger' onClick={() => setShowDeletePopup(false)}>No</button>
             </div>
-            <h2>User Details for: {oneUser?.name} (@{oneUser?.displayName})</h2>
+            <h2>User Details for: {oneUser?.name} (@{oneUser?.displayName}) <img src={oneUser.profilePicture} alt="" style={{width:"50px", height:"50px"}}/></h2>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
             <br />
@@ -112,8 +111,8 @@ const UserDetail = (props) => {
                                     : null
                 }
             </div>
-            {welcome === (user?.name + " (@" + user?.displayName + ")") ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
-            {/* &nbsp;&nbsp;{welcome === (user?.name + " (@" + user?.displayName + ")") ? <button className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null} */}
+            {welcome === (oneUser?.name + " (@" + oneUser?.displayName + ")") ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
+            &nbsp;&nbsp;{welcome === (oneUser?.name + " (@" + oneUser?.displayName + ")") ? <button className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null}
             <br /><br /><br />
         </div>
     )

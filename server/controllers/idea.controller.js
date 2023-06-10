@@ -28,7 +28,7 @@ module.exports.createIdea = async (req, res) => {
         res.json({ idea: newIdea })
         // console.log("inside try")
     }catch(err){
-        console.log(`inside catch`, err)
+        console.log(`inside controller catch`, err)
         res.status(400).json({ message: "Something went worng creating a idea", error: err }) //error isnt specific to either try line
     }
 }

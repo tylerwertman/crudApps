@@ -2,23 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import withAuth from './WithAuth'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 import jwtdecode from 'jwt-decode'
 // import Cookies from 'js-cookie'
 
 const EditUser = (props) => {
     const { darkMode, setWelcome, cookieValue, setCount, count } = props
-
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneUser, setOneUser] = useState({})
     const [errors, setErrors] = useState({})
-    const [userInfoEdit, setUserInfoEdit] = useState({
-        name: "",
-        displayName: "",
-        email: "",
-        password: ""
-    })
+    const [photos, setPhotos] = useState([])
+    // const [userInfoEdit, setUserInfoEdit] = useState({
+    //     name: "",
+    //     displayName: "",
+    //     email: "",
+    //     password: ""
+    // })
     const toastEdit = () => toast.success(`✏️ You edited ${oneUser.user}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -28,7 +28,16 @@ const EditUser = (props) => {
         draggable: true,
         progress: undefined,
         theme: darkMode ? "dark" : "light"
-    });
+    })
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/get')
+            .then((res) => {
+                // console.log(res.data)
+                setPhotos(res.data)
+            })
+            .catch((err) => console.log("err", err))
+    }, [count])
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/users/${id}`)
@@ -39,46 +48,78 @@ const EditUser = (props) => {
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
-    }, []);
+    }, [])
 
-    const handleEdit = (e) => {
-        setUserInfoEdit({
-            ...userInfoEdit,
-            [e.target.name]: e.target.value
-        })
+    const addProfilePictureToUser = async (userId, profilePicture) => {
+        try {
+            await axios.patch(`http://localhost:8000/api/users/${userId}/addProfilePicture`, {
+                profilePicture
+            })
+            console.log(profilePicture)
+        } catch (error) {
+            console.error('Error adding profile picture:', error)
+        }
     }
 
-    const editUser = (e) => {
-        e.preventDefault();
-        axios.patch(`http://localhost:8000/api/users/${id}`, userInfoEdit)
-            .then(res => {
+    const handleFileChange = (e) => {
+        e.preventDefault()
+        const formData = new FormData()
+        const filename = jwtdecode(cookieValue).displayName + '-' + Date.now() + '-' + e.target.files[0].name
+        formData.append("photo", e.target.files[0], filename)
+
+        axios.post("http://localhost:8000/api/save", formData)
+            .then((res) => {
+                console.log(res)
                 navigate(`/users/${id}`)
-                setWelcome(jwtdecode(cookieValue).name + " (@" + jwtdecode(cookieValue).displayName + ")")
                 setCount(count + 1)
-                toastEdit()
             })
-            .catch(err => {
-                setErrors({
-                    name: err.response.data.errors?.name,
-                    displayName: err.response.data.errors?.displayName,
-                    email: err.response.data.errors?.email,
-                    password: err.response.data.errors?.password,
-                    confirmPassword: err.response.data.errors?.confirmPassword,
-                    emailMsg: err.response.data.emailMsg,
-                    displayNameMsg: err.response.data.displayNameMsg,
-                    validationErrors: err.response.data.validationErrors
+            .catch((err) => console.log(err))
 
-                })
-                console.log(err)
-            })
+        const searchString = `${jwtdecode(cookieValue).displayName}`;
+        const userImg = photos.find(obj => obj.photo.includes(searchString));
+        if (userImg) {
+            addProfilePictureToUser(jwtdecode(cookieValue)._id, `http://localhost:8000/uploads/${userImg.photo}`);
+        }
     }
+
+    // const handleEdit = (e) => {
+    //     setUserInfoEdit({
+    //         ...userInfoEdit,
+    //         [e.target.name]: e.target.value
+    //     })
+    // }
+
+    // const editUser = (e) => {
+    //     e.preventDefault()
+    //     axios.patch(`http://localhost:8000/api/users/${id}`, userInfoEdit)
+    //         .then(res => {
+    //             navigate(`/users/${id}`)
+    //             setWelcome(jwtdecode(cookieValue).name + " (@" + jwtdecode(cookieValue).displayName + ")")
+    //             setCount(count + 1)
+    //             toastEdit()
+    //         })
+    //         .catch(err => {
+    //             setErrors({
+    //                 name: err.response.data.errors?.name,
+    //                 displayName: err.response.data.errors?.displayName,
+    //                 email: err.response.data.errors?.email,
+    //                 password: err.response.data.errors?.password,
+    //                 confirmPassword: err.response.data.errors?.confirmPassword,
+    //                 emailMsg: err.response.data.emailMsg,
+    //                 displayNameMsg: err.response.data.displayNameMsg,
+    //                 validationErrors: err.response.data.validationErrors
+
+    //             })
+    //             console.log(err)
+    //         })
+    // }
 
 
     return (
         <div className='mt-5'>
             <br />
             <h1>Edit User Details</h1>
-            <form className="col-md-6 mx-auto" onSubmit={editUser}>
+            {/* <form className="col-md-6 mx-auto" onSubmit={editUser}>
                 <h3>Edit</h3>
                 {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[0]}</p> : null}
                 {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[1]}</p> : null}
@@ -114,14 +155,18 @@ const EditUser = (props) => {
                 <div className="form-group">
                     <button type="submit" className='btn btn-success mb-3'>Confirm</button>
                 </div>
-            </form>
-            {/* <div className='col-md-6 mx-auto'>
+            </form> */}
+            <div className='col-md-6 mx-auto'>
                 <h1>Upload a profile picture</h1>
-                <div className="input-group">
-                    <input type="file" className="form-control custom-input col-md-6" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" onChange={handleFileChange} />
-                    <button className="btn btn-success" type="button" id="inputGroupFileAddon04" onClick={handleUpload}>Button</button>
-                </div>
-            </div> */}
+                <label className='button' htmlFor="filePicker">
+                    {/* <AiFillPlusCircle /> */}
+                    <input type="file" name="filePicker" id="filePicker" onChange={(e) => handleFileChange(e)} />
+                </label>
+                {/* <div className="input-group">
+                    <input type="file" className="form-control custom-input col-md-6" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" onChange={(e) => handleFileChange(e)} />
+                    <button className="btn btn-success" type="button" id="inputGroupFileAddon04" >Upload</button>
+                </div> */}
+            </div>
         </div>
     )
 }

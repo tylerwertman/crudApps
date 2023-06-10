@@ -17,12 +17,15 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Email is required"],
         unique: [true, "Email already exists"],
         validate: [isEmail, "Please enter a valid email"]
-
     },
     password: {
         type: String,
         required: [true, "Password is required"],
         minlength: [8, "Password must be 8 characters or longer"]
+    },
+    profilePicture: {
+        type: String,
+        default: "http://localhost:8000/uploads/default.png"
     },
     booksAdded: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -48,7 +51,7 @@ UserSchema.virtual('confirmPassword')
 
 UserSchema.pre('validate', function(next) {
     if(this.password != this.confirmPassword){
-        this.invalidate('confirmPassword', 'Password must match confirm password')
+        this.invalidate('confirmPassword', 'Confirm password must match password')
     }
     next()
 })
