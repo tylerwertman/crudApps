@@ -252,7 +252,7 @@ const BookClub = (props) => {
                                     <tr className="mt-4" key={book._id}>
                                         <td className={darkMode ? "lightText" : null}><><Link to={`/books/${book?._id}`}>{book?.title}</Link></></td>
                                         <td className={darkMode ? "lightText" : null}>{book.author}</td>
-                                        <td className={darkMode ? "lightText" : null}>{book?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${book?.addedBy?._id}`}>@{book?.addedBy?.displayName}</Link>&nbsp;<img className="profilePicture" src={book.addedBy.profilePicture} alt="" style={{ width: "25px", height: "25px" }} /></p> : <p>(Deleted User @{book?.addedByString})</p>}</td>
+                                        <td className={darkMode ? "lightText" : null}>{book?.addedBy?._id ? <p className='mb-1'><img className="profilePicture" src={book.addedBy.profilePicture} alt="" style={{ width: "40px", height: "40px" }} /> <Link to={`/users/${book?.addedBy?._id}`}>@{book?.addedBy?.displayName}</Link></p> : <p>(Deleted User @{book?.addedByString})</p>}</td>
                                         <td className={darkMode ? "lightText" : null}>{new Date(book.createdAt).toLocaleString()}</td>
                                         {windowWidth > "420" ? <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
