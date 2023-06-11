@@ -17,13 +17,13 @@ const LandingPage = (props) => {
                 <div className={darkMode ? "projectsDark mx-auto" : "projects mx-auto"}>
                     <div className={darkMode ? "contentDark mb-3" : "content mb-3"}>
                         <Link to={"/bookClub"}><h3>Book Club</h3></Link>
-                        <p>Built with: Mongoose, Express, React, Node, Socket.IO, RESTful API, Bootstrap</p>
-                        <p>Features: real-time CRUD, many to many relationships, reg/login, protected routes, dark mode, column sorting, pagination</p>
+                        <p>Built with: Mongoose, Express, React, Node, Socket.IO, RESTful API, Multer, Bootstrap</p>
+                        <p>Features: real-time CRUD, many to many relationships, reg/login & protected routes with JWT/Cookie authentication, dark mode, column sorting, pagination</p>
                     </div>
                     <div className={darkMode ? "contentDark mb-3" : "content mb-3"}>
                         <Link to={"/brightIdeas"}><h3>Bright Ideas</h3></Link>
-                        <p>Built with: Mongoose, Express, React, Node, Socket.IO, RESTful API, Bootstrap</p>
-                        <p>Features: real-time CRUD, many to many relationships, reg/login, protected routes, dark mode, auto-sort, pagination</p>
+                        <p>Built with: Mongoose, Express, React, Node, Socket.IO, RESTful API, Multer, Bootstrap</p>
+                        <p>Features: real-time CRUD, many to many relationships, reg/login & protected routes with JWT/Cookie authentication, dark mode, auto-sort, pagination</p>
                     </div>
                 </div>
             </div>
