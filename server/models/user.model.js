@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        default: "http://localhost:8000/uploads/default.png"
+        default: "https://crudapps.tylerw.xyz/uploads/default.png"
     },
     booksAdded: [{
         type: mongoose.Schema.Types.ObjectId,
