@@ -59,7 +59,7 @@ function App() {
         <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCount={setCount} />} />
         <Route path="/books/:id/edit" element={<EditBook />} />
         <Route path="/ideas/:id/edit" element={<EditIdea />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound darkMode={darkMode}/>} />
       </Routes>
       <Footer darkMode={darkMode} />
     </div>
