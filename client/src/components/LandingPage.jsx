@@ -7,7 +7,7 @@ const LandingPage = (props) => {
     return (
         <div className='mt-5'>
 
-            <h1 style={{ padding: "30px 30px 10px" }}>Welcome to an assortment of TWD CRUD apps!</h1>
+            <h1 style={{ padding: "0px 30px 10px 30px" }}>Welcome to an assortment of TWD CRUD apps!</h1>
             <div className={darkMode ? "contentDark mb-3" : "content mb-3"}>
                 <h3>What is CRUD?</h3>
                 <h5>CRUD stands for create, read, upate, delete. </h5>
@@ -17,13 +17,13 @@ const LandingPage = (props) => {
                 <div className={darkMode ? "projectsDark mx-auto" : "projects mx-auto"}>
                     <div className={darkMode ? "contentDark mb-3" : "content mb-3"}>
                         <Link to={"/bookClub"}><h3>Book Club</h3></Link>
-                        <p>Built with: Mongoose, Express, React, Node, Socket.IO, RESTful API, Multer, Bootstrap</p>
-                        <p>Features: real-time CRUD, many to many relationships, reg/login & protected routes with JWT/Cookie authentication, dark mode, column sorting, pagination</p>
+                        <p>Built with: Mongoose, Express, React, Node, Socket.IO, RESTful API, Bootstrap</p>
+                        <p>Features: real-time CRUD, many to many relationships, protected routes with JWT/Cookie authentication, dark mode, column sorting, pagination</p>
                     </div>
                     <div className={darkMode ? "contentDark mb-3" : "content mb-3"}>
                         <Link to={"/brightIdeas"}><h3>Bright Ideas</h3></Link>
-                        <p>Built with: Mongoose, Express, React, Node, Socket.IO, RESTful API, Multer, Bootstrap</p>
-                        <p>Features: real-time CRUD, many to many relationships, reg/login & protected routes with JWT/Cookie authentication, dark mode, auto-sort, pagination</p>
+                        <p>Built with: Mongoose, Express, React, Node, Socket.IO, RESTful API, Bootstrap</p>
+                        <p>Features: real-time CRUD, many to many relationships, protected routes with JWT/Cookie authentication, dark mode, auto-sort, pagination</p>
                     </div>
                 </div>
             </div>

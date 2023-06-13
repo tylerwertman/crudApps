@@ -12,7 +12,7 @@ const EditUser = (props) => {
     const navigate = useNavigate()
     const [oneUser, setOneUser] = useState({})
     const [errors, setErrors] = useState({})
-    const [photos, setPhotos] = useState([])
+    const [selectedFile, setSelectedFile] = useState(null);
     // const [userInfoEdit, setUserInfoEdit] = useState({
     //     name: "",
     //     displayName: "",
@@ -31,15 +31,6 @@ const EditUser = (props) => {
     })
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/get')
-            .then((res) => {
-                // console.log(res.data)
-                setPhotos(res.data)
-            })
-            .catch((err) => console.log("err", err))
-    }, [count])
-
-    useEffect(() => {
         axios.get(`http://localhost:8000/api/users/${id}`)
             .then(res => {
                 // console.log(res.data.user)
@@ -50,14 +41,17 @@ const EditUser = (props) => {
         // eslint-disable-next-line
     }, [])
 
-    const handleFileChange = async (e) => {
+    const handleFileSelect = (e) => {
         e.preventDefault()
         const formData = new FormData()
         const filename = jwtdecode(cookieValue).displayName + '-' + Date.now() + '-' + e.target.files[0].name
         formData.append('photo', e.target.files[0], filename)
+        setSelectedFile(formData)
+    }
 
+    const handleFileUpload = async () => {
         try {
-            const uploadResponse = await axios.post('http://localhost:8000/api/save', formData)
+            const uploadResponse = await axios.post('http://localhost:8000/api/save', selectedFile)
 
             const uploadedPhotoUrl = `http://localhost:8000/uploads/${uploadResponse.data.photo}`
 
@@ -108,7 +102,6 @@ const EditUser = (props) => {
 
     return (
         <div className='mt-5'>
-            <br />
             <h1>Edit User Details</h1>
             {/* <form className="col-md-6 mx-auto" onSubmit={editUser}>
                 <h3>Edit</h3>
@@ -147,10 +140,11 @@ const EditUser = (props) => {
                     <button type="submit" className='btn btn-success mb-3'>Confirm</button>
                 </div>
             </form> */}
-            <div className='col-md-6 mx-auto'>
-                <h1>Upload a profile picture</h1>
-                <div className="mb-3">
-                    <input className="form-control custom-input" type="file" id="formFile" onChange={(e) => handleFileChange(e)} />
+            <div className='col-4 mx-auto'>
+                <h2>Upload a profile picture</h2>
+                <div className="input-group mb-3">
+                    <input className="form-control custom-input" type="file" id="formFile" onChange={handleFileSelect} />
+                    <button type="button" className="btn btn-success" disabled={!selectedFile} onClick={handleFileUpload}>Upload</button>
                 </div>
             </div>
         </div>

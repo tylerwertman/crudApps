@@ -5,7 +5,7 @@ import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Cookies from 'js-cookie'
 import jwtdecode from 'jwt-decode'
-import axios from 'axios'
+// import axios from 'axios'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import RegLog from './components/RegLog'
@@ -26,9 +26,9 @@ function App() {
   const [count, setCount] = useState(0)
   const [user, setUser] = useState()
   const [darkMode, setDarkMode] = useState(false)
-  
+
   const cookieValue = Cookies.get('userToken')
-  
+
   useEffect(() => {
     setCount(count + 1)
     if (Cookies.get('darkMode') === undefined) Cookies.set('darkMode', false.toString(), { expires: 7 })
@@ -41,8 +41,8 @@ function App() {
     }
     // eslint-disable-next-line
   }, [])
-  
-  
+
+
 
   return (
     <div className={darkMode ? "AppDark" : "AppLight"}>
@@ -59,7 +59,7 @@ function App() {
         <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCount={setCount} />} />
         <Route path="/books/:id/edit" element={<EditBook />} />
         <Route path="/ideas/:id/edit" element={<EditIdea />} />
-        <Route path="*" element={<NotFound darkMode={darkMode}/>} />
+        <Route path="*" element={<NotFound darkMode={darkMode} />} />
       </Routes>
       <Footer darkMode={darkMode} />
     </div>

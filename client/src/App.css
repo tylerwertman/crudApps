@@ -18,6 +18,9 @@ body {
   /* opacity: 20%; */
 }
 
+.AppLight h1, .AppDark h1 {
+  margin-top: 100px;
+}
 .AppDark a {
   color:white
 }
@@ -169,6 +172,7 @@ table, th, td {
 }
 .idea {
   line-height: 2;
+  /* border-radius: 10px; */
 }
 
 .tab {

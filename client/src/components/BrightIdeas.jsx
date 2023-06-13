@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 
 const BrightIdeas = (props) => {
-    const { count, setCount, user, welcome, darkMode, photos } = props
+    const { count, setCount, user, welcome, darkMode } = props
     const [socket] = useState(() => io(':8000'))
     const [ideaList, setIdeaList] = useState([])
     const [oneIdea, setOneIdea] = useState({ idea: "" })
