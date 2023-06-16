@@ -194,10 +194,10 @@ table, th, td {
 .popup {
   position: fixed;
   width: 200px;
-  margin: 0;
+  margin: 0 auto;
   left: 0;
   right: 0;
-  top: 25%;
+  /* top: 25%; */
   background-color: black;
   padding: 25px;
   border-radius: 40px;

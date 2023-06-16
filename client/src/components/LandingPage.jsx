@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import withAuth from './WithAuth'
 
 const LandingPage = (props) => {
     const { darkMode } = props
+
     return (
         <div className='mt-5'>
 

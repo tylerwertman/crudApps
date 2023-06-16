@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import CookiePopup from './CookiePopup'
+
 
 const Reglog = (props) => {
-    const { setLoggedIn, count, setCount } = props
+    const { setLoggedIn, count, setCount, darkMode } = props
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
     const [userInfoReg, setUserInfoReg] = useState({
@@ -70,6 +72,8 @@ const Reglog = (props) => {
     return (
         <div className='row col-lg-6 mx-auto mt-5'>
             <br />
+            <CookiePopup darkMode={darkMode} />
+
             <div className='col'>
                 <form className="regLog" onSubmit={regSubmit}>
                     <h3>Register</h3>

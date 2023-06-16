@@ -62,7 +62,7 @@ const EditUser = (props) => {
             console.log("Successfully updated profile picture!")
         } catch (error) {
             console.error('Error uploading file:', error)
-            window.alert("Error uploading profile picture. Please make sure it is an image type of .PNG, .JPG, or .JPEG")
+            window.alert("Error uploading profile picture. Please make sure it is an image type of .PNG, .JPG, or .JPEG and below 3MB")
         }
     }
 
