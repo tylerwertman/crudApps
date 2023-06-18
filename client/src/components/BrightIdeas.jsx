@@ -14,6 +14,8 @@ const BrightIdeas = (props) => {
     const [errors, setErrors] = useState({})
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [currentPage, setCurrentPage] = useState(1)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [search, setSearch] = useState(false)
 
     const toastAdded = () => toast.success(`➕ You added an idea`, {
         position: "bottom-right",
@@ -238,12 +240,31 @@ const BrightIdeas = (props) => {
         day: "numeric",
     }
 
+    const handleSearchInputChange = (e) => {
+        setSearchQuery(e.target.value)
+    }
+    const handleSearchSubmit = (e) => {
+        e.preventDefault()
+        axios.get('http://localhost:8000/api/ideas', { params: { search: searchQuery } })
+            .then((res) => {
+                const searchedResults = res.data.idea.filter((idea) => idea.idea.toLowerCase().includes(searchQuery.toLowerCase()))
+                setIdeaList(searchedResults)
+                const sortedSearchedIdeas = searchedResults.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length)
+                setIdeaList(sortedSearchedIdeas)
+                // setSearchResults(sortedIdeas)
+                setCurrentPage(1)
+            })
+            .catch((err) => console.log(err))
+    }
+
+
+
     return (
-        <div>
+        <div className='mt-5'>
             <h1 style={{ marginTop: "75px" }}>Welcome to Bright Ideas</h1>
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
-                {/* <button className="btn btn-danger" onClick={() => sort()}>Sort</button> */}
                 <div className={darkMode ? "col-sm-8 mx-auto bg-dark text-light" : "col-sm-8 mx-auto"}>
+{/* Add Idea Form */}
                     <form className={darkMode ? "mx-auto bg-dark text-light mt-5" : "mx-auto mt-5"} onSubmit={submitHandler}>
                         {oneIdea.idea && oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
                         {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
@@ -266,15 +287,29 @@ const BrightIdeas = (props) => {
                         }
                     </form>
                 </div>
-                <h3 className='mt-3'>All Ideas</h3>
+                <h3 className='mt-3' onClick={() => setSearch(!search)}>{search ? "Search Ideas" : "All Ideas 🔍"}</h3>
+{/* SEARCH */}
+                {search ? <div className='col-sm-4 mx-auto'>
+                    <form className="mx-auto" onSubmit={handleSearchSubmit}>
+                        <div className="input-group col-10">
+
+                            <div className="form-floating">
+                                <input type="text" className="form-control custom-input" name="idea" value={searchQuery} onChange={handleSearchInputChange} placeholder='Search ideas!' />
+                                <label className="darkText" htmlFor="idea">Search ideas!</label>
+                            </div>
+                            <button type="submit" className="input-group-text btn btn-success" onSubmit={handleSearchSubmit}>Search!</button>
+                        </div>
+                    </form>
+                </div> : null}
+{/* MAP */}
                 <div className='col-8 mx-auto text-start ideaList'>
                     {currentItems.map((idea, index) => {
                         return (
                             <div className='mt-5' key={idea._id}>
                                 {
                                     idea?.addedBy ?
-                                        <><span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, </span><img className="profilePicture" src={`${idea.addedBy?.profilePicture}`} alt="" style={{width:"40px", height:"40px", padding:"3px"}}/> <Link to={`/users/${idea.addedBy._id}`}>@{idea?.addedBy.displayName}</Link><span> said:</span>&nbsp;</> :
-                                        <span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, <img className="profilePicture" src={`http://localhost:8000/uploads/default.png`} alt="" style={{width:"40px", height:"40px", padding:"2px"}}/> Deleted User says: </span>
+                                        <><span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, </span><img className="profilePicture" src={`${idea.addedBy?.profilePicture}`} alt="" style={{ width: "40px", height: "40px", padding: "3px" }} /> <Link to={`/users/${idea.addedBy._id}`}>@{idea?.addedBy.displayName}</Link><span> said:</span>&nbsp;</> :
+                                        <span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, <img className="profilePicture" src={`http://localhost:8000/uploads/default.png`} alt="" style={{ width: "40px", height: "40px", padding: "2px" }} /> Deleted User says: </span>
                                 }
                                 <br className="MQHide" />
                                 <p className="idea" style={{ border: "1px solid", padding: "5px 10px" }}>{idea.idea}</p>
@@ -300,6 +335,7 @@ const BrightIdeas = (props) => {
                             </div>
                         )
                     })}
+{/* PAGINATION */}
                     <div className="custom-pagination">
                         <div className="pagination justify-content-center">
                             {pageNumbers.map((number) => (

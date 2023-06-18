@@ -26,10 +26,11 @@ function App() {
   const [count, setCount] = useState(0)
   const [user, setUser] = useState()
   const [darkMode, setDarkMode] = useState(false)
-
-  const cookieValue = Cookies.get('userToken')
+  const [cookieValue, setCookieValue] = useState(Cookies.get('userToken'))
+  // const cookieValue = Cookies.get('userToken')
 
   useEffect(() => {
+    setCookieValue(Cookies.get('userToken'))
     setCount(count + 1)
     if (Cookies.get('darkMode') === undefined) Cookies.set('darkMode', false.toString(), { expires: 7 })
     if (cookieValue) {
@@ -53,10 +54,10 @@ function App() {
         <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
         <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
         <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
-        <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode} />} />
+        <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode} cookieValue={cookieValue} />} />
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode} />} />
         <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode} />} />
-        <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCount={setCount} />} />
+        <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} setWelcome={setWelcome} />} />
         <Route path="/books/:id/edit" element={<EditBook />} />
         <Route path="/ideas/:id/edit" element={<EditIdea />} />
         <Route path="*" element={<NotFound darkMode={darkMode} />} />

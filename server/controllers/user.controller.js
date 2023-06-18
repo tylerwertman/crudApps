@@ -60,18 +60,87 @@ module.exports.findOneUser = (req, res) => {
         .then(oneUser => res.json({ user: oneUser }))
         .catch(err => res.status(400).json({ message: "Something went worng finding a user", error: err }))
 }
-module.exports.createUser = (req, res) => {
-    User.create(req.body)
-        .then(newUser => res.json({ user: newUser }))
-        .catch(err => res.status(400).json({ message: "Something went worng creating a user", error: err }))
-}
-module.exports.updateUser = (req, res) => {
+module.exports.updateUserInfo = (req, res) => {
+    const token = req.headers.authorization
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Invalid token', err: err })
+        }
+        req.user = { _id: decoded._id }
+    })
+    const userId = req.params.id
+    const loggedInUserId = req.user._id
+    if (userId !== loggedInUserId) {
+        return res.status(403).json({ message: 'Unauthorized access' })
+    }
     User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
         .populate("booksAdded booksFavorited ideasAdded ideasFavorited")
-        .then(updatedUser => res.json({ user: updatedUser }))
+        .then(updatedUser => {
+            const userToken = jwt.sign({ _id: updatedUser.id, email: updatedUser.email, name: updatedUser.name, displayName: updatedUser.displayName }, secret, { expiresIn: "1d" })
+            res.clearCookie("userToken")
+            res.cookie("userToken", userToken, { httpOnly: false })
+            res.json({ msg: "Delete & rewrite cookie success!", user: updatedUser })
+        })
         .catch(err => res.status(400).json({ message: "Something went worng updating a user", error: err }))
 }
+module.exports.updateUserPassword = async (req, res) => {
+    const token = req.headers.authorization
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Invalid token', err: err })
+        }
+        req.user = { _id: decoded._id }
+    })
+
+    const userId = req.params.id
+    const loggedInUserId = req.user._id
+    if (userId !== loggedInUserId) {
+        return res.status(403).json({ message: 'Unauthorized access' })
+    }
+
+    try {
+        const { password } = req.body
+        const hashedPassword = await bcrypt.hash(password, 10)
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id,
+            { $set: { password: hashedPassword } },
+            { new: true, runValidators: true }
+        ).populate('booksAdded booksFavorited ideasAdded ideasFavorited')
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        res.json({ user: updatedUser })
+    } catch (error) {
+        res.status(400).json({ message: 'Something went wrong updating a user', error: error })
+    }
+}
+
 module.exports.addProfilePicture = async (req, res) => {
+    const token = req.headers.authorization
+    console.log(token)
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Invalid token', err: err })
+        }
+        console.log("decoded", decoded)
+        req.user = { _id: decoded._id }
+    })
+    const userId = req.params.id
+    const loggedInUserId = req.user._id
+    if (userId !== loggedInUserId) {
+        return res.status(403).json({ message: 'Unauthorized access' })
+    }
     try {
         const id = req.params.id
         const { profilePicture } = req.body

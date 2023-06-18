@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import withAuth from './WithAuth'
+import withAuth2 from './WithAuth2'
 import { toast } from 'react-toastify'
 import jwtdecode from 'jwt-decode'
-// import Cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 
 const EditUser = (props) => {
-    const { darkMode, setWelcome, cookieValue, setCount, count } = props
+    const { darkMode, setWelcome, cookieValue, setCount, count, setCookieValue} = props
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneUser, setOneUser] = useState({})
     const [errors, setErrors] = useState({})
-    const [selectedFile, setSelectedFile] = useState(null);
-    // const [userInfoEdit, setUserInfoEdit] = useState({
-    //     name: "",
-    //     displayName: "",
-    //     email: "",
-    //     password: ""
-    // })
-    const toastEdit = () => toast.success(`✏️ You edited ${oneUser.user}`, {
+    const [selectedFile, setSelectedFile] = useState(null)
+    setCookieValue(Cookies.get('userToken'))
+
+    const [userInfoEdit, setUserInfoEdit] = useState({
+        name: oneUser.name,
+        displayName: oneUser.displayName,
+        email: oneUser.email
+    })
+    const [userPasswordEdit, setUserPasswordEdit] = useState({
+        password: "",
+        confirmPassword: ""
+    })
+    const toastEdit = () => toast.success(`✏️ Successfully edited account info`, {
         position: "bottom-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -39,7 +44,7 @@ const EditUser = (props) => {
             })
             .catch(err => console.log(err))
         // eslint-disable-next-line
-    }, [])
+    }, [count])
 
     const handleFileSelect = (e) => {
         e.preventDefault()
@@ -55,60 +60,110 @@ const EditUser = (props) => {
 
             const uploadedPhotoUrl = `http://localhost:8000/uploads/${uploadResponse.data.photo}`
 
-            await axios.patch(`http://localhost:8000/api/users/${id}/addProfilePicture`, { profilePicture: uploadedPhotoUrl })
+            await axios.patch(`http://localhost:8000/api/users/${id}/addProfilePicture`, { profilePicture: uploadedPhotoUrl }, { headers: { 'Authorization': `${cookieValue}` } })
 
             navigate(`/users/${id}`)
             setCount(count + 1)
             console.log("Successfully updated profile picture!")
         } catch (error) {
-            console.error('Error uploading file:', error)
-            window.alert("Error uploading profile picture. Please make sure it is an image type of .PNG, .JPG, or .JPEG and below 3MB")
+            if (error.response.status === 403) {
+                window.alert("You can not edit another user's profile!")
+            } else {
+                console.error('Error uploading file:', error)
+                window.alert("Error uploading profile picture. Please make sure it is an image type of .PNG, .JPG, or .JPEG and below 3MB.")
+            }
         }
     }
 
 
-    // const handleEdit = (e) => {
-    //     setUserInfoEdit({
-    //         ...userInfoEdit,
-    //         [e.target.name]: e.target.value
-    //     })
-    // }
+    const handleEdit = (e) => {
+        setUserInfoEdit({
+            ...userInfoEdit,
+            [e.target.name]: e.target.value
+        })
+        setUserPasswordEdit({
+            ...userPasswordEdit,
+            [e.target.name]: e.target.value
+        })
+    }
 
-    // const editUser = (e) => {
-    //     e.preventDefault()
-    //     axios.patch(`http://localhost:8000/api/users/${id}`, userInfoEdit)
-    //         .then(res => {
-    //             navigate(`/users/${id}`)
-    //             setWelcome(jwtdecode(cookieValue).name + " (@" + jwtdecode(cookieValue).displayName + ")")
-    //             setCount(count + 1)
-    //             toastEdit()
-    //         })
-    //         .catch(err => {
-    //             setErrors({
-    //                 name: err.response.data.errors?.name,
-    //                 displayName: err.response.data.errors?.displayName,
-    //                 email: err.response.data.errors?.email,
-    //                 password: err.response.data.errors?.password,
-    //                 confirmPassword: err.response.data.errors?.confirmPassword,
-    //                 emailMsg: err.response.data.emailMsg,
-    //                 displayNameMsg: err.response.data.displayNameMsg,
-    //                 validationErrors: err.response.data.validationErrors
+    const editUserInfo = (e) => {
+        e.preventDefault()
+        if (userInfoEdit.name || userInfoEdit.displayName || userInfoEdit.email) {
+            axios.patch(`http://localhost:8000/api/users/${id}/info`, userInfoEdit, { headers: { 'Authorization': `${cookieValue}` } })
+                .then(res => {
+                    navigate(`/users/${id}`)
+                    if(userInfoEdit.name || userInfoEdit.displayName){
+                        setWelcome(oneUser.name + " (@" + oneUser.displayName + ")")
+                    }
+                    // setWelcome(jwtdecode(cookieValue).name + " (@" + jwtdecode(cookieValue).displayName + ")")
+                    setCount(count + 1)
+                    toastEdit()
+                })
+                .catch(err => {
+                    if (err.response.status === 403) {
+                        window.alert("You can not edit another user's profile!")
+                        navigate(`/users/${id}`)
+                    }
+                    setErrors({
+                        name: err.response.data.error?.errors?.name,
+                        displayName: err.response.data.error?.errors?.displayName,
+                        email: err.response.data.error?.errors?.email,
+                        emailMsg: err.response.data?.emailMsg,
+                        displayNameMsg: err.response.data?.displayNameMsg,
+                        validationErrors: err.response.data?.validationErrors,
+                        typErrors: err.response.data?.typeErrors,
+                        duplicate: err.response.data?.error?.codeName
+                    })
+                    console.log("editUserInfo", err)
+                })
+        } else {
+            window.alert("Can not submit empty form")
+        }
+    }
 
-    //             })
-    //             console.log(err)
-    //         })
-    // }
+    const editUserPassword = (e) => {
+        e.preventDefault()
+        if (userPasswordEdit.password === userPasswordEdit.confirmPassword && userPasswordEdit.password.length > 7) {
+            axios.patch(`http://localhost:8000/api/users/${id}/password`, userPasswordEdit, { headers: { 'Authorization': `${cookieValue}` } })
+                .then((res) => {
+                    navigate(`/users/${id}`)
+                    setCount(count + 1)
+                    toastEdit()
+                })
+                .catch((err) => {
+                    if (err.response.status === 403) {
+                        window.alert("You cannot edit another user's profile!")
+                        navigate(`/users/${id}`)
+                    }
+                    setErrors({
+                        password: err.response.data.errors?.password,
+                        confirmPassword: err.response.data.errors?.confirmPassword,
+                        validationErrors: err.response.data?.validationErrors,
+                        typeErrors: err.response.data?.typeErrors
+                    })
+                    console.log(err)
+                })
+        } else {
+            setErrors({
+                password: "Password must be 8 characters",
+                confirmPassword: "Confirm password must match password"
+            })
+        }
+    }
+
 
 
     return (
-        <div className='mt-5'>
+        <div>
             <h1>Edit User Details</h1>
-            {/* <form className="col-md-6 mx-auto" onSubmit={editUser}>
-                <h3>Edit</h3>
+            <form className="col-md-6 mx-auto" onSubmit={editUserInfo}>
+                <h3>Edit Account Info</h3>
                 {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[0]}</p> : null}
                 {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[1]}</p> : null}
                 {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[2]}</p> : null}
                 {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[3]}</p> : null}
+                {errors.duplicate ? <p className="text-danger">Email or Display Name already exists. Please choose another one.</p> : null}
                 {errors?.name ? <p className="text-danger">{errors?.name.message}</p> : null}
                 <div className="form-floating mb-3">
                     <input type="text" className="form-control custom-input" name="name" value={userInfoEdit.name} onChange={handleEdit} placeholder='Name' />
@@ -126,29 +181,44 @@ const EditUser = (props) => {
                     <input type="email" className="form-control custom-input" name="email" value={userInfoEdit.email} onChange={handleEdit} placeholder='Email' />
                     <label className='form-label'>Email</label>
                 </div>
-                {errors?.password ? <p className="text-danger">{errors?.password.message}</p> : null}
+                <div className="form-group">
+                    <button type="submit" className='btn btn-success mb-5'>Confirm</button>
+                </div>
+            </form>
+            <form className="col-md-6 mx-auto" onSubmit={editUserPassword}>
+                <h3>Edit Password</h3>
+                {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[0]}</p> : null}
+                {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[1]}</p> : null}
+                {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[2]}</p> : null}
+                {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[3]}</p> : null}
+                {errors?.name ? <p className="text-danger">{errors?.name.message}</p> : null}
+
+                {errors?.password ? <p className="text-danger">{errors?.password}</p> : null}
                 <div className="form-floating mb-3">
-                    <input type="password" className="form-control custom-input" name="password" value={userInfoEdit.password} onChange={handleEdit} placeholder='Password' />
+                    <input type="password" className="form-control custom-input" name="password" value={userPasswordEdit.password} onChange={handleEdit} placeholder='Password' />
                     <label className='form-label'>Password</label>
                 </div>
-                {errors?.confirmPassword ? <p className="text-danger">{errors?.confirmPassword.message}</p> : null}
+                {errors?.confirmPassword ? <p className="text-danger">{errors?.confirmPassword}</p> : null}
                 <div className="form-floating mb-3">
-                    <input type="password" className="form-control custom-input" name="confirmPassword" value={userInfoEdit.confirmPassword} onChange={handleEdit} placeholder='Confirm Password' />
+                    <input type="password" className="form-control custom-input" name="confirmPassword" value={userPasswordEdit.confirmPassword} onChange={handleEdit} placeholder='Confirm Password' />
                     <label className='form-label'>Confirm Password</label>
                 </div>
                 <div className="form-group">
-                    <button type="submit" className='btn btn-success mb-3'>Confirm</button>
+                    <button type="submit" className='btn btn-success mb-5'>Confirm</button>
                 </div>
-            </form> */}
+            </form>
             <div className='col-4 mx-auto'>
-                <h2>Upload a profile picture</h2>
+                <h3>Upload a profile picture</h3>
                 <div className="input-group mb-3">
                     <input className="form-control custom-input" type="file" id="formFile" onChange={handleFileSelect} />
                     <button type="button" className="btn btn-success" disabled={!selectedFile} onClick={handleFileUpload}>Upload</button>
                 </div>
             </div>
+            <br />
+            <br />
+            <br />
         </div>
     )
 }
 
-export default withAuth(EditUser)
+export default withAuth2(EditUser)

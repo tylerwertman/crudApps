@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { findOneUser } = require('../controllers/user.controller');
+const mongoose = require('mongoose')
+const { findOneUser } = require('../controllers/user.controller')
 
 const IdeaSchema = new mongoose.Schema({
     idea: {
@@ -18,6 +18,6 @@ const IdeaSchema = new mongoose.Schema({
     }]
 },
     { timestamps: true }
-);
+)
 
-module.exports = mongoose.model('Idea', IdeaSchema);
+module.exports = mongoose.model('Idea', IdeaSchema)

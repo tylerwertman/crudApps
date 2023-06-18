@@ -10,10 +10,11 @@ const Nav = (props) => {
 
     useEffect(() => {
         if (cookieValue) {
+            // console.log(jwtdecode(cookieValue))
             setWelcome(jwtdecode(cookieValue).name + " (@" + jwtdecode(cookieValue).displayName + ")")
         }
         // eslint-disable-next-line
-    }, [count])
+    }, [])
 
     useEffect(() => {
         const darkModeCookie = Cookies.get('darkMode')

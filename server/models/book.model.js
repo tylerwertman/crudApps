@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { findOneUser } = require('../controllers/user.controller');
+const mongoose = require('mongoose')
+const { findOneUser } = require('../controllers/user.controller')
 
 const BookSchema = new mongoose.Schema({
     title: {
@@ -26,6 +26,6 @@ const BookSchema = new mongoose.Schema({
     }]
 },
     { timestamps: true }
-);
+)
 
-module.exports = mongoose.model('Book', BookSchema);
+module.exports = mongoose.model('Book', BookSchema)

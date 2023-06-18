@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import withAuth from './WithAuth'
+import jwtdecode from 'jwt-decode'
+
 
 const UserDetail = (props) => {
     const { id } = useParams()
-    const { welcome, setWelcome, count, user, setLoggedIn, darkMode } = props
+    const { welcome, setWelcome, count, user, setLoggedIn, darkMode, cookieValue } = props
     const navigate = useNavigate()
     const [showDeletePopup, setShowDeletePopup] = useState(false)
     const [oneUser, setOneUser] = useState({})
@@ -111,8 +113,8 @@ const UserDetail = (props) => {
                                     : null
                 }
             </div>
-            {welcome === (oneUser?.name + " (@" + oneUser?.displayName + ")") ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
-            &nbsp;&nbsp;{welcome === (oneUser?.name + " (@" + oneUser?.displayName + ")") ? <button className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null}
+            {id === jwtdecode(cookieValue)._id ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
+            &nbsp;&nbsp;{id === jwtdecode(cookieValue)._id ? <button className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null}
             <br /><br /><br />
         </div>
     )
