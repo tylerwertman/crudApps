@@ -15,6 +15,7 @@ app.use(express.json(), express.urlencoded({ extended: true }))
 require('./routes/user.routes')(app)
 require('./routes/idea.routes')(app)
 require('./routes/book.routes')(app)
+require('./routes/pizza.routes')(app)
 require("./routes/uploadRoute.routes")(app)
 
 app.use(express.static("public"))

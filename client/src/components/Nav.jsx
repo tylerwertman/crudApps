@@ -19,8 +19,8 @@ const Nav = (props) => {
     useEffect(() => {
         const darkModeCookie = Cookies.get('darkMode')
         setDarkMode(darkModeCookie === "true")
-        if (darkModeCookie === "true") document.body.style.background = 'rgb(33, 37, 41)'
-        else document.body.style.background = 'white'
+        if (darkModeCookie === "true") document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%,  rgba(74,98,110,1) 0.3%, rgba(30,33,48,1) 90.2% )"
+        else document.body.style.backgroundImage = "linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)"
 
         // eslint-disable-next-line
     }, [])
@@ -30,8 +30,8 @@ const Nav = (props) => {
         setDarkMode(updatedDarkMode)
         Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 })
 
-        if (updatedDarkMode) document.body.style.background = 'rgb(33, 37, 41)'
-        else document.body.style.background = 'white'
+        if (updatedDarkMode) document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%,  rgba(74,98,110,1) 0.3%, rgba(30,33,48,1) 90.2% )"
+        else document.body.style.backgroundImage = "linear-gradient( 68.4deg,  rgba(248,182,204,1) 0.5%, rgba(192,198,230,1) 49%, rgba(225,246,240,1) 99.8% )"
 
     }
 
@@ -60,7 +60,7 @@ const Nav = (props) => {
 
     const navToUser = () => {
         navigate(`/users/${user?._id}`)
-        setCount(count+1)
+        setCount(count + 1)
     }
 
     return (
@@ -70,7 +70,7 @@ const Nav = (props) => {
                 <br className='MQHide' />
                 {
                     welcome !== "Guest" ?
-                        <span onClick={()=>navToUser()}><h4 style={{ display: 'inline' }}>Welcome, {welcome}</h4></span> :
+                        <span onClick={() => navToUser()}><h4 style={{ display: 'inline' }}>Welcome, {welcome}</h4></span> :
                         <h4 style={{ display: 'inline' }}>Welcome, Guest</h4>
                 }
             </div>

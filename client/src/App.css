@@ -1,19 +1,21 @@
 html {
-  height: 100vh
-}
-
-body {
-  background-color: rgb(33, 37, 41);
   height: 100%;
+}
+body {
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .AppLight {
   text-align: center;
   /* background-color: white; */
 }
+
 .AppDark {
   text-align: center;
-  background-color: rgb(33, 37, 41);
+  /* background-color: rgb(33, 37, 41); */
   color: lightgrey;
   /* opacity: 20%; */
 }
@@ -21,11 +23,13 @@ body {
 .AppLight h1, .AppDark h1 {
   margin-top: 100px;
 }
+
 .AppDark a {
-  color:white
+  color: white
 }
+
 .AppLight a {
-  color:seagreen
+  color: seagreen
 }
 
 nav {
@@ -54,11 +58,13 @@ footer {
   text-align: center;
   z-index: 100;
 }
+
 .footerDark {
-  background-color: rgb(33,37,41);
+  background-color: rgb(33, 37, 41);
   color: lightgrey;
   box-shadow: 0 0 10px lightgrey;
 }
+
 .navLight {
   background-color: whitesmoke;
   background-color: lightgrey;
@@ -69,9 +75,10 @@ footer {
   box-shadow: 0 0 10px black;
   /* position: fixed; */
 }
+
 .navDark {
   background-color: whitesmoke;
-  background-color: rgb(33,37,41);
+  background-color: rgb(33, 37, 41);
   /* color: darkslategrey; */
   justify-content: space-between;
   align-items: center;
@@ -79,31 +86,38 @@ footer {
   box-shadow: 0 0 10px grey;
   /* position: fixed; */
 }
+
 nav h1 {
   padding: 10px 0;
   /* font-size: 18px; */
   margin-right: 10px;
 }
+
 nav ul {
   display: flex;
   list-style: none;
   gap: 50px
 }
-.navLight ul a, .navLight a {
+
+.navLight ul a,
+.navLight a {
   text-decoration: none;
   color: black;
   /* font-size: 1.5rem; */
 }
 
-.navDark ul a, .navDark a {
+.navDark ul a,
+.navDark a {
   text-decoration: none;
   color: lightgrey;
   /* font-size: 1.5rem; */
 }
 
-.navDark h1, .navDark h4 {
+.navDark h1,
+.navDark h4 {
   color: lightgrey
 }
+
 .content {
   margin: 0 auto;
   text-align: center;
@@ -111,29 +125,40 @@ nav ul {
   padding: 20px;
   border-radius: 50px;
   width: 300px;
+  gap: 50px;
 }
+
 .contentDark {
   margin: 0 auto;
   text-align: center;
-  background-color: rgb(50, 50, 50);
+  background-color: rgb(33, 37, 41);
   color: lightgrey;
   padding: 20px;
   border-radius: 50px;
   width: 300px;
+  gap: 50px;
 }
+
 .contentDark p {
   color: lightgrey
 }
-.content h3, .content h4 {
+
+.content h3,
+.content h4 {
   font-weight: bold
 }
+
 .content a {
   color: seagreen;
 }
-.contentDark a, .contentDark h3, .contentDark h4 {
+
+.contentDark a,
+.contentDark h3,
+.contentDark h4 {
   color: lightgrey;
   font-weight: bold
 }
+
 .hide {
   display: none;
 }
@@ -150,11 +175,14 @@ nav ul {
   display: flex;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid;
   padding: 10px;
   /* margin: auto */
 }
+
 .tableDark th {
   border: 1px solid white;
 }
@@ -164,12 +192,14 @@ table, th, td {
   padding: 10px;
   margin-top: 30px;
   border-radius: 10px;
-  background-color: rgb(50,50,50);
+  background-color: rgb(33, 37, 41);
   color: lightgrey;
 }
+
 .darkText {
   color: darkslategrey
 }
+
 .idea {
   line-height: 2;
   /* border-radius: 10px; */
@@ -183,10 +213,12 @@ table, th, td {
   align-items: center;
   justify-content: center;
 }
+
 .clicked {
   background-color: seagreen;
   color: white;
 }
+
 .MQHide {
   display: none
 }
@@ -201,6 +233,13 @@ table, th, td {
   background-color: black;
   padding: 25px;
   border-radius: 40px;
+}
+
+.pizzaBox {
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid black;
+  padding: 20px;
 }
 
 /* Custom pagination colors */
@@ -233,6 +272,7 @@ table, th, td {
   border-color: #80ff8d;
   box-shadow: 0 0 0 0.2rem rgba(0, 255, 13, 0.25);
 }
+
 .landingPage {
   width: 300px;
   margin: 0 auto
@@ -241,40 +281,56 @@ table, th, td {
 .profilePicture {
   border-radius: 100%;
 }
+
 @media (width < 900px) {
   .MQHide {
     display: block
   }
-  nav h1, nav h4, nav a, nav span {
+
+  nav h1,
+  nav h4,
+  nav a,
+  nav span {
     font-size: 1rem;
     /* color: red; */
   }
 }
+
 @media (width < 900px) {
   .ideaList {
     margin-left: 10%;
   }
 }
+
 @media (width > 900px) {
   .popup {
     width: 500px;
   }
-  .content {
-    width: 750px;
+
+  /* .content {
+    width: 924px;
   }
+  .contentDark {
+    width: 924px;
+  } */
   .landingPage {
-    width: 750px;
-    margin: 0 auto
+    width: 924px;
+    margin: 0 auto;
+    gap: 50px;
   }
 }
 
 @media (width < 500px) {
-  table, th, td {
+
+  table,
+  th,
+  td {
     font-size: 14px;
     /* width: 100%; */
     /* padding: 10px; */
     /* margin: auto */
   }
+
   .tableDark th {
     font-size: 10px;
   }

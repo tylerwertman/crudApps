@@ -19,6 +19,9 @@ import IdeaDetail from './components/IdeaDetail'
 import EditUser from './components/EditUser'
 import EditBook from './components/EditBook'
 import EditIdea from './components/EditIdea'
+import PizzaTime from './components/PizzaTime'
+import PizzaCreate from './components/PizzaCreate'
+import PizzaCheckout from './components/PizzaCheckout'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -27,7 +30,6 @@ function App() {
   const [user, setUser] = useState()
   const [darkMode, setDarkMode] = useState(false)
   const [cookieValue, setCookieValue] = useState(Cookies.get('userToken'))
-  // const cookieValue = Cookies.get('userToken')
 
   useEffect(() => {
     setCookieValue(Cookies.get('userToken'))
@@ -54,9 +56,12 @@ function App() {
         <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
         <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
         <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
+        <Route path="/pizzaTime" element={<PizzaTime count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
         <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode} cookieValue={cookieValue} />} />
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode} />} />
         <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode} />} />
+        <Route path="/pizzaTime/create" element={<PizzaCreate darkMode={darkMode} />} />
+        <Route path="/pizzaTime/checkout" element={<PizzaCheckout darkMode={darkMode} />} />
         <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} setWelcome={setWelcome} />} />
         <Route path="/books/:id/edit" element={<EditBook />} />
         <Route path="/ideas/:id/edit" element={<EditIdea />} />

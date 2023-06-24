@@ -47,7 +47,7 @@ const BrightIdeas = (props) => {
         progress: undefined,
         theme: darkMode ? "dark" : "light"
     })
-    const toastDelete = (id) => toast.error(`🗑 You deleted ${id}`, {
+    const toastDelete = (id) => toast.error(`🗑 You deleted an idea`, {
         position: "bottom-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -58,7 +58,7 @@ const BrightIdeas = (props) => {
         theme: darkMode ? "dark" : "light"
     })
 
-    // UE for tracking window size
+// UE for tracking window size
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth)
@@ -69,7 +69,7 @@ const BrightIdeas = (props) => {
         }
     }, [])
 
-    // UE for sorting ideas by favorites. The Fav & Unfav FN update count to trigger this UE
+// UE for sorting ideas by favorites. The Fav & Unfav FN update count to trigger this UE
     useEffect(() => {
         axios.get(`http://localhost:8000/api/ideas`)
             .then(res => {
@@ -80,7 +80,7 @@ const BrightIdeas = (props) => {
         // eslint-disable-next-line
     }, [count])
 
-    // UE for socket.io
+// UE for socket.io
     useEffect(() => {
         // Event handler for 'ideaAdded' event
         const handleIdeaAdded = (newIdea) => {
@@ -136,14 +136,14 @@ const BrightIdeas = (props) => {
         }
     }, [socket])
 
-    const changeHandler = (e) => {
+    const handleAddIdeaChange = (e) => {
         setOneIdea({
             ...oneIdea,
             [e.target.name]: e.target.value
         })
     }
 
-    const submitHandler = (e) => {
+    const handleAddIdeaSubmit = (e) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/ideas', oneIdea, { withCredentials: true })
             .then(res => {
@@ -243,6 +243,7 @@ const BrightIdeas = (props) => {
     const handleSearchInputChange = (e) => {
         setSearchQuery(e.target.value)
     }
+
     const handleSearchSubmit = (e) => {
         e.preventDefault()
         axios.get('http://localhost:8000/api/ideas', { params: { search: searchQuery } })
@@ -257,6 +258,17 @@ const BrightIdeas = (props) => {
             .catch((err) => console.log(err))
     }
 
+    const returnToAllIdeas = () => {
+        setSearchQuery('')
+        setSearch(!search)
+        axios.get('http://localhost:8000/api/ideas', { params: { search: "" } })
+            .then((res) => {
+                const sortedIdeas = res.data.idea.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length)
+                setIdeaList(sortedIdeas)
+                setCurrentPage(1)
+            })
+            .catch((err) => console.log(err))
+    }
 
 
     return (
@@ -265,29 +277,29 @@ const BrightIdeas = (props) => {
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
                 <div className={darkMode ? "col-sm-8 mx-auto bg-dark text-light" : "col-sm-8 mx-auto"}>
 {/* Add Idea Form */}
-                    <form className={darkMode ? "mx-auto bg-dark text-light mt-5" : "mx-auto mt-5"} onSubmit={submitHandler}>
+                    <form className={darkMode ? "mx-auto bg-dark text-light mt-5" : "mx-auto mt-5"} onSubmit={handleAddIdeaSubmit}>
                         {oneIdea.idea && oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
                         {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
                         {windowWidth > 575 ?
                             <div className="input-group col-10">
                                 <div className="form-floating">
-                                    <input type="text" className="form-control custom-input" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
+                                    <input type="text" className="form-control custom-input" name="idea" value={oneIdea.idea} onChange={handleAddIdeaChange} placeholder='Add a new idea!' />
                                     <label className="darkText" htmlFor="idea">Add a new idea!</label>
                                 </div>
-                                <button type="submit" className="input-group-text btn btn-success" onSubmit={submitHandler}>Add idea!</button>
+                                <button type="submit" className="input-group-text btn btn-success" onSubmit={handleAddIdeaSubmit}>Add idea!</button>
                             </div>
                             :
                             <div>
                                 <div className="form-floating col-10 mx-auto">
-                                    <input type="text" className="form-control custom-input" name="idea" value={oneIdea.idea} onChange={changeHandler} placeholder='Add a new idea!' />
+                                    <input type="text" className="form-control custom-input" name="idea" value={oneIdea.idea} onChange={handleAddIdeaChange} placeholder='Add a new idea!' />
                                     <label className="darkText" htmlFor="idea">Add a new idea!</label>
                                 </div>
-                                <button type="submit" className="input-group-text btn btn-success mt-3 col-10" onSubmit={submitHandler}>Add idea!</button>
+                                <button type="submit" className="input-group-text btn btn-success mt-3 col-10" onSubmit={handleAddIdeaSubmit}>Add idea!</button>
                             </div>
                         }
                     </form>
                 </div>
-                <h3 className='mt-3' onClick={() => setSearch(!search)}>{search ? "Search Ideas" : "All Ideas 🔍"}</h3>
+                <h3 className='mt-3' onClick={returnToAllIdeas}>{search ? "Search Ideas" : "All Ideas 🔍"}</h3>
 {/* SEARCH */}
                 {search ? <div className='col-sm-4 mx-auto'>
                     <form className="mx-auto" onSubmit={handleSearchSubmit}>
