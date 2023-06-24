@@ -9,7 +9,7 @@ const Reglog = (props) => {
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
     const [userInfoReg, setUserInfoReg] = useState({
-        name: "",
+        firstName: "",
         displayName: "",
         email: "",
         password: "",

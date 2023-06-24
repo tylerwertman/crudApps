@@ -22,6 +22,9 @@ const Nav = (props) => {
         if (darkModeCookie === "true") document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%,  rgba(74,98,110,1) 0.3%, rgba(30,33,48,1) 90.2% )"
         else if(darkModeCookie === "purple") document.body.style.backgroundImage = "radial-gradient( circle 922px at 98.1% 95%,  rgba(141,102,155,1) 0%, rgba(92,41,143,1) 100.2% )"
         else document.body.style.backgroundImage = "linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)"
+
+        //https://gradienthunt.com/gradient/3877
+
         // eslint-disable-next-line
     }, [])
 
