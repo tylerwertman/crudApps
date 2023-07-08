@@ -21,7 +21,7 @@ import EditBook from './components/EditBook'
 import EditIdea from './components/EditIdea'
 import PizzaTime from './components/PizzaTime'
 import PizzaCreate from './components/PizzaCreate'
-import PizzaCheckout from './components/PizzaCheckout'
+import PizzaCart from './components/PizzaCart'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -61,7 +61,7 @@ function App() {
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode} />} />
         <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode} />} />
         <Route path="/pizzaTime/create" element={<PizzaCreate darkMode={darkMode} />} />
-        <Route path="/pizzaTime/checkout" element={<PizzaCheckout darkMode={darkMode} />} />
+        <Route path="/pizzaTime/cart" element={<PizzaCart darkMode={darkMode} />} />
         <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} setWelcome={setWelcome} />} />
         <Route path="/books/:id/edit" element={<EditBook />} />
         <Route path="/ideas/:id/edit" element={<EditIdea />} />

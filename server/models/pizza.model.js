@@ -42,15 +42,15 @@ const PizzaSchema = new mongoose.Schema({
     orderedByString: {
         type: String
     },
-    orderedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: [true, "Added-By field is required"]
-    },
-    favoritedBy: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }]
+    // orderedBy: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User",
+    //     required: [true, "Added-By field is required"]
+    // },
+    // favoritedBy: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User"
+    // }]
 },
     { timestamps: true }
 )

@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Cookies from 'js-cookie'
+import jwtdecode from 'jwt-decode'
+import { useEffect } from 'react'
 
 const PizzaCreate = (props) => {
-    const {darkMode} = props
+    const { darkMode } = props
     const navigate = useNavigate()
     const [order, setOrder] = useState([])
     const [pizza, setPizza] = useState({
@@ -33,12 +36,20 @@ const PizzaCreate = (props) => {
     //     console.log("order", order)
     // }
 
+    useEffect(() => {
+        Cookies.set('order', JSON.stringify(order), { expires: 7 })
+    }, [])
+
     const checkout = (e) => {
         e.preventDefault()
-        navigate("/pizzatime/checkout")
         axios.post('http://localhost:8000/api/pizzas', pizza, { withCredentials: true })
             .then(res => {
-                console.log(res.data)
+                console.log(res.data.pizza)
+                setOrder([...order, res.data.pizza])
+                Cookies.set('order', JSON.stringify([...order, res.data.pizza]), { expires: 7 })
+
+                // const orderData = [...order, pizza]
+                // navigate("/pizzaTime/checkout")
             })
             .catch(err => {
                 console.log(`submit errer`, err)

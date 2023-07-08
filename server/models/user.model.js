@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
-const {isEmail} = require('validator')
+const { isEmail } = require('validator')
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -42,26 +42,33 @@ const UserSchema = new mongoose.Schema({
     ideasFavorited: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Idea"
+    }],
+    favoritePizza: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Pizza"
+    },
+    orders: [{
+        type: Object
     }]
 }, { timestamps: true })
 
 UserSchema.virtual('confirmPassword')
-    .get(()=>this.confirmPassword)
-    .set(value=>this.confirmPassword = value)
+    .get(() => this.confirmPassword)
+    .set(value => this.confirmPassword = value)
 
-UserSchema.pre('validate', function(next) {
-    if(this.password != this.confirmPassword){
+UserSchema.pre('validate', function (next) {
+    if (this.password != this.confirmPassword) {
         this.invalidate('confirmPassword', 'Confirm password must match password')
     }
     next()
 })
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
     bcrypt.hash(this.password, 10)
-        .then(hash=>{
+        .then(hash => {
             this.password = hash
             next()
         })
-    })
+})
 
 module.exports = mongoose.model("User", UserSchema)
