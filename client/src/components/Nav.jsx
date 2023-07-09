@@ -21,7 +21,8 @@ const Nav = (props) => {
         setDarkMode(darkModeCookie === "true")
         if (darkModeCookie === "true") document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%,  rgba(74,98,110,1) 0.3%, rgba(30,33,48,1) 90.2% )"
         else if(darkModeCookie === "purple") document.body.style.backgroundImage = "radial-gradient( circle 922px at 98.1% 95%,  rgba(141,102,155,1) 0%, rgba(92,41,143,1) 100.2% )"
-        else document.body.style.backgroundImage = "linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)"
+        else document.body.style.backgroundImage = "linear-gradient( 68.4deg,  rgba(248,182,204,1) 0.5%, rgba(192,198,230,1) 49%, rgba(225,246,240,1) 99.8% )"
+        // else document.body.style.backgroundImage = "linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)"
 
         //https://gradienthunt.com/gradient/3877
 
@@ -32,8 +33,10 @@ const Nav = (props) => {
         const updatedDarkMode = !darkMode
         setDarkMode(updatedDarkMode)
         Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 })
-        if (updatedDarkMode) document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%,  rgba(74,98,110,1) 0.3%, rgba(30,33,48,1) 90.2% )"
-        else document.body.style.backgroundImage = "linear-gradient( 68.4deg,  rgba(248,182,204,1) 0.5%, rgba(192,198,230,1) 49%, rgba(225,246,240,1) 99.8% )"
+        if (!updatedDarkMode) document.body.classList.add('change')
+        else document.body.classList.remove('change')
+        // if (updatedDarkMode) document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%,  rgba(74,98,110,1) 0.3%, rgba(30,33,48,1) 90.2% )"
+        // else document.body.style.backgroundImage = "linear-gradient( 68.4deg,  rgba(248,182,204,1) 0.5%, rgba(192,198,230,1) 49%, rgba(225,246,240,1) 99.8% )"
 
     }
 
@@ -86,7 +89,7 @@ const Nav = (props) => {
                         :
                         null
                 }
-                <button className={darkMode ? "btn btn-success" : "btn btn-dark"} onClick={colorToggle}>{darkMode ? "☀️" : "🌙"}</button>
+                <button className={darkMode ? "btn btn-success darkModeButton" : "btn btn-dark darkModeButton"} onClick={colorToggle}>{darkMode ? "☀️" : "🌙"}</button>
             </div>
         </nav>
     )
