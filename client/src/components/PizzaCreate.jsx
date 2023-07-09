@@ -128,7 +128,8 @@ const PizzaCreate = (props) => {
                         </div>
                     </div>
                 </div>
-                <button className={darkMode ? "btn btn-outline-light" : "btn btn-outline-dark"} onClick={checkout}>Add To Order</button>
+                <button className={darkMode ? "btn btn-outline-light" : "btn btn-outline-dark"} onClick={checkout}>Add To Order</button>&nbsp;
+                <button className={darkMode ? "btn btn-outline-dark" : "btn btn-outline-light"} onClick={()=>navigate("/pizzaTime/cart")}>Go To Cart</button>
             </form>
         </div>
     )

@@ -30,7 +30,7 @@ function App() {
   const [user, setUser] = useState()
   const [darkMode, setDarkMode] = useState(false)
   const [cookieValue, setCookieValue] = useState(Cookies.get('userToken'))
-
+  const [order, setOrder] = useState(Cookies.get('order'))
   useEffect(() => {
     setCookieValue(Cookies.get('userToken'))
     setCount(count + 1)
@@ -60,8 +60,8 @@ function App() {
         <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode} cookieValue={cookieValue} />} />
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode} />} />
         <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode} />} />
-        <Route path="/pizzaTime/create" element={<PizzaCreate darkMode={darkMode} />} />
-        <Route path="/pizzaTime/cart" element={<PizzaCart darkMode={darkMode} />} />
+        <Route path="/pizzaTime/create" element={<PizzaCreate darkMode={darkMode} setOrder={setOrder} />} />
+        <Route path="/pizzaTime/cart" element={<PizzaCart darkMode={darkMode} order={order} />} />
         <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} setWelcome={setWelcome} />} />
         <Route path="/books/:id/edit" element={<EditBook />} />
         <Route path="/ideas/:id/edit" element={<EditIdea />} />

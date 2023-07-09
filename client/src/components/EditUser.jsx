@@ -57,11 +57,8 @@ const EditUser = (props) => {
     const handleFileUpload = async () => {
         try {
             const uploadResponse = await axios.post('http://localhost:8000/api/save', selectedFile)
-
             const uploadedPhotoUrl = `http://localhost:8000/uploads/${uploadResponse.data.photo}`
-
             await axios.patch(`http://localhost:8000/api/users/${id}/addProfilePicture`, { profilePicture: uploadedPhotoUrl }, { headers: { 'Authorization': `${cookieValue}` } })
-
             navigate(`/users/${id}`)
             setCount(count + 1)
             console.log("Successfully updated profile picture!")
@@ -152,8 +149,6 @@ const EditUser = (props) => {
         }
     }
 
-
-
     return (
         <div>
             <h1>Edit User Details</h1>
@@ -192,7 +187,6 @@ const EditUser = (props) => {
                 {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[2]}</p> : null}
                 {errors.validationErrors ? <p className="text-danger">{errors.validationErrors[3]}</p> : null}
                 {errors?.name ? <p className="text-danger">{errors?.name.message}</p> : null}
-
                 {errors?.password ? <p className="text-danger">{errors?.password}</p> : null}
                 <div className="form-floating mb-3">
                     <input type="password" className="form-control custom-input" name="password" value={userPasswordEdit.password} onChange={handleEdit} placeholder='Password' />
