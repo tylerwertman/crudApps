@@ -215,7 +215,7 @@ const BookClub = (props) => {
             <h1 className='mt-5'>Welcome to the Book Club</h1>
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
                 <div>
-                    <h3>Add a new book</h3>
+                    <h4>Add a new book</h4>
                     <form className={darkMode ? "col-md-4 offset-1 mx-auto text-light" : "col-md-4 offset-1 mx-auto"} onSubmit={submitHandler}>
                         {oneBook.title && oneBook.title?.length < 2 ? <p className="text-danger">Title must be at least 2 characters</p> : null}
                         {errors.title ? <p className="text-danger">{errors.title.message}</p> : null}
@@ -235,7 +235,7 @@ const BookClub = (props) => {
                     </form>
                 </div>
                 <div>
-                    <h3>All Books</h3>
+                    <h4>All Books</h4>
                     <table className='mx-auto mb-3' style={windowWidth < "500px" ? { width: "100%" } : null}>
                         <thead>
                             <tr>

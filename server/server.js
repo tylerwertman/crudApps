@@ -1,9 +1,9 @@
 const express = require('express')
 const app = express()
-const port = 8000
 const socket = require('socket.io')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const port = 8000
 
 require('dotenv').config()
 require('./config/mongoose.config')
@@ -20,7 +20,7 @@ require("./routes/upload.routes")(app)
 
 app.use(express.static("public"))
 
-const server = app.listen(port, () => console.log(`Listening on port: ${port}`))
+const server = app.listen(port, () => console.log(`Listening on port: port`))
 
 const io = socket(server, {
     cors: {
