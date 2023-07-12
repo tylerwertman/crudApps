@@ -64,9 +64,9 @@ const IdeaDetail = (props) => {
 
     }
 
-    const editIdea = (e) => {
-        navigate(`/ideas/${id}/edit`)
-    }
+    // const editIdea = (e) => {
+    //     navigate(`/ideas/${id}/edit`)
+    // }
 
     const favoriteIdea = () => {
         axios.post(`http://localhost:8000/api/ideas/${id}/favorite`, {}, { withCredentials: true })

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import jwtdecode from 'jwt-decode'
+// import jwtdecode from 'jwt-decode'
 import { useEffect } from 'react'
 
 const PizzaCreate = (props) => {
@@ -38,6 +38,7 @@ const PizzaCreate = (props) => {
 
     useEffect(() => {
         Cookies.set('order', JSON.stringify(order), { expires: 7 })
+        // eslint-disable-next-line
     }, [])
 
     const checkout = (e) => {
@@ -129,7 +130,7 @@ const PizzaCreate = (props) => {
                     </div>
                 </div>
                 <button className={darkMode ? "btn btn-outline-light" : "btn btn-outline-dark"} onClick={checkout}>Add To Order</button>&nbsp;
-                <button className={darkMode ? "btn btn-outline-dark" : "btn btn-outline-light"} onClick={()=>navigate("/pizzaTime/cart")}>Go To Cart</button>
+                <button className={darkMode ? "btn btn-outline-dark" : "btn btn-outline-light"} onClick={() => navigate("/pizzaTime/cart")}>Go To Cart</button>
             </form>
         </div>
     )

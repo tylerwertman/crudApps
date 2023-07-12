@@ -1,6 +1,6 @@
 import React from 'react'
 import Cookies from 'js-cookie'
-import jwtdecode from 'jwt-decode'
+// import jwtdecode from 'jwt-decode'
 import { Link } from 'react-router-dom'
 
 const PizzaCart = () => {

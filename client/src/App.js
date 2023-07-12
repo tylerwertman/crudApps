@@ -18,7 +18,7 @@ import BookDetail from './components/BookDetail'
 import IdeaDetail from './components/IdeaDetail'
 import EditUser from './components/EditUser'
 import EditBook from './components/EditBook'
-import EditIdea from './components/EditIdea'
+// import EditIdea from './components/EditIdea'
 import PizzaTime from './components/PizzaTime'
 import PizzaCreate from './components/PizzaCreate'
 import PizzaCart from './components/PizzaCart'
@@ -64,7 +64,7 @@ function App() {
         <Route path="/pizzaTime/cart" element={<PizzaCart darkMode={darkMode} order={order} />} />
         <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} setWelcome={setWelcome} />} />
         <Route path="/books/:id/edit" element={<EditBook />} />
-        <Route path="/ideas/:id/edit" element={<EditIdea />} />
+        {/* <Route path="/ideas/:id/edit" element={<EditIdea />} /> */}
         <Route path="*" element={<NotFound darkMode={darkMode} />} />
       </Routes>
       <Footer darkMode={darkMode} />

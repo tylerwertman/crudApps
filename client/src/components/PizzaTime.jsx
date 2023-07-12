@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 const PizzaTime = (props) => {
-    const { count, setCount, user, welcome, darkMode } = props
+    const { darkMode } = props
     const navigate = useNavigate()
 
     return (

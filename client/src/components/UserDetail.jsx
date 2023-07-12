@@ -7,7 +7,7 @@ import jwtdecode from 'jwt-decode'
 
 const UserDetail = (props) => {
     const { id } = useParams()
-    const { welcome, setWelcome, count, user, setLoggedIn, darkMode, cookieValue } = props
+    const { setWelcome, count, user, setLoggedIn, darkMode, cookieValue } = props
     const navigate = useNavigate()
     const [showDeletePopup, setShowDeletePopup] = useState(false)
     const [oneUser, setOneUser] = useState({})
