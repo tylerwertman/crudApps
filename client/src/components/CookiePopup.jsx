@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Cookies from 'js-cookie'
 
-const CookiePopup = (props) => {
-    const { darkMode } = props
+const CookiePopup = () => {
     const [showCookiePopup, setShowCookiePopup] = useState(true)
 
     useEffect(()=> {
