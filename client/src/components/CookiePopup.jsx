@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 const CookiePopup = (props) => {
     const { darkMode } = props
-    const [showCookiePopup, setShowCookiePopup] = useState(false)
+    const [showCookiePopup, setShowCookiePopup] = useState(true)
 
     useEffect(()=> {
         setTimeout(() => setShowCookiePopup(true), 3500)
