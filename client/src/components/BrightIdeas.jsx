@@ -254,6 +254,7 @@ const BrightIdeas = (props) => {
                 setIdeaList(sortedSearchedIdeas)
                 // setSearchResults(sortedIdeas)
                 setCurrentPage(1)
+                setSearchQuery("")
             })
             .catch((err) => console.log(err))
     }
