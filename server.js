@@ -18,7 +18,7 @@ require('./server/routes/book.routes')(app)
 require('./server/routes/pizza.routes')(app)
 require("./server/routes/upload.routes")(app)
 
-app.use(express.static("public"))
+app.use(express.static("./server/public"))
 
 const server = app.listen(port, () => console.log(`Listening on port: port`))
 
