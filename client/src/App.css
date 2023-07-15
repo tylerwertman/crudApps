@@ -250,7 +250,8 @@ td {
   background-color: rgb(50,50,50);
   padding: 25px;
   border-radius: 40px;
-  transition: opacity 10s ease;
+  /* transition: opacity 10s ease; */
+  z-index: 100;
 }
 
 .pizzaBox {

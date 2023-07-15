@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
 const CookiePopup = () => {
-    const [showCookiePopup, setShowCookiePopup] = useState(true)
+    const [showCookiePopup, setShowCookiePopup] = useState(false)
 
     useEffect(()=> {
         setTimeout(() => setShowCookiePopup(true), 3500)
-
     }, [])
 
     return (

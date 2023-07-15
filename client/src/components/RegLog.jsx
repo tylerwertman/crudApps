@@ -2,12 +2,18 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import CookiePopup from './CookiePopup'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 const Reglog = (props) => {
     const { setLoggedIn, count, setCount, darkMode } = props
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
+    const [passwordIsVisible, setPasswordIsVisible] = useState({
+        reg: false,
+        log: false,
+        confirm: false
+    })
     const [userInfoReg, setUserInfoReg] = useState({
         name: "",
         displayName: "",
@@ -19,7 +25,6 @@ const Reglog = (props) => {
         email: "",
         password: ""
     })
-
     const regChange = (e) => {
         setUserInfoReg({
             ...userInfoReg,
@@ -31,6 +36,13 @@ const Reglog = (props) => {
             ...userInfoLog,
             [e.target.name]: e.target.value
         })
+    }
+
+    const passwordToggle = (inputName) => {
+        setPasswordIsVisible((prevState) => ({
+            ...prevState,
+            [inputName]: !prevState[inputName],
+        }))
     }
 
     const regSubmit = (e) => {
@@ -94,15 +106,35 @@ const Reglog = (props) => {
                         {errors?.regErr?.errors?.email ? <p className="text-danger">{errors?.regErr.errors.email.message}</p> : null}
                         <input type="email" className="form-control" name="email" value={userInfoReg.email} onChange={regChange} />
                     </div>
-                    <div className="form-group">
+                    <div>
                         <label className='form-label'>Password</label>
                         {errors?.regErr?.errors?.password ? <p className="text-danger">{errors?.regErr.errors.password.message}</p> : null}
-                        <input type="password" className="form-control" name="password" value={userInfoReg.password} onChange={regChange} />
+                        <div className="input-group mb-3">
+                            <input type={passwordIsVisible.reg ? "text" : "password"} className="form-control" name="password" value={userInfoReg.password} onChange={regChange} />
+                            <span className="input-group-text">
+                                {
+                                    passwordIsVisible.reg ?
+                                        <FontAwesomeIcon icon={faEye} style={{ color: "lightgrey" }} name="reg" onClick={() => passwordToggle("reg")} />
+                                        :
+                                        <FontAwesomeIcon icon={faEyeSlash} style={{ color: "lightgrey" }} name="reg" onClick={() => passwordToggle("reg")} />
+                                }
+                            </span>
+                        </div>
                     </div>
-                    <div className="form-group">
+                    <div>
                         <label className='form-label'>Confirm Password</label>
                         {errors?.regErr?.errors?.confirmPassword ? <p className="text-danger">{errors?.regErr.errors.confirmPassword.message}</p> : null}
-                        <input type="password" className="form-control" name="confirmPassword" value={userInfoReg.confirmPassword} onChange={regChange} />
+                        <div className="input-group mb-3">
+                            <input type={passwordIsVisible.confirm ? "text" : "password"} className="form-control" name="confirmPassword" value={userInfoReg.confirmPassword} onChange={regChange} />
+                            <span className="input-group-text">
+                                {
+                                    passwordIsVisible.confirm ?
+                                        <FontAwesomeIcon icon={faEye} style={{ color: "lightgrey" }} name="confirm" onClick={() => passwordToggle("confirm")} />
+                                        :
+                                        <FontAwesomeIcon icon={faEyeSlash} style={{ color: "lightgrey" }} name="confirm" onClick={() => passwordToggle("confirm")} />
+                                }
+                            </span>
+                        </div>
                     </div>
                     <div className="form-group">
                         <button type="submit" className='btn btn-success mt-3'>Register</button>
@@ -117,9 +149,21 @@ const Reglog = (props) => {
                         <label className='form-label'>Email</label>
                         <input type="email" className="form-control" name="email" value={userInfoLog.email} onChange={logChange} />
                     </div>
-                    <div className="form-group">
+                    <div>
                         <label className='form-label'>Password</label>
-                        <input type="password" className="form-control" name="password" value={userInfoLog.password} onChange={logChange} />
+                        {errors?.logErr?.errors?.password ? <p className="text-danger">{errors?.logErr.errors.password.message}</p> : null}
+                        <div className="input-group mb-3">
+                            <input type={passwordIsVisible.log ? "text" : "password"} className="form-control" name="password" value={userInfoLog.password} onChange={logChange} />
+                            <span className="input-group-text">
+                                {
+                                    passwordIsVisible.log ?
+                                        <FontAwesomeIcon icon={faEye} style={{ color: "lightgrey" }} name="log" onClick={() => passwordToggle("log")} />
+                                        :
+                                        <FontAwesomeIcon icon={faEyeSlash} style={{ color: "lightgrey" }} name="log" onClick={() => passwordToggle("log")} />
+
+                                }
+                            </span>
+                        </div>
                     </div>
                     <div className="form-group">
                         <button type="submit" className='btn btn-success mt-3'>Login</button>
