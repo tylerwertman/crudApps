@@ -54,4 +54,4 @@ jobs:
         pm2 restart all
         sudo service nginx restart
     - name: replace uploaded profile pics
-      run: cp -r /home/tyler/uploads /home/tyler/actions-runner/_work/crudApps/crudApps/server/public/uploads
+      run: cp -r /home/tyler/uploads /home/tyler/actions-runner/_work/crudApps/crudApps/server/public/
