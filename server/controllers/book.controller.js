@@ -20,7 +20,6 @@ module.exports.createBook = async (req, res) => {
     try {
         const {_id, displayName} = jwt.verify(req.cookies.userToken, secret)
         const myBook = new Book(req.body)
-        console.log(req.body)
         myBook.addedBy = _id
         myBook.addedByString = displayName
         myBook.favoritedBy.push(_id)

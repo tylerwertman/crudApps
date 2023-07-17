@@ -18,9 +18,10 @@ module.exports.findOneIdea = (req, res) => {
 }
 module.exports.createIdea = async (req, res) => {
     try {
-        const {_id} = jwt.verify(req.cookies.userToken, secret)
+        const {_id, displayName} = jwt.verify(req.cookies.userToken, secret)
         const myIdea = new Idea(req.body)
         myIdea.addedBy = _id
+        myIdea.addedByString = displayName
         myIdea.favoritedBy.push(_id)
         let newIdea = await myIdea.save()
         await newIdea.populate("addedBy favoritedBy")

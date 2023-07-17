@@ -4,10 +4,11 @@ import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
 import withAuth from './WithAuth'
 import { toast } from 'react-toastify'
+import jwtdecode from 'jwt-decode'
 
 
 const BookClub = (props) => {
-    const { count, setCount, user, welcome, darkMode } = props
+    const { count, setCount, user, welcome, darkMode, cookieValue } = props
     const [socket] = useState(() => io(':8000'))
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({ title: "", author: "" })
@@ -16,48 +17,13 @@ const BookClub = (props) => {
     const [sortDirection, setSortDirection] = useState('asc')
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [currentPage, setCurrentPage] = useState(1)
-    const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastFav = (id) => toast.success(`👍 You favorited ${id}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastUnfav = (id) => toast.error(`👎 You unfavorited ${id}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastDelete = (id) => toast.error(`🗑 You deleted ${id}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastBookAdded = (book, cookieName) => toast.success(cookieName !== undefined ? `➕ You added ${book.title}`: `➕ ${book.addedByString} added ${book.title}`)
+    const toastBookDeleted = (book, cookieName) => toast.error(cookieName !== undefined ? `🗑 You deleted ${book.title}`: `🗑 ${book.addedByString} deleted ${book.title}`)
+    const toastBookFav = (book, cookieName) => toast.success(cookieName !== undefined ? `👍 You favorited ${book.title}` : `👍 A user favorited ${book.title}`)
+    const toastBookUnfav = (book, cookieName) => toast.error(cookieName !== undefined ? `👎 You unfavorited ${book.title}` : `👍 A user favorited ${book.title}`)
 
     useEffect(() => {
+        // console.log(welcome)
         const handleResize = () => {
             setWindowWidth(window.innerWidth)
         }
@@ -79,21 +45,35 @@ const BookClub = (props) => {
         // Event handler for 'bookAdded' event
         const handleBookAdded = (newBook) => {
             setBookList((bookList) => [newBook, ...bookList])
+            toastBookAdded(newBook)
         }
 
         //Event handler for 'bookDeleted' event
         const handleBookDeleted = (deletedBook) => {
             setBookList((bookList) => bookList.filter((book) => book._id !== deletedBook._id))
+            toastBookDeleted(deletedBook)
+        }
+        //Event handler for 'bookFavorited' event
+        const handleBookFavorited = (favoritedBook) => {
+            toastBookFav(favoritedBook)
+        }
+        //Event handler for 'bookUnfavorited' event
+        const handleBookUnfavorited = (unfavoritedBook) => {
+            toastBookUnfav(unfavoritedBook)
         }
 
-        // Subscribe to 'bookAdded' event
+        // Subscribe to events
         socket.on('bookAdded', handleBookAdded)
         socket.on('bookDeleted', handleBookDeleted)
+        socket.on('bookFavorited', handleBookFavorited)
+        socket.on('bookUnfavorited', handleBookUnfavorited)
 
         // Clean up the event listener on component unmount
         return () => {
             socket.off('bookAdded', handleBookAdded)
             socket.off('bookDeleted', handleBookDeleted)
+            socket.off('bookFavorited', handleBookFavorited)
+            socket.off('bookUnfavorited', handleBookUnfavorited)
         }
     }, [socket])
 
@@ -109,7 +89,7 @@ const BookClub = (props) => {
         axios.post('http://localhost:8000/api/books', oneBook, { withCredentials: true })
             .then(res => {
                 setBookList([...bookList, res.data.book])
-                toastAdded()
+                toastBookAdded(res.data.book, jwtdecode(cookieValue).name)
                 setOneBook({
                     title: "",
                     author: ""
@@ -120,6 +100,7 @@ const BookClub = (props) => {
                 })
                 socket.emit('bookAdded', res.data.book)
                 setCount(count + 1)
+                setSortColumn('createdAt')
             })
             .catch(err => {
                 console.log(`submit errer`, err)
@@ -137,7 +118,9 @@ const BookClub = (props) => {
         axios.post(`http://localhost:8000/api/books/${book._id}/favorite`, {}, { withCredentials: true })
             .then(res => {
                 setCount(count + 1)
-                toastFav(book.title)
+                toastBookFav(book, jwtdecode(cookieValue).name)
+                socket.emit('bookFavorited', book)
+
             })
             .catch(err => console.log(`FAV error`, err))
     }
@@ -146,7 +129,9 @@ const BookClub = (props) => {
         axios.post(`http://localhost:8000/api/books/${book._id}/unfavorite`, {}, { withCredentials: true })
             .then(res => {
                 setCount(count + 1)
-                toastUnfav(book.title)
+                toastBookUnfav(book, jwtdecode(cookieValue).name)
+                socket.emit('bookUnfavorited', book)
+
             })
             .catch(err => console.log(`UNfav error`, err))
     }
@@ -155,7 +140,7 @@ const BookClub = (props) => {
         axios.delete(`http://localhost:8000/api/books/${book._id}`)
             .then(res => {
                 setCount(count + 1)
-                toastDelete(book.title)
+                toastBookDeleted(book, jwtdecode(cookieValue).name)
                 socket.emit('bookDeleted', book)
 
             })

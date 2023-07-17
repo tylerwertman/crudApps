@@ -50,12 +50,13 @@ function App() {
   return (
     <div className={darkMode ? "AppDark" : "AppLight"}>
       <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode} />
-      <ToastContainer transition={Slide} />
+      <ToastContainer transition={Slide} position="bottom-right" autoClose={2500} hideProgressBar= {false} closeOnClick= {true} pauseOnHover= {true} draggable= {true} progress= {undefined} theme= {darkMode ? "dark" : "light"}
+      />
       <Routes>
         <Route path="/" element={<RegLog setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} />} />
         <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
-        <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
-        <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
+        <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} cookieValue={cookieValue} />} />
+        <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} cookieValue={cookieValue}/>} />
         <Route path="/pizzaTime" element={<PizzaTime count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
         <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode} cookieValue={cookieValue} />} />
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode} />} />

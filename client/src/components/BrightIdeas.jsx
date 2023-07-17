@@ -4,10 +4,11 @@ import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
 import withAuth from './WithAuth'
 import { toast } from 'react-toastify'
+import jwtdecode from 'jwt-decode'
 
 
 const BrightIdeas = (props) => {
-    const { count, setCount, user, welcome, darkMode } = props
+    const { count, setCount, user, welcome, darkMode, cookieValue } = props
     const [socket] = useState(() => io(':8000'))
     const [ideaList, setIdeaList] = useState([])
     const [oneIdea, setOneIdea] = useState({ idea: "" })
@@ -17,46 +18,10 @@ const BrightIdeas = (props) => {
     const [searchQuery, setSearchQuery] = useState('')
     const [search, setSearch] = useState(false)
 
-    const toastAdded = () => toast.success(`➕ You added an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastFav = (id) => toast.success(`👍 You favorited an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastUnfav = (id) => toast.error(`👎 You unfavorited an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastDelete = (id) => toast.error(`🗑 You deleted an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastIdeaAdded = (idea, cookieName) => toast.success(cookieName !== undefined ? `➕ You added an idea` : `➕ ${idea.addedByString} added an idea`)
+    const toastIdeaDeleted = (idea, cookieName) => toast.error(cookieName !== undefined ? `🗑 You deleted an idea` : `🗑 ${idea.addedByString} deleted an idea`)
+    const toastIdeaFav = (idea, cookieName) => toast.success(cookieName !== undefined ? `👍 You favorited an idea` : `👍 A user favorited an idea`)
+    const toastIdeaUnfav = (idea, cookieName) => toast.error(cookieName !== undefined ? `👎 You unfavorited an idea` : `👎 A user unfavorited an idea`)
 
 // UE for tracking window size
     useEffect(() => {
@@ -87,6 +52,7 @@ const BrightIdeas = (props) => {
             setIdeaList((ideaList) => {
                 const socketSortedList = [newIdea, ...ideaList]
                 socketSortedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
+                toastIdeaAdded(newIdea)
                 return socketSortedList
             })
         }
@@ -102,6 +68,7 @@ const BrightIdeas = (props) => {
                 const socketSortedList = updatedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
                 return socketSortedList
             })
+            toastIdeaFav(updatedIdea)
         }
         //Event handler for 'ideaUnfavorited' event
         const handleIdeaUnfavorited = (updatedIdea) => {
@@ -115,24 +82,26 @@ const BrightIdeas = (props) => {
                 const socketSortedList = updatedList.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
                 return socketSortedList
             })
+            toastIdeaUnfav(updatedIdea)
         }
         //Event handler for 'ideaDeleted' event
         const handleIdeaDeleted = (deletedIdea) => {
             setIdeaList((ideaList) => ideaList.filter((idea) => idea._id !== deletedIdea._id))
+            toastIdeaDeleted(deletedIdea)
         }
 
         // Subscribe to events
         socket.on('ideaAdded', handleIdeaAdded)
+        socket.on('ideaDeleted', handleIdeaDeleted)
         socket.on('ideaFavorited', handleIdeaFavorited)
         socket.on('ideaUnfavorited', handleIdeaUnfavorited)
-        socket.on('ideaDeleted', handleIdeaDeleted)
 
         // Clean up the event listener on component unmount
         return () => {
             socket.off('ideaAdded', handleIdeaAdded)
+            socket.off('ideaDeleted', handleIdeaDeleted)
             socket.off('ideaFavorited', handleIdeaFavorited)
             socket.off('ideaUnfavorited', handleIdeaUnfavorited)
-            socket.off('ideaDeleted', handleIdeaDeleted)
         }
     }, [socket])
 
@@ -151,7 +120,7 @@ const BrightIdeas = (props) => {
                 const list = [newIdea, ...ideaList]
                 const sortedList = list.sort((a, b) => b?.favoritedBy?.length - a?.favoritedBy?.length)
                 setIdeaList(sortedList)
-                toastAdded()
+                toastIdeaAdded(res.data.idea, jwtdecode(cookieValue).name)
                 setOneIdea({
                     idea: "",
                 })
@@ -163,7 +132,7 @@ const BrightIdeas = (props) => {
             .catch(err => {
                 console.log(`submit errer`, err)
                 setErrors({
-                    idea: err.response.data.error.errors.idea,
+                    idea: err.response.data.error.errors?.idea,
                 })
                 console.log(errors)
             })
@@ -181,7 +150,7 @@ const BrightIdeas = (props) => {
                 })
                 setIdeaList(updatedIdeaList)
                 setCount(count + 1)
-                toastFav(idea.idea)
+                toastIdeaFav(idea, jwtdecode(cookieValue).name)
                 socket.emit('ideaFavorited', updatedIdea)
             })
             .catch(err => console.log(`FAV error`, err))
@@ -199,7 +168,7 @@ const BrightIdeas = (props) => {
                 })
                 setIdeaList(updatedIdeaList)
                 setCount(count + 1)
-                toastUnfav(idea.idea)
+                toastIdeaUnfav(idea, jwtdecode(cookieValue).name)
                 socket.emit('ideaUnfavorited', updatedIdea)
             })
             .catch(err => console.log(`UNfav error`, err))
@@ -209,7 +178,7 @@ const BrightIdeas = (props) => {
         axios.delete(`http://localhost:8000/api/ideas/${idea._id}`)
             .then(res => {
                 setCount(count + 1)
-                toastDelete(idea.idea)
+                toastIdeaDeleted(idea, jwtdecode(cookieValue).name)
                 socket.emit('ideaDeleted', idea)
 
             })

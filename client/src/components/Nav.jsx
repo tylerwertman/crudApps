@@ -3,10 +3,14 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import jwtdecode from 'jwt-decode'
 import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
+
 
 const Nav = (props) => {
     const { cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, darkMode, setDarkMode } = props
     const navigate = useNavigate()
+    const toastDarkMode = () => toast.success(darkMode ? '☀️ Dark mode disabled' : '🌙 Dark mode enabled')
+    const toastLogout = () => toast.success('Goodbye!')
 
     useEffect(() => {
         if (cookieValue) {
@@ -40,7 +44,7 @@ const Nav = (props) => {
         const updatedDarkMode = !darkMode
         setDarkMode(updatedDarkMode)
         Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 })
-
+        toastDarkMode()
         //fade background
 
         if (!updatedDarkMode) document.body.classList.add('change')
@@ -55,7 +59,7 @@ const Nav = (props) => {
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
             .then(res => {
-                // console.log(res.data)
+                toastLogout()
                 navigate('/')
                 setWelcome("Guest")
                 setLoggedIn(false)

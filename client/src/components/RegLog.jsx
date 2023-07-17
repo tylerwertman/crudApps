@@ -4,6 +4,7 @@ import axios from 'axios'
 import CookiePopup from './CookiePopup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import { toast } from 'react-toastify'
 
 const Reglog = (props) => {
     const { setLoggedIn, count, setCount, darkMode } = props
@@ -25,6 +26,27 @@ const Reglog = (props) => {
         email: "",
         password: ""
     })
+    const toastLog = (user) => toast.success(`${user.displayName} logged in`, {
+        position: "bottom-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light"
+    })
+    const toastReg = (user) => toast.success(`${user.displayName} registered`, {
+        position: "bottom-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light"
+    })
+
     const regChange = (e) => {
         setUserInfoReg({
             ...userInfoReg,
@@ -49,7 +71,7 @@ const Reglog = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/register', userInfoReg, { withCredentials: true })
             .then(res => {
-                // console.log(res)
+                toastReg(userInfoReg)
                 setCount(count + 1) //update nav username & logout button
                 navigate('/landing')
                 setLoggedIn(true)
@@ -68,6 +90,7 @@ const Reglog = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/login', userInfoLog, { withCredentials: true })
             .then(res => {
+                toastLog(userInfoLog)
                 setCount(count + 1) //update nav username & logout button
                 navigate('/landing')
                 setLoggedIn(true)

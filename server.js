@@ -44,11 +44,26 @@ io.on('connection', (socket) => {
         console.log('Book Deleted:', deletedBook)
         socket.broadcast.emit('bookDeleted', deletedBook)
     })
+    // Handle 'bookFavorited' event
+    socket.on('bookFavorited', (favoritedBook) => {
+        console.log('Book Favorited:', favoritedBook)
+        socket.broadcast.emit('bookFavorited', favoritedBook)
+    })
+    // Handle 'bookUnfavorited' event
+    socket.on('bookUnfavorited', (unfavoritedBook) => {
+        console.log('Book Unfavorited:', unfavoritedBook)
+        socket.broadcast.emit('bookUnfavorited', unfavoritedBook)
+    })
 
     // Handle 'ideaAdded' event
     socket.on('ideaAdded', (newIdea) => {
         console.log('Idea added:', newIdea)
         socket.broadcast.emit('ideaAdded', newIdea)
+    })
+    // Handle 'ideaDeleted' event
+    socket.on('ideaDeleted', (deletedIdea) => {
+        console.log('Idea Deleted:', deletedIdea)
+        socket.broadcast.emit('ideaDeleted', deletedIdea)
     })
     // Handle 'ideaFavorited' event
     socket.on('ideaFavorited', (updatedIdea) => {
@@ -59,11 +74,6 @@ io.on('connection', (socket) => {
     socket.on('ideaUnfavorited', (updatedIdea) => {
         console.log('Idea Unfavorited:', updatedIdea)
         socket.broadcast.emit('ideaUnfavorited', updatedIdea)
-    })
-    // Handle 'ideaDeleted' event
-    socket.on('ideaDeleted', (deletedIdea) => {
-        console.log('Idea Deleted:', deletedIdea)
-        socket.broadcast.emit('ideaDeleted', deletedIdea)
     })
 
     // Handle disconnection

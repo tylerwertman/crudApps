@@ -12,6 +12,9 @@ const IdeaSchema = new mongoose.Schema({
         ref: "User",
         required: [true, "Added-By field is required"]
     },
+    addedByString: {
+        type: String
+    },
     favoritedBy: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
