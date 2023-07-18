@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import withAuth2 from './WithAuth2'
+import withAuth2 from '../WithAuth2'
 import { toast } from 'react-toastify'
 import jwtdecode from 'jwt-decode'
 import Cookies from 'js-cookie'
