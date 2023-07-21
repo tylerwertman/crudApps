@@ -1,12 +1,16 @@
-import React from 'react'
-const Footer = (props) => {
-    const { darkMode } = props
+import React from "react";
+import { useAppContext } from "../context/main";
 
-    return (
-        <footer className={darkMode ? "footerDark mt-5" : "footerLight mt-5"}>
-            <a href="https://tylerw.xyz">© 2023 Tyler Wertman Developments</a>
-        </footer>
-    )
-}
+const Footer = () => {
+  const { mode } = useAppContext;
 
-export default Footer
+  return (
+    <footer
+      className={mode === "dark" ? "footerDark mt-5" : "footerLight mt-5"}
+    >
+      <a href="https://tylerw.xyz">© 2023 Tyler Wertman Developments</a>
+    </footer>
+  );
+};
+
+export default Footer;
