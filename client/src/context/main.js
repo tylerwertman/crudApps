@@ -15,7 +15,6 @@ export const AppProvider = ({ children }) => {
   const [user, setUser] = React.useState();
 
   const toggleMode = () => {
-    console.log("toggleMode");
     const newMode = mode === "light" ? "dark" : "light";
     setMode(newMode);
     localStorage.setItem("mode", newMode);
