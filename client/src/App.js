@@ -1,5 +1,5 @@
 import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -8,20 +8,21 @@ import jwtdecode from 'jwt-decode'
 // import axios from 'axios'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
-import RegLog from './components/user/RegLog'
-import LandingPage from './components/structural/LandingPage'
-import NotFound from './component/NotFound'
+import Register from './components/user/Register'
+import LandingPage from './components/LandingPage'
+import NotFound from './components/NotFound'
 import BookClub from './components/bookClub/BookClub'
 import BrightIdeas from './components/brightIdeas/BrightIdeas'
 import UserDetail from './components/user/UserDetail'
-import BookDetail from './components/BookDetail'
-import IdeaDetail from './components/IdeaDetail'
+import BookDetail from './components/bookClub/BookDetail'
+import IdeaDetail from './components/brightIdeas/IdeaDetail'
 import EditUser from './components/user/EditUser'
 import EditBook from './components/bookClub/EditBook'
 // import EditIdea from './components/EditIdea'
-import PizzaTime from './components/PizzaTime'
-import PizzaCreate from './components/PizzaCreate'
+import PizzaTime from './components/pizzaTime/PizzaTime'
+import PizzaCreate from './components/pizzaTime/PizzaCreate'
 import PizzaCart from './components/pizzaTime/PizzaCart'
+import Login from './components/user/Login'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -31,6 +32,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(false)
   const [cookieValue, setCookieValue] = useState(Cookies.get('userToken'))
   const [order, setOrder] = useState(Cookies.get('order'))
+  
   useEffect(() => {
     setCookieValue(Cookies.get('userToken'))
     setCount(count + 1)
@@ -48,28 +50,30 @@ function App() {
 
 
   return (
-    <div className={darkMode ? "AppDark" : "AppLight"}>
-      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode} />
-      <ToastContainer transition={Slide} position="bottom-right" autoClose={2500} hideProgressBar= {false} closeOnClick= {true} pauseOnHover= {true} draggable= {true} progress= {undefined} theme= {darkMode ? "dark" : "light"}
-      />
-      <Routes>
-        <Route path="/" element={<RegLog setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} />} />
-        <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
-        <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} cookieValue={cookieValue} />} />
-        <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} cookieValue={cookieValue}/>} />
-        <Route path="/pizzaTime" element={<PizzaTime count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
-        <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode} cookieValue={cookieValue} />} />
-        <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode} />} />
-        <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode} />} />
-        <Route path="/pizzaTime/create" element={<PizzaCreate darkMode={darkMode} setOrder={setOrder} />} />
-        <Route path="/pizzaTime/cart" element={<PizzaCart darkMode={darkMode} order={order} />} />
-        <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} setWelcome={setWelcome} />} />
-        <Route path="/books/:id/edit" element={<EditBook />} />
-        {/* <Route path="/ideas/:id/edit" element={<EditIdea />} /> */}
-        <Route path="*" element={<NotFound darkMode={darkMode} />} />
-      </Routes>
-      <Footer darkMode={darkMode} />
-    </div>
+    <BrowserRouter>
+      <div className={darkMode ? "AppDark" : "AppLight"}>
+        <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode} />
+        <ToastContainer transition={Slide} position="bottom-right" autoClose={2500} hideProgressBar={false} closeOnClick={true} pauseOnHover={true} draggable={true} progress={undefined} theme={darkMode ? "dark" : "light"} />
+        <Routes>
+          <Route path="/" element={<Register setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} />} />
+          <Route path="/login" element={<Login setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} />} />
+          <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
+          <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} cookieValue={cookieValue} />} />
+          <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} cookieValue={cookieValue} />} />
+          <Route path="/pizzaTime" element={<PizzaTime count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome} />} />
+          <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setLoggedIn={setLoggedIn} darkMode={darkMode} cookieValue={cookieValue} />} />
+          <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode} />} />
+          <Route path="/ideas/:id" element={<IdeaDetail welcome={welcome} user={user} darkMode={darkMode} />} />
+          <Route path="/pizzaTime/create" element={<PizzaCreate darkMode={darkMode} setOrder={setOrder} />} />
+          <Route path="/pizzaTime/cart" element={<PizzaCart darkMode={darkMode} order={order} />} />
+          <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} setWelcome={setWelcome} />} />
+          <Route path="/books/:id/edit" element={<EditBook />} />
+          {/* <Route path="/ideas/:id/edit" element={<EditIdea />} /> */}
+          <Route path="*" element={<NotFound darkMode={darkMode} />} />
+        </Routes>
+        <Footer darkMode={darkMode} />
+      </div>
+    </BrowserRouter>
   )
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import withAuth from '../WithAuth'
+import withAuth from './WithAuth'
 
 const LandingPage = (props) => {
     const { darkMode } = props

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import withAuth from './WithAuth'
+import WithAuth from '../WithAuth'
 import { toast } from 'react-toastify'
 
 
@@ -122,4 +122,4 @@ const BookDetail = (props) => {
     )
 }
 
-export default withAuth(BookDetail)
+export default WithAuth(BookDetail)

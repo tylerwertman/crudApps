@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
-import withAuth from '../WithAuth'
+import WithAuth from '../WithAuth'
 import { toast } from 'react-toastify'
 import jwtdecode from 'jwt-decode'
 
@@ -336,4 +336,4 @@ const BrightIdeas = (props) => {
     )
 }
 
-export default withAuth(BrightIdeas)
+export default WithAuth(BrightIdeas)

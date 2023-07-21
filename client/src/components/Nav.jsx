@@ -18,7 +18,7 @@ const Nav = (props) => {
             setWelcome(jwtdecode(cookieValue).name + " (@" + jwtdecode(cookieValue).displayName + ")")
         }
         // eslint-disable-next-line
-    }, [])
+    }, [loggedIn])
 
     useEffect(() => {
         const darkModeCookie = Cookies.get('darkMode')
@@ -34,7 +34,7 @@ const Nav = (props) => {
         // if (darkModeCookie === "true") document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%, rgb(74, 110, 88) 0.3%, rgba(30, 33, 48, 1) 90.2%)"
         // else if(darkModeCookie === "purple") document.body.style.backgroundImage = "radial-gradient( circle 922px at 98.1% 95%,  rgba(141,102,155,1) 0%, rgba(92,41,143,1) 100.2% )"
         // else document.body.style.backgroundImage = "radial-gradient(circle 2759px at -6.7% 50%, rgba(80, 131, 73, 1) 0%, rgba(140, 209, 131, 1) 26.2%, rgba(178, 231, 170, 1) 50.6%, rgba(144, 213, 135, 1) 74.1%, rgba(75, 118, 69, 1) 100.3%)"
-        
+
         //https://gradienthunt.com/gradient/3877
 
         // eslint-disable-next-line
@@ -63,7 +63,9 @@ const Nav = (props) => {
                 navigate('/')
                 setWelcome("Guest")
                 setLoggedIn(false)
-                setUser()
+                setUser(null)
+                // navigate(0)
+                // window.location.reload()
             })
             .catch(err => console.log(err))
         console.log("logging out")
@@ -87,17 +89,15 @@ const Nav = (props) => {
     return (
         <nav className={darkMode ? "navDark" : "navLight"}>
             <div>
-                <h1 style={{ display: 'inline' }} onClick={(navHome)}>CRUD Apps</h1>
+                <h1 style={{ display: 'inline' }} onClick={navHome}>CRUD Apps</h1>
                 <br className='MQHide' />
                 {
-                    welcome !== "Guest" ?
+                    (welcome !== "Guest") ?
                         <span onClick={() => navToUser()}><h4 style={{ display: 'inline' }}>Welcome, {welcome}</h4></span> :
                         <h4 style={{ display: 'inline' }}>Welcome, Guest</h4>
                 }
             </div>
             <div>
-                {/* <button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={clearIdeas}>Clear Ideas</button>&nbsp;&nbsp; */}
-
                 {
                     (welcome !== "Guest") ?
                         // (loggedIn) ?

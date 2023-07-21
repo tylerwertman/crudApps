@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
-import CookiePopup from '../structural/CookiePopup'
+import CookiePopup from '../CookiePopup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify'
 
-const Reglog = (props) => {
+const Register = (props) => {
     const { setLoggedIn, count, setCount, darkMode } = props
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
     const [passwordIsVisible, setPasswordIsVisible] = useState({
         reg: false,
-        log: false,
         confirm: false
     })
     const [userInfoReg, setUserInfoReg] = useState({
@@ -22,40 +21,11 @@ const Reglog = (props) => {
         password: "",
         confirmPassword: ""
     })
-    const [userInfoLog, setUserInfoLog] = useState({
-        email: "",
-        password: ""
-    })
-    const toastLog = (user) => toast.success(`${user.displayName} logged in`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastReg = (user) => toast.success(`${user.displayName} registered`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastReg = (user) => toast.success(`${user.displayName} registered`)
 
     const regChange = (e) => {
         setUserInfoReg({
             ...userInfoReg,
-            [e.target.name]: e.target.value
-        })
-    }
-    const logChange = (e) => {
-        setUserInfoLog({
-            ...userInfoLog,
             [e.target.name]: e.target.value
         })
     }
@@ -86,32 +56,13 @@ const Reglog = (props) => {
             })
     }
 
-    const logSubmit = (e) => {
-        e.preventDefault()
-        axios.post('http://localhost:8000/api/users/login', userInfoLog, { withCredentials: true })
-            .then(res => {
-                toastLog(userInfoLog)
-                setCount(count + 1) //update nav username & logout button
-                navigate('/landing')
-                setLoggedIn(true)
-                window.location.reload()
-            })
-            .catch(err => {
-                console.log(`login errer`, err)
-                setErrors({
-                    logErr: err.response?.data?.logErrMsg
-                })
-            })
-    }
 
     return (
-        <div className='row col-lg-6 mx-auto mt-5'>
-            <br />
+        <div className='row col-md-6 mx-auto mt-5'>
             <CookiePopup darkMode={darkMode} />
-
             <div className='col'>
+                <h3>Register</h3>
                 <form className="regLog" onSubmit={regSubmit}>
-                    <h3>Register</h3>
                     <div className="form-group">
                         <label className='form-label'>Name</label>
                         {errors?.regErr?.errors?.name ? <p className="text-danger">{errors?.regErr.errors.name.message}</p> : null}
@@ -160,41 +111,13 @@ const Reglog = (props) => {
                         </div>
                     </div>
                     <div className="form-group">
-                        <button type="submit" className='btn btn-success mt-3'>Register</button>
+                        <button type="submit" className='btn btn-success mt-3 mb-3'>Register</button>
                     </div>
-                </form>
-            </div>
-            <div className='col'>
-                <form className="regLog" onSubmit={logSubmit}>
-                    <h3>Login</h3>
-                    {errors.logErr ? <p className="text-danger">{errors.logErr}</p> : null}
-                    <div className="form-group">
-                        <label className='form-label'>Email</label>
-                        <input type="email" className="form-control" name="email" value={userInfoLog.email} onChange={logChange} />
-                    </div>
-                    <div>
-                        <label className='form-label'>Password</label>
-                        {errors?.logErr?.errors?.password ? <p className="text-danger">{errors?.logErr.errors.password.message}</p> : null}
-                        <div className="input-group mb-3">
-                            <input type={passwordIsVisible.log ? "text" : "password"} className="form-control" name="password" value={userInfoLog.password} onChange={logChange} />
-                            <span className="input-group-text">
-                                {
-                                    passwordIsVisible.log ?
-                                        <FontAwesomeIcon icon={faEye} style={{ color: "lightgrey" }} name="log" onClick={() => passwordToggle("log")} />
-                                        :
-                                        <FontAwesomeIcon icon={faEyeSlash} style={{ color: "lightgrey" }} name="log" onClick={() => passwordToggle("log")} />
-
-                                }
-                            </span>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <button type="submit" className='btn btn-success mt-3'>Login</button>
-                    </div>
+                    <Link to="/login">Already have an account?</Link>
                 </form>
             </div>
         </div>
     )
 }
 
-export default Reglog
+export default Register

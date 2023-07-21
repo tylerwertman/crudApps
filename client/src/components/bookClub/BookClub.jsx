@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
-import withAuth from '../WithAuth'
+import WithAuth from '../WithAuth'
 import { toast } from 'react-toastify'
 import jwtdecode from 'jwt-decode'
 
@@ -272,4 +272,4 @@ const BookClub = (props) => {
     )
 }
 
-export default withAuth(BookClub)
+export default WithAuth(BookClub)

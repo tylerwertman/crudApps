@@ -20,7 +20,7 @@ require("./server/routes/upload.routes")(app)
 
 app.use(express.static("./server/public"))
 
-const server = app.listen(port, () => console.log(`Listening on port: port`))
+const server = app.listen(port, () => console.log(`Listening on port: ${port}`))
 
 const io = socket(server, {
     cors: {
