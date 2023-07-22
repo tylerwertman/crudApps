@@ -26,7 +26,7 @@ import PizzaCart from './components/PizzaTime/PizzaCart'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [user, setUser] = useState(jwtdecode(Cookies.get('userToken')))
+  const [user, setUser] = useState(null)
   const [cookieValue, setCookieValue] = useState(Cookies.get('userToken'))
   const [previousLocation, setPreviousLocation] = useState(null)
   const [darkMode, setDarkMode] = useState(false)
@@ -34,7 +34,7 @@ function App() {
 
   useEffect(() => {
     setCookieValue(Cookies.get('userToken'))
-    // if (cookieValue) setUser(jwtdecode(cookieValue))
+    if (cookieValue) setUser(jwtdecode(cookieValue))
     if (Cookies.get('darkMode') === undefined) Cookies.set('darkMode', false.toString(), { expires: 7 })
     // eslint-disable-next-line
   }, [user])
