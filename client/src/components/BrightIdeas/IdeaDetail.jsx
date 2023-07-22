@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import withAuth from './WithAuth'
+import withAuth from '../WithAuth'
 import { toast } from 'react-toastify'
 
 
