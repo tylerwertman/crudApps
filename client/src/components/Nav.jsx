@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
 
 const Nav = (props) => {
     const { user, setUser, setCount, count, darkMode, setDarkMode } = props
     const navigate = useNavigate()
+    const toastLogOut = () => toast.error(`Goodbye, ${user.name}`)
 
     useEffect(() => {
         const darkModeCookie = Cookies.get('darkMode')
@@ -48,7 +50,8 @@ const Nav = (props) => {
             .then(res => {
                 // console.log(res.data)
                 navigate('/')
-                setUser()
+                setUser(null)
+                toastLogOut()
             })
             .catch(err => console.log(err))
         console.log("logging out")
@@ -65,7 +68,8 @@ const Nav = (props) => {
     }
 
     const navToUser = () => {
-        navigate(`/users/${user?._id}`)
+        console.log(user)
+        if (user) navigate(`/users/${user?._id}`)
         setCount(count + 1)
     }
 

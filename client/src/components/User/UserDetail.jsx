@@ -7,7 +7,7 @@ import jwtdecode from 'jwt-decode'
 
 const UserDetail = (props) => {
     const { id } = useParams()
-    const { count, user, darkMode, cookieValue } = props
+    const { count, user, setUser, darkMode, cookieValue } = props
     const navigate = useNavigate()
     const [showDeletePopup, setShowDeletePopup] = useState(false)
     const [oneUser, setOneUser] = useState({})
@@ -44,6 +44,7 @@ const UserDetail = (props) => {
                 axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
                     .then(res => {
                         console.log("deleted account")
+                        setUser(null)
                     })
                     .catch(err => console.log(err))
                 console.log("Deleting account & logging out")
@@ -112,8 +113,8 @@ const UserDetail = (props) => {
                                     : null
                 }
             </div>
-            {id === jwtdecode(cookieValue)._id ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
-            &nbsp;&nbsp;{id === jwtdecode(cookieValue)._id ? <button className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null}
+            {id === user?._id ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
+            &nbsp;&nbsp;{id === user?._id ? <button className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null}
             <br /><br /><br />
         </div>
     )

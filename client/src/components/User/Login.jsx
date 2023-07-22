@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import CookiePopup from '../CookiePopup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import Cookies from 'js-cookie'
+import jwtdecode from 'jwt-decode'
 
 const Login = (props) => {
-    const { count, setCount, darkMode } = props
+    const { setUser, cookieValue, count, setCount, darkMode, setPreviousLocation } = props
     const navigate = useNavigate()
+    const location = useLocation()
     const [errors, setErrors] = useState({})
     const [passwordIsVisible, setPasswordIsVisible] = useState({
         log: false,
@@ -38,7 +41,9 @@ const Login = (props) => {
             .then(res => {
                 setCount(count + 1) //update nav username & logout button
                 navigate('/landing')
-                window.location.reload()
+                setPreviousLocation(location)
+                setUser(jwtdecode(Cookies.get('userToken')))
+                // window.location.reload()
             })
             .catch(err => {
                 console.log(`login errer`, err)
@@ -67,8 +72,7 @@ const Login = (props) => {
                         <span className="input-group-text">
                             {
                                 passwordIsVisible.log ?
-                                    <FontAwesomeIcon icon={faEye} style={{ color: "lightgrey" }} name="log" onClick={() => passwordToggle("log")} />
-                                    :
+                                    <FontAwesomeIcon icon={faEye} style={{ color: "lightgrey" }} name="log" onClick={() => passwordToggle("log")} /> :
                                     <FontAwesomeIcon icon={faEyeSlash} style={{ color: "lightgrey" }} name="log" onClick={() => passwordToggle("log")} />
                             }
                         </span>

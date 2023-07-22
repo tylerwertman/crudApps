@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import withAuth from './WithAuth'
+import { toast } from 'react-toastify'
 
 const LandingPage = (props) => {
-    const { darkMode } = props
+    const { user, darkMode, previousLocation } = props
+    const toastReg = () => toast.success(`Thank you for registering, ${user?.name}!`, {toastId: 1})
+    const toastLogIn = () => toast.success(`Welcome back, ${user?.name}`, {toastId: 1})
+
+    useEffect(() => {
+        console.log(previousLocation)
+        if (previousLocation?.pathname === "/") {
+            toastReg()
+        } else if (previousLocation?.pathname === "/login") {
+            toastLogIn()
+        }
+    })
 
     return (
         <div className='mt-5'>
