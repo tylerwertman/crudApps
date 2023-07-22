@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import withAuth2 from './WithAuth2'
+import withAuth2 from '../WithAuth2'
 import { toast } from 'react-toastify'
 import jwtdecode from 'jwt-decode'
 import Cookies from 'js-cookie'
 
 const EditUser = (props) => {
-    const { darkMode, setWelcome, cookieValue, setCount, count, setCookieValue} = props
+    const { darkMode, cookieValue, setCount, count, setCookieValue} = props
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneUser, setOneUser] = useState({})
@@ -90,10 +90,6 @@ const EditUser = (props) => {
             axios.patch(`http://localhost:8000/api/users/${id}/info`, userInfoEdit, { headers: { 'Authorization': `${cookieValue}` } })
                 .then(res => {
                     navigate(`/users/${id}`)
-                    if(userInfoEdit.name || userInfoEdit.displayName){
-                        setWelcome(oneUser.name + " (@" + oneUser.displayName + ")")
-                    }
-                    // setWelcome(jwtdecode(cookieValue).name + " (@" + jwtdecode(cookieValue).displayName + ")")
                     setCount(count + 1)
                     toastEdit()
                 })

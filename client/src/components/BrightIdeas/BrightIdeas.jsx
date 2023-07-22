@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 
 const BrightIdeas = (props) => {
-    const { count, setCount, user, welcome, darkMode } = props
+    const { count, setCount, user, darkMode } = props
     const [socket] = useState(() => io(':8000'))
     const [ideaList, setIdeaList] = useState([])
     const [oneIdea, setOneIdea] = useState({ idea: "" })
@@ -343,7 +343,7 @@ const BrightIdeas = (props) => {
                                                 <><button className="btn btn-success" onClick={() => favoriteIdea(idea)}>★</button>&nbsp;</>
                                 }
                                 { // delete if logged in user or 'admin' email user
-                                    (welcome === (`${idea?.addedBy?.name} (@${idea?.addedBy?.displayName})`) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-dark"} onClick={() => removeIdea(idea)}>🅧</button>&nbsp;&nbsp;</> : null
+                                    (user.displayName === idea?.addedBy?.displayName || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-dark"} onClick={() => removeIdea(idea)}>🅧</button>&nbsp;&nbsp;</> : null
                                 }
                             </div>
                         )

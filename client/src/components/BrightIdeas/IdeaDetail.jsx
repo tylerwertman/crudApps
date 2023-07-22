@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 
 const IdeaDetail = (props) => {
-    const { welcome, user, darkMode } = props
+    const { user, darkMode } = props
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneIdea, setOneIdea] = useState({})
@@ -106,10 +106,10 @@ const IdeaDetail = (props) => {
                     : <><button className="btn btn-success" onClick={favoriteIdea}>Favorite Idea</button>&nbsp;&nbsp;</>
             }
             { // edit
-                // (welcome === (oneIdea.addedBy?.name + " (@" + oneIdea.addedBy?.displayName) + ")") ? <><button className='btn btn-warning' onClick={editIdea}>Edit Idea</button>&nbsp;&nbsp;</> : null
+                // (user.displayName === oneIdea.addedBy?.displayName || user?.email === "t@w.com") ? <><button className='btn btn-warning' onClick={editIdea}>Edit Idea</button>&nbsp;&nbsp;</> : null
             }
             { // delete
-                (welcome === (oneIdea.addedBy?.name + " (@" + oneIdea.addedBy?.displayName + ")") || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={removeIdea}>Delete Idea</button>&nbsp;&nbsp;</> : null
+                (user.displayName === oneIdea.addedBy?.displayName || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={removeIdea}>Delete Idea</button>&nbsp;&nbsp;</> : null
             }
             <div className='col-6'>
 

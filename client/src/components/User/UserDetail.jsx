@@ -7,7 +7,7 @@ import jwtdecode from 'jwt-decode'
 
 const UserDetail = (props) => {
     const { id } = useParams()
-    const { setWelcome, count, user, setLoggedIn, darkMode, cookieValue } = props
+    const { count, user, darkMode, cookieValue } = props
     const navigate = useNavigate()
     const [showDeletePopup, setShowDeletePopup] = useState(false)
     const [oneUser, setOneUser] = useState({})
@@ -41,10 +41,9 @@ const UserDetail = (props) => {
         axios.delete(`http://localhost:8000/api/users/${id}`)
             .then(res => {
                 navigate("/")
-                setWelcome("Guest")
                 axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
                     .then(res => {
-                        setLoggedIn(false)
+                        console.log("deleted account")
                     })
                     .catch(err => console.log(err))
                 console.log("Deleting account & logging out")

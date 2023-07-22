@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 
 const BookClub = (props) => {
-    const { count, setCount, user, welcome, darkMode } = props
+    const { count, setCount, user, darkMode } = props
     const [socket] = useState(() => io(':8000'))
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({ title: "", author: "" })
@@ -261,7 +261,7 @@ const BookClub = (props) => {
                                                     : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>★</button></>
                                             }
                                             { // delete if logged in user or 'admin' email user
-                                                (welcome === (currentItems[index]?.addedBy?.name + " (@" + currentItems[index]?.addedBy?.displayName + ")") || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button></> : null
+                                                (user.displayName === currentItems[index]?.addedBy?.displayName || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button></> : null
                                             }
                                         </td> : null}
                                     </tr>

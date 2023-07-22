@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 
 const BookDetail = (props) => {
-    const { welcome, user, darkMode } = props
+    const { user, darkMode } = props
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneBook, setOneBook] = useState({})
@@ -99,10 +99,10 @@ const BookDetail = (props) => {
                     : <><button className="btn btn-success" onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
             }
             { // edit
-                (welcome === (oneBook?.addedBy?.name + " (@" + oneBook?.addedBy?.displayName + ")")) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
+                user.displayName === oneBook?.addedBy?.displayName ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
             }
             { // delete
-                (welcome === (oneBook?.addedBy?.name + " (@" + oneBook?.addedBy?.displayName + ")") || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
+                user.displayName === oneBook?.addedBy?.displayName || user?.email === "t@w.com" ? <><button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
             }
 
             <br />

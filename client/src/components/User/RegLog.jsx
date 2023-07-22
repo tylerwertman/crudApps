@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 const Reglog = (props) => {
-    const { setLoggedIn, count, setCount, darkMode } = props
+    const { count, setCount, darkMode } = props
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
     const [passwordIsVisible, setPasswordIsVisible] = useState({
@@ -52,7 +52,6 @@ const Reglog = (props) => {
                 // console.log(res)
                 setCount(count + 1) //update nav username & logout button
                 navigate('/landing')
-                setLoggedIn(true)
                 window.location.reload()
 
             })
@@ -70,7 +69,6 @@ const Reglog = (props) => {
             .then(res => {
                 setCount(count + 1) //update nav username & logout button
                 navigate('/landing')
-                setLoggedIn(true)
                 window.location.reload()
             })
             .catch(err => {
