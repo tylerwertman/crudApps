@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import jwtdecode from 'jwt-decode'
 import Cookies from 'js-cookie'
 
 const Nav = (props) => {
-    const { cookieValue, user, setUser, setCount, count, darkMode, setDarkMode } = props
+    const { user, setUser, setCount, count, darkMode, setDarkMode } = props
     const navigate = useNavigate()
 
     useEffect(() => {

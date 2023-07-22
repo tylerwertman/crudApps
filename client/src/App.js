@@ -8,16 +8,17 @@ import jwtdecode from 'jwt-decode'
 // import axios from 'axios'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
-import RegLog from './components/User/RegLog'
+import Login from './components/User/Login'
+import Register from './components/User/Register'
 import LandingPage from './components/LandingPage'
 import NotFound from './components/NotFound'
-import BookClub from './components/BookClub/BookClub'
-import BrightIdeas from './components/BrightIdeas/BrightIdeas'
 import UserDetail from './components/User/UserDetail'
-import BookDetail from './components/BookClub/BookDetail'
-import IdeaDetail from './components/BrightIdeas/IdeaDetail'
 import EditUser from './components/User/EditUser'
+import BookClub from './components/BookClub/BookClub'
+import BookDetail from './components/BookClub/BookDetail'
 import EditBook from './components/BookClub/EditBook'
+import BrightIdeas from './components/BrightIdeas/BrightIdeas'
+import IdeaDetail from './components/BrightIdeas/IdeaDetail'
 // import EditIdea from './components/EditIdea'
 import PizzaTime from './components/PizzaTime/PizzaTime'
 import PizzaCreate from './components/PizzaTime/PizzaCreate'
@@ -44,7 +45,8 @@ function App() {
       <Nav cookieValue={cookieValue} user={user} setUser={setUser} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode} />
       <ToastContainer transition={Slide} />
       <Routes>
-        <Route path="/" element={<RegLog count={count} setCount={setCount} darkMode={darkMode} />} />
+        <Route path="/" element={<Register count={count} setCount={setCount} darkMode={darkMode} />} />
+        <Route path="/login" element={<Login count={count} setCount={setCount} darkMode={darkMode} />} />
         <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} darkMode={darkMode} />} />
         <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} />} />
         <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} />} />
