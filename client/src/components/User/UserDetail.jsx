@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import withAuth from '../WithAuth'
-import jwtdecode from 'jwt-decode'
+// import jwtdecode from 'jwt-decode'
 
 
 const UserDetail = (props) => {
     const { id } = useParams()
-    const { count, user, setUser, darkMode, cookieValue } = props
+    const { count, user, setUser, darkMode } = props
     const navigate = useNavigate()
     const [showDeletePopup, setShowDeletePopup] = useState(false)
     const [oneUser, setOneUser] = useState({})

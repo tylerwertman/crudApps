@@ -8,7 +8,7 @@ import Cookies from 'js-cookie'
 import jwtdecode from 'jwt-decode'
 
 const Register = (props) => {
-    const { setUser, cookieValue, count, setCount, darkMode, setPreviousLocation} = props
+    const { setUser, darkMode, setPreviousLocation} = props
     const navigate = useNavigate()
     const location = useLocation()
     const [errors, setErrors] = useState({})
@@ -42,13 +42,9 @@ const Register = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/register', userInfoReg, { withCredentials: true })
             .then(res => {
-                // console.log(res)
-                setCount(count + 1) //update nav username & logout button
                 navigate('/landing')
                 setPreviousLocation(location)
                 setUser(jwtdecode(Cookies.get('userToken')))
-                // window.location.reload()
-
             })
             .catch(err => {
                 console.log(`reg errer`, err)

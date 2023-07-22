@@ -46,10 +46,10 @@ function App() {
       <Nav cookieValue={cookieValue} user={user} setUser={setUser} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode} />
       <ToastContainer transition={Slide} position={"bottom-right"} autoClose={2500} hideProgressBar={false} closeOnClick= {true} pauseOnHover={true} draggable={true} progress={undefined} theme={darkMode ? "dark" : "light"}/>
       <Routes>
-        <Route path="/" element={<Register setUser={setUser} cookieValue={cookieValue} count={count} setCount={setCount} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
-        <Route path="/login" element={<Login setUser={setUser} cookieValue={cookieValue} count={count} setCount={setCount} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
+        <Route path="/" element={<Register setUser={setUser} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
+        <Route path="/login" element={<Login setUser={setUser} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
         <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} previousLocation={previousLocation} darkMode={darkMode} />} />
-        <Route path="/users/:id" element={<UserDetail user={user} setUser={setUser} count={count} darkMode={darkMode} cookieValue={cookieValue} />} />
+        <Route path="/users/:id" element={<UserDetail user={user} setUser={setUser} count={count} darkMode={darkMode} />} />
         <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} />} />
         <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} />} />
         <Route path="/books/:id" element={<BookDetail user={user} darkMode={darkMode} />} />
