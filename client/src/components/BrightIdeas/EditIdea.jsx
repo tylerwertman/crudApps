@@ -5,24 +5,14 @@ import withAuth from './WithAuth'
 import { toast } from 'react-toastify'
 
 
-const EditIdea = (props) => {
-    const { darkMode } = props
+const EditIdea = () => {
 
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneIdea, setOneIdea] = useState({})
     const [errors, setErrors] = useState({})
 
-    const toastEdit = () => toast.success(`✏️ You edited ${oneIdea.idea}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastEdit = () => toast.success(`✏️ You edited ${oneIdea.idea}`, {toastId: 1})
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/ideas/${id}`)

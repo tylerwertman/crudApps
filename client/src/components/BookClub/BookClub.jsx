@@ -16,46 +16,10 @@ const BookClub = (props) => {
     const [sortDirection, setSortDirection] = useState('asc')
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [currentPage, setCurrentPage] = useState(1)
-    const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastFav = (id) => toast.success(`👍 You favorited ${id}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastUnfav = (id) => toast.error(`👎 You unfavorited ${id}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastDelete = (id) => toast.error(`🗑 You deleted ${id}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`)
+    const toastFav = (id) => toast.success(`👍 You favorited ${id}`)
+    const toastUnfav = (id) => toast.error(`👎 You unfavorited ${id}`)
+    const toastDelete = (id) => toast.error(`🗑 You deleted ${id}`)
 
     useEffect(() => {
         const handleResize = () => {

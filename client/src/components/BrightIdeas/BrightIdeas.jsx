@@ -17,46 +17,10 @@ const BrightIdeas = (props) => {
     const [searchQuery, setSearchQuery] = useState('')
     const [search, setSearch] = useState(false)
 
-    const toastAdded = () => toast.success(`➕ You added an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastFav = (id) => toast.success(`👍 You favorited an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastUnfav = (id) => toast.error(`👎 You unfavorited an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastDelete = (id) => toast.error(`🗑 You deleted an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastAdded = () => toast.success(`➕ You added an idea`)
+    const toastFav = (id) => toast.success(`👍 You favorited an idea`)
+    const toastUnfav = (id) => toast.error(`👎 You unfavorited an idea`)
+    const toastDelete = (id) => toast.error(`🗑 You deleted an idea`)
 
 // UE for tracking window size
     useEffect(() => {
