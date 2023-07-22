@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Cookies from 'js-cookie'
-import jwtdecode from 'jwt-decode'
+// import jwtdecode from 'jwt-decode'
 // import axios from 'axios'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
@@ -34,10 +34,10 @@ function App() {
 
   useEffect(() => {
     setCookieValue(Cookies.get('userToken'))
-    if (cookieValue) setUser(jwtdecode(cookieValue))
+    // if (cookieValue) setUser(jwtdecode(cookieValue))
     if (Cookies.get('darkMode') === undefined) Cookies.set('darkMode', false.toString(), { expires: 7 })
     // eslint-disable-next-line
-  }, [])
+  }, [user])
 
 
 
@@ -48,7 +48,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Register setUser={setUser} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
         <Route path="/login" element={<Login setUser={setUser} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
-        <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} previousLocation={previousLocation} darkMode={darkMode} />} />
+        <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} previousLocation={previousLocation} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
         <Route path="/users/:id" element={<UserDetail user={user} setUser={setUser} count={count} darkMode={darkMode} />} />
         <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} />} />
         <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} />} />

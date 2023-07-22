@@ -4,18 +4,23 @@ import withAuth from './WithAuth'
 import { toast } from 'react-toastify'
 
 const LandingPage = (props) => {
-    const { user, darkMode, previousLocation } = props
+    const { user, darkMode, previousLocation, setPreviousLocation } = props
     const toastReg = () => toast.success(`Thank you for registering, ${user?.name}!`, {toastId: 1})
-    const toastLogIn = () => toast.success(`Welcome back, ${user?.name}`, {toastId: 1})
+    const toastLogin = () => toast.success(`Welcome back, ${user?.name}`, {toastId: 1})
 
     useEffect(() => {
         console.log(previousLocation)
-        if (previousLocation?.pathname === "/") {
+        if (previousLocation?.pathname === "/login") {
+            toastLogin()
+            setPreviousLocation(null)
+        } else if (previousLocation?.pathname === "/") {
             toastReg()
-        } else if (previousLocation?.pathname === "/login") {
-            toastLogIn()
+            setPreviousLocation(null)
+        } else {
+            return
         }
-    })
+        //eslint-disable-next-line
+    }, [])
 
     return (
         <div className='mt-5'>
