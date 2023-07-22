@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Cookies from 'js-cookie'
-// import jwtdecode from 'jwt-decode'
+import jwtdecode from 'jwt-decode'
 // import axios from 'axios'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
@@ -26,7 +26,7 @@ import PizzaCart from './components/PizzaTime/PizzaCart'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(jwtdecode(Cookies.get('userToken')))
   const [cookieValue, setCookieValue] = useState(Cookies.get('userToken'))
   const [previousLocation, setPreviousLocation] = useState(null)
   const [darkMode, setDarkMode] = useState(false)
