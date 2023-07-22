@@ -307,7 +307,7 @@ const BrightIdeas = (props) => {
                                                 <><button className="btn btn-success" onClick={() => favoriteIdea(idea)}>★</button>&nbsp;</>
                                 }
                                 { // delete if logged in user or 'admin' email user
-                                    (user.displayName === idea?.addedBy?.displayName || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-dark"} onClick={() => removeIdea(idea)}>🅧</button>&nbsp;&nbsp;</> : null
+                                    (user?.displayName === idea?.addedBy?.displayName || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-dark"} onClick={() => removeIdea(idea)}>🅧</button>&nbsp;&nbsp;</> : null
                                 }
                             </div>
                         )

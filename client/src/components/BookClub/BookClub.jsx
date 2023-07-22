@@ -225,7 +225,7 @@ const BookClub = (props) => {
                                                     : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>★</button></>
                                             }
                                             { // delete if logged in user or 'admin' email user
-                                                (user.displayName === currentItems[index]?.addedBy?.displayName || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button></> : null
+                                                (user?.displayName === currentItems[index]?.addedBy?.displayName || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button></> : null
                                             }
                                         </td> : null}
                                     </tr>
