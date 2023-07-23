@@ -174,9 +174,8 @@ const BookClub = (props) => {
     }
 
     return (
-        <div>
-            <br />
-            <h1 className='mt-5'>Welcome to the Book Club</h1>
+        <div style={{marginTop:"0px", marginBottom:"30px"}}>
+            <h1>Welcome to the Book Club</h1>
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
                 <div>
                     <h4>Add a new book</h4>
@@ -200,14 +199,14 @@ const BookClub = (props) => {
                 </div>
                 <div>
                     <h4>All Books</h4>
-                    <table className='mx-auto mb-3' style={windowWidth < "500px" ? { width: "100%" } : null}>
+                    <table className='mx-auto mb-3' style={windowWidth < 500 ? { width: "280px" } : null}>
                         <thead>
                             <tr>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('title')}>Title {sortDirection === 'asc' && sortColumn === "title" ? "🔼" : sortDirection === 'desc' && sortColumn === "title" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('author')}>Author {sortDirection === 'asc' && sortColumn === "author" ? "🔼" : sortDirection === 'desc' && sortColumn === "author" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('addedBy')}>Added By {sortDirection === 'asc' && sortColumn === "addedBy" ? "🔼" : sortDirection === 'desc' && sortColumn === "addedBy" ? "🔽" : null}</th>
-                                <th className={darkMode ? "lightText" : null} onClick={() => handleSort('createdAt')}>Date Added {sortDirection === 'asc' && sortColumn === "createdAt" ? "🔼" : sortDirection === 'desc' && sortColumn === "createdAt" ? "🔽" : null}</th>
-                                {windowWidth > "420" ? <th className={darkMode ? "lightText" : null}>Actions</th> : null}
+                                {windowWidth > 420 ? <th className={darkMode ? "lightText" : null} onClick={() => handleSort('createdAt')}>Date Added {sortDirection === 'asc' && sortColumn === "createdAt" ? "🔼" : sortDirection === 'desc' && sortColumn === "createdAt" ? "🔽" : null}</th> : <></>}
+                                {windowWidth > 420 ? <th className={darkMode ? "lightText" : null}>Actions</th> : <></>}
                             </tr>
                         </thead>
                         <tbody>
@@ -217,8 +216,8 @@ const BookClub = (props) => {
                                         <td className={darkMode ? "lightText" : null}><><Link to={`/books/${book?._id}`}>{book?.title}</Link></></td>
                                         <td className={darkMode ? "lightText" : null}>{book.author}</td>
                                         <td className={darkMode ? "lightText" : null}>{book?.addedBy?._id ? <p className='mb-1'><img className="profilePicture" src={book.addedBy.profilePicture} alt="" style={{ width: "40px", height: "40px" }} /> <Link to={`/users/${book?.addedBy?._id}`}>@{book?.addedBy?.displayName}</Link></p> : <p>(Deleted User @{book?.addedByString})</p>}</td>
-                                        <td className={darkMode ? "lightText" : null}>{new Date(book.createdAt).toLocaleString()}</td>
-                                        {windowWidth > "420" ? <td className={darkMode ? "lightText" : null}>
+                                        {windowWidth > 420 ? <td className={darkMode ? "lightText" : null}>{new Date(book.createdAt).toLocaleString()}</td> : <></>}
+                                        {windowWidth > 420 ? <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
                                                 currentItems[index]?.favoritedBy?.some(bookObj => bookObj._id === user?._id)
                                                     ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button></>

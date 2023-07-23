@@ -334,9 +334,6 @@ table, th, td {
 
   table, th, td {
     font-size: 14px;
-    /* width: 100%; */
-    /* padding: 10px; */
-    /* margin: auto */
   }
 
   .tableDark th {
@@ -347,6 +344,13 @@ table, th, td {
 @media (width<320px) {
   nav, footer, .content, .contentDark {
     width: 100%;
+  }
+  table, th, td {
+    font-size: 12px;
+  }
+
+  .tableDark th {
+    font-size: 8px;
   }
 }
 
