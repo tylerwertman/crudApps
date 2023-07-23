@@ -41,6 +41,7 @@ const UserDetail = (props) => {
         axios.delete(`http://localhost:8000/api/users/${id}`)
             .then(res => {
                 navigate("/")
+                setUser(null)
                 axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
                     .then(res => {
                         console.log("deleted account")
@@ -56,9 +57,7 @@ const UserDetail = (props) => {
         navigate(`/users/${user._id}/edit`)
     }
     return (
-        <div className={darkMode ? "mainDivDark mt-5" : "mainDivLight mt-5"}>
-            <br />
-            <br />
+        <div style={{marginTop:"100px", marginBottom:"100px"}} className={darkMode ? "mainDivDark" : "mainDivLight"}>
             <div className={'popup mx-auto'} style={{ display: showDeletePopup ? "block" : "none", color: "white", top: "25%" }}>
                 <h2>Are you sure you want to delete your account?</h2>
                 <button className='btn btn-success' onClick={deleteAccount}>Yes</button>&nbsp;&nbsp;
@@ -67,8 +66,7 @@ const UserDetail = (props) => {
             <h2>User Details for: <img className="profilePicture" src={`${oneUser?.profilePicture}`} alt="" style={{width:"50px", height:"50px"}}/> {oneUser?.name} (@{oneUser?.displayName})</h2>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
-            <br />
-            <table className={darkMode ? 'mx-auto tableDark' : 'mx-auto'}>
+            <table className={darkMode ? 'tableDark mx-auto mt-5 mb-5' : 'mx-auto mt-5 mb-5'}>
                 <thead>
                     <tr className={darkMode ? 'flex tableDark' : 'flex'}>
                         {allTabs.map((tabs, i) =>
@@ -79,8 +77,7 @@ const UserDetail = (props) => {
                     </tr>
                 </thead>
             </table>
-            <br />
-            <div className='flex mx-auto'>
+            <div className='flex mx-auto mb-3'>
                 {
                     currentTab === 0 ?
                         <div className='col-md-6 mx-auto px-2'>
@@ -113,9 +110,8 @@ const UserDetail = (props) => {
                                     : null
                 }
             </div>
-            {id === user?._id ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
-            &nbsp;&nbsp;{id === user?._id ? <button className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null}
-            <br /><br /><br />
+            {id === user?._id ? <button style={{marginBottom:"60px"}} className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
+            &nbsp;&nbsp;{id === user?._id ? <button style={{marginBottom:"60px"}} className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null}
         </div>
     )
 }
