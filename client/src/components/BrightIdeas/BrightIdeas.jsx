@@ -242,9 +242,9 @@ const BrightIdeas = (props) => {
         <div className='mt-5'>
             <h1 style={{ marginTop: "75px" }}>Welcome to Bright Ideas</h1>
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
-                <div className={darkMode ? "col-sm-8 mx-auto text-light" : "col-sm-8 mx-auto"}>
+                <div className="col-sm-8 mx-auto mt-5" >
                     {/* Add Idea Form */}
-                    <form className={darkMode ? "mx-auto text-light mt-5" : "mx-auto mt-5"} onSubmit={handleAddIdeaSubmit}>
+                    <form onSubmit={handleAddIdeaSubmit}>
                         {oneIdea.idea && oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
                         {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
                         {windowWidth > 575 ?
@@ -268,8 +268,8 @@ const BrightIdeas = (props) => {
                 </div>
                 <h3 className='mt-3' onClick={returnToAllIdeas}>{search ? "Search Ideas" : <>All Ideas <FontAwesomeIcon icon={faMagnifyingGlass} /></>}</h3>
                 {/* SEARCH */}
-                {search ? <div className='col-sm-4 mx-auto'>
-                    <form className="mx-auto col-10" onSubmit={handleSearchSubmit}>
+                {search ? <div className='col-sm-8 mx-auto px-4'>
+                    <form onSubmit={handleSearchSubmit}>
                         <div className="input-group col-10">
                             <div className="form-floating">
                                 <input type="text" className="form-control custom-input" name="idea" value={searchQuery} onChange={handleSearchInputChange} placeholder='Search ideas!' />
