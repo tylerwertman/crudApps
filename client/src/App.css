@@ -345,7 +345,7 @@ table, th, td {
   nav, footer, .content, .contentDark {
     width: 100%;
   }
-  table, th, td {
+  table h5, th, td {
     font-size: 12px;
   }
 

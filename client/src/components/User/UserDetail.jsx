@@ -83,28 +83,28 @@ const UserDetail = (props) => {
             <div className='flex mx-auto'>
                 {
                     currentTab === 0 ?
-                        <div className='col-md-6 mx-auto'>
+                        <div className='col-md-6 mx-auto px-2'>
                             <h4>Added Books:</h4>
                             {oneUser?.booksAdded?.map((usersAddedBooks) => {
                                 return <h6 key={usersAddedBooks._id}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6>
                             })}
                         </div>
                         : currentTab === 1 ?
-                            <div className='col-md-6 mx-auto'>
+                            <div className='col-md-6 mx-auto px-2'>
                                 <h4>Favorite Books:</h4>
                                 {oneUser?.booksFavorited?.map((usersFavBooks) => {
                                     return <h6 key={usersFavBooks._id}><Link to={`/books/${usersFavBooks?._id}`}>{usersFavBooks?.title}</Link></h6>
                                 })}
                             </div>
                             : currentTab === 2 ?
-                                <div className='col-md-6 mx-auto'>
+                                <div className='col-md-6 mx-auto px-2'>
                                     <h4>Added Ideas:</h4>
                                     {oneUser?.ideasAdded?.map((usersAddedIdeas) => {
                                         return <h6 key={usersAddedIdeas._id}><Link to={`/ideas/${usersAddedIdeas?._id}`}>{usersAddedIdeas?.idea}</Link></h6>
                                     })}
                                 </div>
                                 : currentTab === 3 ?
-                                    <div className='col-md-6 mx-auto'>
+                                    <div className='col-md-6 mx-auto px-2'>
                                         <h4>Favorite Ideas:</h4>
                                         {oneUser?.ideasFavorited?.map((usersFavIdeas) => {
                                             return <h6 key={usersFavIdeas._id}><Link to={`/ideas/${usersFavIdeas?._id}`}>{usersFavIdeas?.idea}</Link></h6>
