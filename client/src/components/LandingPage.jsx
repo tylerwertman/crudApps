@@ -9,7 +9,6 @@ const LandingPage = (props) => {
     const toastLogin = () => toast.success(`Welcome back, ${user?.name}`, {toastId: 1})
 
     useEffect(() => {
-        console.log(previousLocation)
         if (previousLocation?.pathname === "/login") {
             toastLogin()
             setPreviousLocation(null)
@@ -19,7 +18,7 @@ const LandingPage = (props) => {
         } else {
             return
         }
-        //eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

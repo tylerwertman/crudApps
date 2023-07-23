@@ -26,7 +26,7 @@ const Nav = (props) => {
 
         //https://gradienthunt.com/gradient/3877
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const colorToggle = () => {
@@ -95,7 +95,7 @@ const Nav = (props) => {
                         :
                         null
                 }
-                <br className='MQHide'/>
+                <br className='MQHide' />
                 <button className={darkMode ? "btn btn-success darkModeButton" : "btn btn-dark darkModeButton"} onClick={colorToggle}>{darkMode ? "☀️" : "🌙"}</button>
             </div>
         </nav>

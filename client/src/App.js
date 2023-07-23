@@ -34,10 +34,10 @@ function App() {
 
   useEffect(() => {
     setCookieValue(Cookies.get('userToken'))
-    if (cookieValue) setUser(jwtdecode(cookieValue))
+    setUser(jwtdecode(Cookies.get('userToken')))
     if (Cookies.get('darkMode') === undefined) Cookies.set('darkMode', false.toString(), { expires: 7 })
-    // eslint-disable-next-line
-  }, [user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
 
