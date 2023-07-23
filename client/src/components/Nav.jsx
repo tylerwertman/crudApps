@@ -27,7 +27,7 @@ const Nav = (props) => {
         //https://gradienthunt.com/gradient/3877
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [user])
 
     const colorToggle = () => {
         const updatedDarkMode = !darkMode

@@ -50,7 +50,7 @@ function App() {
         <Route path="/login" element={<Login setUser={setUser} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
         <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} previousLocation={previousLocation} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
         <Route path="/users/:id" element={<UserDetail user={user} setUser={setUser} count={count} darkMode={darkMode} />} />
-        <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} />} />
+        <Route path="/users/:id/edit" element={<EditUser setUser={setUser} cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} />} />
         <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} />} />
         <Route path="/books/:id" element={<BookDetail user={user} darkMode={darkMode} />} />
         <Route path="/books/:id/edit" element={<EditBook />} />
