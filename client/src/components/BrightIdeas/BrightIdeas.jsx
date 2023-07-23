@@ -4,7 +4,8 @@ import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
 import withAuth from '../WithAuth'
 import { toast } from 'react-toastify'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 const BrightIdeas = (props) => {
     const { count, setCount, user, darkMode } = props
@@ -16,13 +17,19 @@ const BrightIdeas = (props) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
     const [search, setSearch] = useState(false)
+    const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    }
 
     const toastAdded = () => toast.success(`➕ You added an idea`)
     const toastFav = (id) => toast.success(`👍 You favorited an idea`)
     const toastUnfav = (id) => toast.error(`👎 You unfavorited an idea`)
     const toastDelete = (id) => toast.error(`🗑 You deleted an idea`)
 
-// UE for tracking window size
+    // UE for tracking window size
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth)
@@ -33,7 +40,7 @@ const BrightIdeas = (props) => {
         }
     }, [])
 
-// UE for sorting ideas by favorites. The Fav & Unfav FN update count to trigger this UE
+    // UE for sorting ideas by favorites. The Fav & Unfav FN update count to trigger this UE
     useEffect(() => {
         axios.get(`http://localhost:8000/api/ideas`)
             .then(res => {
@@ -44,7 +51,7 @@ const BrightIdeas = (props) => {
         // eslint-disable-next-line
     }, [count])
 
-// UE for socket.io
+    // UE for socket.io
     useEffect(() => {
         // Event handler for 'ideaAdded' event
         const handleIdeaAdded = (newIdea) => {
@@ -175,12 +182,13 @@ const BrightIdeas = (props) => {
                 setCount(count + 1)
                 toastDelete(idea.idea)
                 socket.emit('ideaDeleted', idea)
+                if ((ideaList - 1) % 5 === 0) setCurrentPage(currentPage - 1)
 
             })
             .catch(err => console.log(err))
     }
 
-    // Pagination
+    // PAGINATION
     const itemsPerPage = 5
     const totalPages = Math.ceil(ideaList.length / itemsPerPage)
     const pageNumbers = []
@@ -197,13 +205,7 @@ const BrightIdeas = (props) => {
         setCurrentPage(pageNumber)
     }
 
-    const options = {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    }
-
+    // SEARCH
     const handleSearchInputChange = (e) => {
         setSearchQuery(e.target.value)
     }
@@ -241,7 +243,7 @@ const BrightIdeas = (props) => {
             <h1 style={{ marginTop: "75px" }}>Welcome to Bright Ideas</h1>
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
                 <div className={darkMode ? "col-sm-8 mx-auto text-light" : "col-sm-8 mx-auto"}>
-{/* Add Idea Form */}
+                    {/* Add Idea Form */}
                     <form className={darkMode ? "mx-auto text-light mt-5" : "mx-auto mt-5"} onSubmit={handleAddIdeaSubmit}>
                         {oneIdea.idea && oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
                         {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
@@ -264,12 +266,11 @@ const BrightIdeas = (props) => {
                         }
                     </form>
                 </div>
-                <h3 className='mt-3' onClick={returnToAllIdeas}>{search ? "Search Ideas" : "All Ideas 🔍"}</h3>
-{/* SEARCH */}
+                <h3 className='mt-3' onClick={returnToAllIdeas}>{search ? "Search Ideas" : <>All Ideas <FontAwesomeIcon icon={faMagnifyingGlass} /></>}</h3>
+                {/* SEARCH */}
                 {search ? <div className='col-sm-4 mx-auto'>
-                    <form className="mx-auto" onSubmit={handleSearchSubmit}>
+                    <form className="mx-auto col-10" onSubmit={handleSearchSubmit}>
                         <div className="input-group col-10">
-
                             <div className="form-floating">
                                 <input type="text" className="form-control custom-input" name="idea" value={searchQuery} onChange={handleSearchInputChange} placeholder='Search ideas!' />
                                 <label className="darkText" htmlFor="idea">Search ideas!</label>
@@ -278,7 +279,7 @@ const BrightIdeas = (props) => {
                         </div>
                     </form>
                 </div> : null}
-{/* MAP */}
+                {/* MAP */}
                 <div className='col-8 mx-auto text-start ideaList'>
                     {currentItems.map((idea, index) => {
                         return (
@@ -312,7 +313,7 @@ const BrightIdeas = (props) => {
                             </div>
                         )
                     })}
-{/* PAGINATION */}
+                    {/* PAGINATION */}
                     <div className="custom-pagination">
                         <div className="pagination justify-content-center">
                             {pageNumbers.map((number) => (
