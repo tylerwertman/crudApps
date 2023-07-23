@@ -3,7 +3,7 @@ const Footer = (props) => {
     const { darkMode } = props
 
     return (
-        <footer className={darkMode ? "footerDark mt-5" : "footerLight mt-5"}>
+        <footer className={darkMode ? "footerDark" : "footerLight"}>
             <a href="https://tylerw.xyz">© 2023 Tyler Wertman Developments</a>
         </footer>
     )
