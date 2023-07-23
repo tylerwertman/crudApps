@@ -7,19 +7,40 @@ body, body::before, body::after {
   background-repeat: repeat;
   background-attachment: fixed;
 }
+body::before, body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: opacity .3s ease;
+}
+  
+body::before {
+  background-image: radial-gradient( circle farthest-corner at -4% -12.9%, rgb(74, 110, 88) 0.3%, rgb(30, 48, 32) 90.2%);
+  opacity: 1;
+}
 
-.AppLight {
+body.change::before {
+  opacity: 0;
+}
+
+body::after {
+  opacity: 0;
+  background-image: radial-gradient(circle 2759px at -6.7% 50%, rgba(80, 131, 73, 1) 0%, rgba(140, 209, 131, 1) 26.2%, rgba(178, 231, 170, 1) 50.6%, rgba(144, 213, 135, 1) 74.1%, rgba(75, 118, 69, 1) 100.3%);
+}
+
+body.change::after {
+  opacity: 1;
+}
+
+.AppLight, .AppDark {
   text-align: center;
   /* transition: .3s ease; */
 }
 
-.AppDark {
-  text-align: center;
-  /* background-color: rgb(50, 50, 50); */
-  /* opacity: 20%; */
-  /* transition: .3s ease; */
-
-}
 .AppDark {
   color: lightgrey;
 }
@@ -36,7 +57,7 @@ body, body::before, body::after {
   color: seagreen
 }
 
-nav {
+.navLight, .navDark {
   display: flex;
   position: fixed;
   top: 0%;
@@ -45,54 +66,18 @@ nav {
   overflow: hidden;
   z-index: 100;
   transition: .3s ease;
-
-}
-
-footer {
-  width: 100%;
-  margin: 0 auto;
-  background-color: whitesmoke;
   background-color: lightgrey;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
+  padding: 0 5px;
   box-shadow: 0 0 10px black;
-  text-decoration: none;
-  color: darkslategrey;
-  padding: 10px 0;
-  position: fixed;
-  bottom: 0%;
-  text-align: center;
-  z-index: 100;
-  transition: .3s ease;
-
-}
-
-.footerDark {
-  background-color: rgb(50, 50, 50);
-  color: lightgrey;
-  box-shadow: 0 0 10px lightgrey;
-}
-
-.navLight {
-  background-color: whitesmoke;
-  background-color: lightgrey;
-  /* color: darkslategrey; */
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px 0 20px;
-  box-shadow: 0 0 10px black;
+  /* gap: 50px; */
   /* position: fixed; */
 }
 
 .navDark {
-  background-color: whitesmoke;
   background-color: rgb(50, 50, 50);
-  /* color: darkslategrey; */
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px 0 20px;
   box-shadow: 0 0 10px grey;
-  /* position: fixed; */
 }
 
 nav h1 {
@@ -107,26 +92,46 @@ nav ul {
   gap: 50px
 }
 
-.navLight ul a,
-.navLight a {
+.navLight ul a, .navLight a {
   text-decoration: none;
   color: black;
   /* font-size: 1.5rem; */
 }
 
-.navDark ul a,
-.navDark a {
+.navDark ul a, .navDark a {
   text-decoration: none;
   color: lightgrey;
   /* font-size: 1.5rem; */
 }
 
-.navDark h1,
-.navDark h4 {
+.navDark h1, .navDark h4 {
   color: lightgrey
 }
 
-.content {
+.footerLight, .footerDark {
+  width: 100%;
+  margin: 0 auto;
+  background-color: lightgrey;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 10px black;
+  text-decoration: none;
+  color: rgb(50,50,50);
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0%;
+  text-align: center;
+  z-index: 100;
+  transition: .3s ease;
+
+}
+
+.footerDark {
+  background-color: rgb(50, 50, 50);
+  color: lightgrey;
+  box-shadow: 0 0 10px lightgrey;
+}
+.content, .contentDark {
   margin: 0 auto;
   text-align: center;
   background-color: lightgrey;
@@ -140,15 +145,8 @@ nav ul {
 
 .contentDark {
   border: 1px solid;
-  margin: 0 auto;
-  text-align: center;
   background-color: rgb(50, 50, 50);
   /* color: lightgrey; */
-  padding: 20px;
-  border-radius: 50px;
-  width: 300px;
-  gap: 50px;
-  /* transition: .3s ease; */
   
 }
 
@@ -157,8 +155,7 @@ nav ul {
   /* transition: .3s ease; */
 }
 
-.content h3,
-.content h4 {
+.content h3, .content h4 {
   font-weight: bold
 }
 
@@ -166,9 +163,7 @@ nav ul {
   color: seagreen;
 }
 
-.contentDark a,
-.contentDark h3,
-.contentDark h4 {
+.contentDark a, .contentDark h3, .contentDark h4 {
   color: lightgrey;
   font-weight: bold;
   /* transition: .3s ease; */
@@ -179,7 +174,7 @@ nav ul {
 }
 
 .mainDivLight a {
-  color: darkslategrey;
+  color: rgb(50,50,50);
 }
 
 .mainDivDark a {
@@ -191,9 +186,7 @@ nav ul {
   display: flex;
 }
 
-table,
-th,
-td {
+table, th, td {
   border: 1px solid;
   padding: 10px;
   /* margin: auto */
@@ -213,7 +206,7 @@ td {
 }
 
 .darkText {
-  color: darkslategrey
+  color: rgb(50,50,50)
 }
 
 .idea {
@@ -261,7 +254,7 @@ td {
   padding: 20px;
 }
 
-/* Custom pagination colors */
+/* Custom pagination colors vv */
 .custom-pagination .page-link {
   color: seagreen;
   /* background-color: #00ff11;
@@ -291,6 +284,7 @@ td {
   border-color: #80ff8d;
   box-shadow: 0 0 0 0.2rem rgba(0, 255, 13, 0.25);
 }
+/* Custom pagination colors ^^ */
 
 .landingPage {
   width: 300px;
@@ -306,10 +300,7 @@ td {
     display: block
   }
 
-  nav h1,
-  nav h4,
-  nav a,
-  nav span {
+  nav h1, nav h4, nav a, nav span {
     font-size: 1rem;
     /* color: red; */
   }
@@ -341,9 +332,7 @@ td {
 
 @media (width < 500px) {
 
-  table,
-  th,
-  td {
+  table, th, td {
     font-size: 14px;
     /* width: 100%; */
     /* padding: 10px; */
@@ -355,6 +344,12 @@ td {
   }
 }
 
+@media (width<320px) {
+  nav, footer, .content, .contentDark {
+    width: 100%;
+  }
+}
+
 .navLight .darkModeButton {
   transition: .3s ease;
 }
@@ -362,37 +357,3 @@ td {
 .navDark .darkModeButton {
   transition: .3s ease;
 }
-
-body::before,
-  body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: -1;
-    transition: opacity .3s ease;
-  }
-  
-  body::before {
-    background-image: radial-gradient( circle farthest-corner at -4% -12.9%, rgb(74, 110, 88) 0.3%, rgb(30, 48, 32) 90.2%);
-    opacity: 1;
-    /* height: 100vh; */
-  }
-  
-  body.change::before {
-    opacity: 0;
-    /* height: 100vh; */
-  }
-  
-  body::after {
-    opacity: 0;
-    background-image: radial-gradient(circle 2759px at -6.7% 50%, rgba(80, 131, 73, 1) 0%, rgba(140, 209, 131, 1) 26.2%, rgba(178, 231, 170, 1) 50.6%, rgba(144, 213, 135, 1) 74.1%, rgba(75, 118, 69, 1) 100.3%);
-    /* height: 100vh; */
-  }
-  
-  body.change::after {
-    opacity: 1;
-    /* height: 100vh; */
-  }

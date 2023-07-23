@@ -91,10 +91,11 @@ const Nav = (props) => {
                 {/* <button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={clearIdeas}>Clear Ideas</button>&nbsp;&nbsp; */}
                 {
                     (user) ?
-                        <><button className='btn btn-danger' onClick={logout}>Logout</button>&nbsp;&nbsp;</>
+                        <button className='btn btn-danger' onClick={logout}>Logout</button>
                         :
                         null
                 }
+                <br className='MQHide'/>
                 <button className={darkMode ? "btn btn-success darkModeButton" : "btn btn-dark darkModeButton"} onClick={colorToggle}>{darkMode ? "☀️" : "🌙"}</button>
             </div>
         </nav>
