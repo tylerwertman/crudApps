@@ -70,21 +70,22 @@ module.exports.updateUserInfo = (req, res) => {
             return res.status(401).json({ message: 'Invalid token', err: err })
         }
         req.user = { _id: decoded._id }
+        const userDetailId = req.params.id
+        const loggedInUserId = req.user?._id
+        if (userDetailId !== loggedInUserId) {
+            return res.status(403).json({ message: 'Unauthorized access' })
+        }
+        User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+            .populate("booksAdded booksFavorited ideasAdded ideasFavorited")
+            .then(updatedUser => {
+                console.log("successfully edited user account")
+                res.clearCookie("userToken")
+                const userToken = jwt.sign({ _id: updatedUser.id, email: updatedUser.email, name: updatedUser.name, displayName: updatedUser.displayName }, secret, { expiresIn: "1d" })
+                res.cookie("userToken", userToken, { httpOnly: false })
+                res.json({ msg: "Delete & rewrite cookie success!", user: updatedUser })
+            })
+            .catch(err => res.status(400).json({ message: "Something went worng updating a user", error: err }))
     })
-    const userId = req.params.id
-    const loggedInUserId = req.user._id
-    if (userId !== loggedInUserId) {
-        return res.status(403).json({ message: 'Unauthorized access' })
-    }
-    User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-        .populate("booksAdded booksFavorited ideasAdded ideasFavorited")
-        .then(updatedUser => {
-            const userToken = jwt.sign({ _id: updatedUser.id, email: updatedUser.email, name: updatedUser.name, displayName: updatedUser.displayName }, secret, { expiresIn: "1d" })
-            res.clearCookie("userToken")
-            res.cookie("userToken", userToken, { httpOnly: false })
-            res.json({ msg: "Delete & rewrite cookie success!", user: updatedUser })
-        })
-        .catch(err => res.status(400).json({ message: "Something went worng updating a user", error: err }))
 }
 module.exports.updateUserPassword = async (req, res) => {
     const token = req.headers.authorization
@@ -98,9 +99,9 @@ module.exports.updateUserPassword = async (req, res) => {
         req.user = { _id: decoded._id }
     })
 
-    const userId = req.params.id
+    const userDetailId = req.params.id
     const loggedInUserId = req.user._id
-    if (userId !== loggedInUserId) {
+    if (userDetailId !== loggedInUserId) {
         return res.status(403).json({ message: 'Unauthorized access' })
     }
 
@@ -136,9 +137,9 @@ module.exports.addProfilePicture = async (req, res) => {
         console.log("decoded", decoded)
         req.user = { _id: decoded._id }
     })
-    const userId = req.params.id
+    const userDetailId = req.params.id
     const loggedInUserId = req.user._id
-    if (userId !== loggedInUserId) {
+    if (userDetailId !== loggedInUserId) {
         return res.status(403).json({ message: 'Unauthorized access' })
     }
     try {
