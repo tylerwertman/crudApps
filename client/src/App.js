@@ -23,6 +23,7 @@ import IdeaDetail from './components/BrightIdeas/IdeaDetail'
 import PizzaTime from './components/PizzaTime/PizzaTime'
 import PizzaCreate from './components/PizzaTime/PizzaCreate'
 import PizzaCart from './components/PizzaTime/PizzaCart'
+import DarkMode from './components/DarkMode'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -64,6 +65,8 @@ function App() {
           <Route path="*" element={<NotFound darkMode={darkMode} />} />
         </Routes>
         <Footer darkMode={darkMode} />
+        <DarkMode darkMode={darkMode} setDarkMode={setDarkMode} />
+
       </BrowserRouter>
     </div>
   )
