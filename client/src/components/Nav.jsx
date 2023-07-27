@@ -29,21 +29,21 @@ const Nav = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [Cookies.get('userToken')])
 
-    const colorToggle = () => {
-        const updatedDarkMode = !darkMode
-        setDarkMode(updatedDarkMode)
-        Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 })
+    // const colorToggle = () => {
+    //     const updatedDarkMode = !darkMode
+    //     setDarkMode(updatedDarkMode)
+    //     Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 })
 
-        //fade background
+    //     //fade background
 
-        if (!updatedDarkMode) document.body.classList.add('change')
-        else document.body.classList.remove('change')
+    //     if (!updatedDarkMode) document.body.classList.add('change')
+    //     else document.body.classList.remove('change')
 
-        //instant-change background
+    //     //instant-change background
 
-        // if (updatedDarkMode) document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%, rgb(74, 110, 88) 0.3%, rgba(30, 33, 48, 1) 90.2%)"
-        // else document.body.style.backgroundImage = "radial-gradient(circle 2759px at -6.7% 50%, rgba(80, 131, 73, 1) 0%, rgba(140, 209, 131, 1) 26.2%, rgba(178, 231, 170, 1) 50.6%, rgba(144, 213, 135, 1) 74.1%, rgba(75, 118, 69, 1) 100.3%)"
-    }
+    //     // if (updatedDarkMode) document.body.style.backgroundImage = "radial-gradient( circle farthest-corner at -4% -12.9%, rgb(74, 110, 88) 0.3%, rgba(30, 33, 48, 1) 90.2%)"
+    //     // else document.body.style.backgroundImage = "radial-gradient(circle 2759px at -6.7% 50%, rgba(80, 131, 73, 1) 0%, rgba(140, 209, 131, 1) 26.2%, rgba(178, 231, 170, 1) 50.6%, rgba(144, 213, 135, 1) 74.1%, rgba(75, 118, 69, 1) 100.3%)"
+    // }
 
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
