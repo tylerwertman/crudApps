@@ -66,6 +66,7 @@ const UserDetail = (props) => {
             <h2>User Details for: <img className="profilePicture" src={`${oneUser?.profilePicture}`} alt="" style={{width:"50px", height:"50px"}}/> {oneUser?.name} (@{oneUser?.displayName})</h2>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
+            {id === user?._id || user?.email === "t@w.com" ? <h6>Email: {oneUser.email} <strong>(only you can see this)</strong></h6> : null}
             <table className={darkMode ? 'tableDark mx-auto mt-5 mb-5' : 'mx-auto mt-5 mb-5'}>
                 <thead>
                     <tr className={darkMode ? 'flex tableDark' : 'flex'}>
