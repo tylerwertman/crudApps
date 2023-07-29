@@ -11,36 +11,9 @@ const BookDetail = (props) => {
     const navigate = useNavigate()
     const [oneBook, setOneBook] = useState({})
     const bookFavByContainsLoggedInUser = oneBook.favoritedBy ? oneBook.favoritedBy.some(bookObj => bookObj._id === user._id) : false
-    const toastFav = () => toast.success(`💚 You favorited ${oneBook.title}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastUnfav = () => toast.error(`🚫 You unfavorited ${oneBook.title}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastDelete = () => toast.error(`🗑 You deleted ${oneBook.title}`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastFav = () => toast.success(`💚 You favorited ${oneBook.title}`, {toastId: 1})
+    const toastUnfav = () => toast.error(`🚫 You unfavorited ${oneBook.title}`, {toastId: 1})
+    const toastDelete = () => toast.error(`🗑 You deleted ${oneBook.title}`, {toastId: 1})
 
 
     useEffect(() => {

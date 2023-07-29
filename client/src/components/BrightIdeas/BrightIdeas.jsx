@@ -24,10 +24,10 @@ const BrightIdeas = (props) => {
         day: "numeric",
     }
 
-    const toastAdded = () => toast.success(`➕ You added an idea`)
-    const toastFav = (id) => toast.success(`👍 You favorited an idea`)
-    const toastUnfav = (id) => toast.error(`👎 You unfavorited an idea`)
-    const toastDelete = (id) => toast.error(`🗑 You deleted an idea`)
+    const toastAdded = () => toast.success(`➕ You added an idea`, {toastId: 1})
+    const toastFav = (id) => toast.success(`👍 You favorited an idea`, {toastId: 1})
+    const toastUnfav = (id) => toast.error(`👎 You unfavorited an idea`, {toastId: 1})
+    const toastDelete = (id) => toast.error(`🗑 You deleted an idea`, {toastId: 1})
 
     // UE for tracking window size
     useEffect(() => {

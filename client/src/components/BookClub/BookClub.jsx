@@ -16,10 +16,10 @@ const BookClub = (props) => {
     const [sortDirection, setSortDirection] = useState('asc')
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [currentPage, setCurrentPage] = useState(1)
-    const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`)
-    const toastFav = (id) => toast.success(`👍 You favorited ${id}`)
-    const toastUnfav = (id) => toast.error(`👎 You unfavorited ${id}`)
-    const toastDelete = (id) => toast.error(`🗑 You deleted ${id}`)
+    const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {toastId: 1})
+    const toastFav = (book) => toast.success(`👍 You favorited ${book.title}`, {toastId: 1})
+    const toastUnfav = (book) => toast.error(`👎 You unfavorited ${book.title}`, {toastId: 1})
+    const toastDelete = (book) => toast.error(`🗑 You deleted ${book.title}`, {toastId: 1})
 
     useEffect(() => {
         const handleResize = () => {
@@ -101,7 +101,7 @@ const BookClub = (props) => {
         axios.post(`http://localhost:8000/api/books/${book._id}/favorite`, {}, { withCredentials: true })
             .then(res => {
                 setCount(count + 1)
-                toastFav(book.title)
+                toastFav(book)
             })
             .catch(err => console.log(`FAV error`, err))
     }
@@ -110,7 +110,7 @@ const BookClub = (props) => {
         axios.post(`http://localhost:8000/api/books/${book._id}/unfavorite`, {}, { withCredentials: true })
             .then(res => {
                 setCount(count + 1)
-                toastUnfav(book.title)
+                toastUnfav(book)
             })
             .catch(err => console.log(`UNfav error`, err))
     }
@@ -119,7 +119,7 @@ const BookClub = (props) => {
         axios.delete(`http://localhost:8000/api/books/${book._id}`)
             .then(res => {
                 setCount(count + 1)
-                toastDelete(book.title)
+                toastDelete(book)
                 socket.emit('bookDeleted', book)
 
             })

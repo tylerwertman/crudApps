@@ -11,36 +11,9 @@ const IdeaDetail = (props) => {
     const navigate = useNavigate()
     const [oneIdea, setOneIdea] = useState({})
     const ideaFavByContainsLoggedInUser = oneIdea.favoritedBy ? oneIdea.favoritedBy.some(ideaObj => ideaObj._id === user._id) : false
-    const toastFav = () => toast.success(`💚 You favorited an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastUnfav = () => toast.error(`🚫 You unfavorited an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
-    const toastDelete = () => toast.error(`🗑 You deleted an idea`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastFav = () => toast.success(`💚 You favorited an idea`, {toastId: 1})
+    const toastUnfav = () => toast.error(`🚫 You unfavorited an idea`, {toastId: 1})
+    const toastDelete = () => toast.error(`🗑 You deleted an idea`, {toastId: 1})
 
 
     useEffect(() => {
