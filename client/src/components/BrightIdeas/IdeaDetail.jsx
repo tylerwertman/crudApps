@@ -30,7 +30,7 @@ const IdeaDetail = (props) => {
     const removeIdea = () => {
         axios.delete(`http://localhost:8000/api/ideas/${id}`)
             .then(res => {
-                navigate("/dashboard")
+                navigate("/brightIdeas")
                 toastDelete()
             })
             .catch(err => console.log(err))
