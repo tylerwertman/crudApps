@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
@@ -6,9 +6,10 @@ import withAuth from '../WithAuth'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { crudAppsContext } from '../../App'
 
-const BrightIdeas = (props) => {
-    const { count, setCount, user, darkMode } = props
+const BrightIdeas = () => {
+    const { darkMode, user, count, setCount } = useContext(crudAppsContext)
     const [socket] = useState(() => io(':8000'))
     const [ideaList, setIdeaList] = useState([])
     const [oneIdea, setOneIdea] = useState({ idea: "" })

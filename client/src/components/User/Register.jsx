@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import CookiePopup from '../CookiePopup'
@@ -6,9 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import Cookies from 'js-cookie'
 import jwtdecode from 'jwt-decode'
+import { crudAppsContext } from '../../App'
 
 const Register = (props) => {
-    const { setUser, darkMode, setPreviousLocation} = props
+    const { setUser } = useContext(crudAppsContext)
+    const { setPreviousLocation } = props
     const navigate = useNavigate()
     const location = useLocation()
     const [errors, setErrors] = useState({})
@@ -57,7 +59,7 @@ const Register = (props) => {
     return (
         <div className='row col-sm-6 mx-auto mt-5 px-2'>
             <br />
-            <CookiePopup darkMode={darkMode} />
+            <CookiePopup />
             <form className="regLog" onSubmit={regSubmit}>
                 <h3>Register</h3>
                 <div className="form-group">
@@ -112,8 +114,8 @@ const Register = (props) => {
                 </div>
                 <Link to="/login">Have an account? Login!</Link>
             </form>
-        </div> 
-    ) 
-} 
+        </div>
+    )
+}
 
 export default Register

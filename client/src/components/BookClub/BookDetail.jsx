@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import withAuth from '../WithAuth'
 import { toast } from 'react-toastify'
+import { crudAppsContext } from '../../App'
 
 
-const BookDetail = (props) => {
-    const { user, darkMode } = props
+
+const BookDetail = () => {
+    const { darkMode, user } = useContext(crudAppsContext)
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneBook, setOneBook] = useState({})
     const bookFavByContainsLoggedInUser = oneBook.favoritedBy ? oneBook.favoritedBy.some(bookObj => bookObj._id === user._id) : false
-    const toastFav = () => toast.success(`💚 You favorited ${oneBook.title}`, {toastId: 1})
-    const toastUnfav = () => toast.error(`🚫 You unfavorited ${oneBook.title}`, {toastId: 1})
-    const toastDelete = () => toast.error(`🗑 You deleted ${oneBook.title}`, {toastId: 1})
+    const toastFav = () => toast.success(`💚 You favorited ${oneBook.title}`, { toastId: 1 })
+    const toastUnfav = () => toast.error(`🚫 You unfavorited ${oneBook.title}`, { toastId: 1 })
+    const toastDelete = () => toast.error(`🗑 You deleted ${oneBook.title}`, { toastId: 1 })
 
 
     useEffect(() => {

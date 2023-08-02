@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, createContext } from 'react'
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Cookies from 'js-cookie'
@@ -25,6 +25,8 @@ import PizzaCreate from './components/PizzaTime/PizzaCreate'
 import PizzaCart from './components/PizzaTime/PizzaCart'
 import DarkMode from './components/DarkMode'
 
+export const crudAppsContext = createContext()
+
 function App() {
   const [count, setCount] = useState(0)
   const [user, setUser] = useState(null)
@@ -43,32 +45,34 @@ function App() {
 
 
   return (
-    <div className={darkMode ? "AppDark" : "AppLight"}>
-      <BrowserRouter>
-        <Nav cookieValue={cookieValue} user={user} setUser={setUser} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode} />
-        <ToastContainer transition={Slide} position={"bottom-right"} autoClose={2500} hideProgressBar={false} closeOnClick={true} pauseOnHover={true} draggable={true} progress={undefined} theme={darkMode ? "dark" : "light"} />
-        <Routes>
-          <Route path="/" element={<Register setUser={setUser} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
-          <Route path="/login" element={<Login setUser={setUser} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
-          <Route path="/landing" element={<LandingPage count={count} setCount={setCount} user={user} previousLocation={previousLocation} setPreviousLocation={setPreviousLocation} darkMode={darkMode} />} />
-          <Route path="/users/:id" element={<UserDetail user={user} setUser={setUser} count={count} darkMode={darkMode} />} />
-          <Route path="/users/:id/edit" element={<EditUser setUser={setUser} cookieValue={cookieValue} setCookieValue={setCookieValue} setCount={setCount} />} />
-          <Route path="/bookClub" element={<BookClub count={count} setCount={setCount} user={user} darkMode={darkMode} />} />
-          <Route path="/books/:id" element={<BookDetail user={user} darkMode={darkMode} />} />
-          <Route path="/books/:id/edit" element={<EditBook />} />
-          <Route path="/brightIdeas" element={<BrightIdeas count={count} setCount={setCount} user={user} darkMode={darkMode} />} />
-          <Route path="/ideas/:id" element={<IdeaDetail user={user} darkMode={darkMode} />} />
-          {/* <Route path="/ideas/:id/edit" element={<EditIdea />} /> */}
-          <Route path="/pizzaTime" element={<PizzaTime count={count} setCount={setCount} user={user} darkMode={darkMode} />} />
-          <Route path="/pizzaTime/create" element={<PizzaCreate darkMode={darkMode} setOrder={setOrder} />} />
-          <Route path="/pizzaTime/cart" element={<PizzaCart darkMode={darkMode} order={order} />} />
-          <Route path="*" element={<NotFound darkMode={darkMode} />} />
-        </Routes>
-        <Footer darkMode={darkMode} />
-        <DarkMode darkMode={darkMode} setDarkMode={setDarkMode} />
+    <crudAppsContext.Provider value={{ darkMode, user, setUser, count, setCount }}>
+      <div className={darkMode ? "AppDark" : "AppLight"}>
+        <BrowserRouter>
+          <Nav />
+          <ToastContainer transition={Slide} position={"bottom-right"} autoClose={2500} hideProgressBar={false} closeOnClick={true} pauseOnHover={true} draggable={true} progress={undefined} theme={darkMode ? "dark" : "light"} />
+          <Routes>
+            <Route path="/" element={<Register setPreviousLocation={setPreviousLocation} />} />
+            <Route path="/login" element={<Login setPreviousLocation={setPreviousLocation} />} />
+            <Route path="/landing" element={<LandingPage previousLocation={previousLocation} setPreviousLocation={setPreviousLocation} />} />
+            <Route path="/users/:id" element={<UserDetail />} />
+            <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} />} />
+            <Route path="/bookClub" element={<BookClub />} />
+            <Route path="/books/:id" element={<BookDetail />} />
+            <Route path="/books/:id/edit" element={<EditBook />} />
+            <Route path="/brightIdeas" element={<BrightIdeas />} />
+            <Route path="/ideas/:id" element={<IdeaDetail />} />
+            {/* <Route path="/ideas/:id/edit" element={<EditIdea />} /> */}
+            <Route path="/pizzaTime" element={<PizzaTime />} />
+            <Route path="/pizzaTime/create" element={<PizzaCreate order={order} setOrder={setOrder} />} />
+            <Route path="/pizzaTime/cart" element={<PizzaCart order={order} />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+          <DarkMode setDarkMode={setDarkMode} />
 
-      </BrowserRouter>
-    </div>
+        </BrowserRouter>
+      </div>
+    </crudAppsContext.Provider>
   )
 }
 

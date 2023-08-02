@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import withAuth from './WithAuth'
 import { toast } from 'react-toastify'
+import { crudAppsContext } from '../App'
 
 const LandingPage = (props) => {
-    const { user, darkMode, previousLocation, setPreviousLocation } = props
-    const toastReg = () => toast.success(`Thank you for registering, ${user?.name}!`, {toastId: 1})
-    const toastLogin = () => toast.success(`Welcome back, ${user?.name}`, {toastId: 1})
+    const { darkMode, user } = useContext(crudAppsContext)
+    const { previousLocation, setPreviousLocation } = props
+    const toastReg = () => toast.success(`Thank you for registering, ${user?.name}!`, { toastId: 1 })
+    const toastLogin = () => toast.success(`Welcome back, ${user?.name}`, { toastId: 1 })
 
     useEffect(() => {
         if (previousLocation?.pathname === "/login") {
@@ -18,7 +20,7 @@ const LandingPage = (props) => {
         } else {
             return
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

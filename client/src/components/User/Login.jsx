@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import CookiePopup from '../CookiePopup'
@@ -6,9 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import Cookies from 'js-cookie'
 import jwtdecode from 'jwt-decode'
+import { crudAppsContext } from '../../App'
 
 const Login = (props) => {
-    const { setUser, darkMode, setPreviousLocation } = props
+    const { setUser } = useContext(crudAppsContext)
+
+    const { setPreviousLocation } = props
     const navigate = useNavigate()
     const location = useLocation()
     const [errors, setErrors] = useState({})
@@ -54,7 +57,7 @@ const Login = (props) => {
     return (
         <div className='row col-sm-6 mx-auto mt-5 px-2'>
             <br />
-            <CookiePopup darkMode={darkMode} />
+            <CookiePopup />
             <form className="regLog" onSubmit={logSubmit}>
                 <h3>Login</h3>
                 {errors.logErr ? <p className="text-danger">{errors.logErr}</p> : null}
@@ -82,7 +85,7 @@ const Login = (props) => {
                 <Link to="/">Need an account? Register!</Link>
             </form>
         </div>
-    ) 
+    )
 }
 
 export default Login

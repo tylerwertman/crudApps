@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import WithAuth2 from '../WithAuth2'
 import { toast } from 'react-toastify'
 import jwtdecode from 'jwt-decode'
 import Cookies from 'js-cookie'
+import { crudAppsContext } from '../../App'
+
 
 const EditUser = (props) => {
-    const { darkMode, cookieValue, setUser, setCount, count, setCookieValue } = props
+    const { setUser, count, setCount } = useContext(crudAppsContext)
+    const { cookieValue, setCookieValue } = props
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneUser, setOneUser] = useState({})
@@ -23,16 +26,7 @@ const EditUser = (props) => {
         password: "",
         confirmPassword: ""
     })
-    const toastEdit = () => toast.success(`✏️ Successfully edited account info`, {
-        position: "bottom-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: darkMode ? "dark" : "light"
-    })
+    const toastEdit = () => toast.success(`✏️ Successfully edited account`, { toastId: 1 })
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/users/${id}`)
@@ -201,8 +195,8 @@ const EditUser = (props) => {
             <div className='col mx-auto'>
                 <h3>Upload a profile picture</h3>
                 <div className="input-group">
-                    <input style={{marginBottom:"60px"}} type="file" className="form-control custom-input" id="formFile" onChange={handleFileSelect} />
-                    <button style={{marginBottom:"60px"}} type="button" className="btn btn-success" disabled={!selectedFile} onClick={handleFileUpload}>Upload</button>
+                    <input style={{ marginBottom: "60px" }} type="file" className="form-control custom-input" id="formFile" onChange={handleFileSelect} />
+                    <button style={{ marginBottom: "60px" }} type="button" className="btn btn-success" disabled={!selectedFile} onClick={handleFileUpload}>Upload</button>
                 </div>
             </div>
         </div>

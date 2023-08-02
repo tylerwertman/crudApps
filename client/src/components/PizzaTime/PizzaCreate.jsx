@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 // import jwtdecode from 'jwt-decode'
-import { useEffect } from 'react'
+import { crudAppsContext } from '../../App'
 
 const PizzaCreate = (props) => {
-    const { darkMode } = props
+    const { darkMode } = useContext(crudAppsContext)
+    const { order, setOrder } = props
+
     const navigate = useNavigate()
-    const [order, setOrder] = useState([])
     const [pizza, setPizza] = useState({
         orderType: "Delivery",
         size: "Large",
@@ -37,7 +38,7 @@ const PizzaCreate = (props) => {
     // }
 
     useEffect(() => {
-        Cookies.set('order', JSON.stringify(order), { expires: 7 })
+        if (Cookies.get('order') === undefined) Cookies.set('order', JSON.stringify([order]), { expires: 7 })
         // eslint-disable-next-line
     }, [])
 
@@ -45,7 +46,7 @@ const PizzaCreate = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/pizzas', pizza, { withCredentials: true })
             .then(res => {
-                console.log(res.data.pizza)
+                console.log(JSON.stringify([...order, res.data.pizza]))
                 setOrder([...order, res.data.pizza])
                 Cookies.set('order', JSON.stringify([...order, res.data.pizza]), { expires: 7 })
 

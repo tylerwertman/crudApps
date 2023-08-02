@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import withAuth from '../WithAuth'
 // import jwtdecode from 'jwt-decode'
+import { crudAppsContext } from '../../App'
 
 
-const UserDetail = (props) => {
+
+const UserDetail = () => {
+    const { darkMode, user, setUser, count } = useContext(crudAppsContext)
     const { id } = useParams()
-    const { count, user, setUser, darkMode } = props
     const navigate = useNavigate()
     const [showDeletePopup, setShowDeletePopup] = useState(false)
     const [oneUser, setOneUser] = useState({})
@@ -57,13 +59,13 @@ const UserDetail = (props) => {
         navigate(`/users/${user._id}/edit`)
     }
     return (
-        <div style={{marginTop:"100px", marginBottom:"100px"}} className={darkMode ? "mainDivDark" : "mainDivLight"}>
+        <div style={{ marginTop: "100px", marginBottom: "100px" }} className={darkMode ? "mainDivDark" : "mainDivLight"}>
             <div className={'popup mx-auto'} style={{ display: showDeletePopup ? "block" : "none", color: "white", top: "25%" }}>
                 <h2>Are you sure you want to delete your account?</h2>
                 <button className='btn btn-success' onClick={deleteAccount}>Yes</button>&nbsp;&nbsp;
                 <button className='btn btn-danger' onClick={() => setShowDeletePopup(false)}>No</button>
             </div>
-            <h2>User Details for: <img className="profilePicture" src={`${oneUser?.profilePicture}`} alt="" style={{width:"50px", height:"50px"}}/> {oneUser?.name} (@{oneUser?.displayName})</h2>
+            <h2>User Details for: <img className="profilePicture" src={`${oneUser?.profilePicture}`} alt="" style={{ width: "50px", height: "50px" }} /> {oneUser?.name} (@{oneUser?.displayName})</h2>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
             {id === user?._id || user?.email === "t@w.com" ? <h6>Email: {oneUser.email} <strong>(only you can see this)</strong></h6> : null}
@@ -111,8 +113,8 @@ const UserDetail = (props) => {
                                     : null
                 }
             </div>
-            {id === user?._id ? <button style={{marginBottom:"60px"}} className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
-            &nbsp;&nbsp;{id === user?._id ? <button style={{marginBottom:"60px"}} className={"btn btn-info"} onClick={()=>{editAccount()}}>Edit Account</button> : null}
+            {id === user?._id ? <button style={{ marginBottom: "60px" }} className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={() => setShowDeletePopup(true)}>Delete Account</button> : null}
+            &nbsp;&nbsp;{id === user?._id ? <button style={{ marginBottom: "60px" }} className={"btn btn-info"} onClick={() => { editAccount() }}>Edit Account</button> : null}
         </div>
     )
 }

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
 import withAuth from '../WithAuth'
 import { toast } from 'react-toastify'
+import { crudAppsContext } from '../../App'
 
 
-const BookClub = (props) => {
-    const { count, setCount, user, darkMode } = props
+const BookClub = () => {
+    const { darkMode, user, count, setCount } = useContext(crudAppsContext)
     const [socket] = useState(() => io(':8000'))
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({ title: "", author: "" })
@@ -16,10 +17,10 @@ const BookClub = (props) => {
     const [sortDirection, setSortDirection] = useState('asc')
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [currentPage, setCurrentPage] = useState(1)
-    const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {toastId: 1})
-    const toastFav = (book) => toast.success(`👍 You favorited ${book.title}`, {toastId: 1})
-    const toastUnfav = (book) => toast.error(`👎 You unfavorited ${book.title}`, {toastId: 1})
-    const toastDelete = (book) => toast.error(`🗑 You deleted ${book.title}`, {toastId: 1})
+    const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, { toastId: 1 })
+    const toastFav = (book) => toast.success(`👍 You favorited ${book.title}`, { toastId: 1 })
+    const toastUnfav = (book) => toast.error(`👎 You unfavorited ${book.title}`, { toastId: 1 })
+    const toastDelete = (book) => toast.error(`🗑 You deleted ${book.title}`, { toastId: 1 })
 
     useEffect(() => {
         const handleResize = () => {
@@ -174,7 +175,7 @@ const BookClub = (props) => {
     }
 
     return (
-        <div style={{marginTop:"0px", marginBottom:"30px"}}>
+        <div style={{ marginTop: "0px", marginBottom: "30px" }}>
             <h1>Welcome to the Book Club</h1>
             <div className={darkMode ? "mainDivDark" : "mainDivLight"}>
                 <div>

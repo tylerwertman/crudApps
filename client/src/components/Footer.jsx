@@ -1,6 +1,8 @@
-import React from 'react'
-const Footer = (props) => {
-    const { darkMode } = props
+import React, { useContext } from 'react'
+import { crudAppsContext } from '../App'
+
+const Footer = () => {
+    const { darkMode } = useContext(crudAppsContext)
 
     return (
         <footer className={darkMode ? "footerDark" : "footerLight"}>
