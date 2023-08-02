@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
-import Cookies from 'js-cookie'
+// import React, { useContext } from 'react'
+// import Cookies from 'js-cookie'
 // import jwtdecode from 'jwt-decode'
 import { Link } from 'react-router-dom'
-import { crudAppsContext } from '../../App'
+// import { crudAppsContext } from '../../App'
 
 const PizzaCart = (props) => {
-    const { darkMode } = useContext(crudAppsContext)
+    // const { darkMode } = useContext(crudAppsContext)
     const { order } = props
     console.log(order)
 
