@@ -9,6 +9,7 @@ const Nav = () => {
     const navigate = useNavigate()
     const toastLogOut = () => toast.error(`Goodbye, ${user.name}`)
 
+    console.log(user)
 
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
@@ -54,8 +55,8 @@ const Nav = () => {
             <div>
                 {/* <button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={clearIdeas}>Clear Ideas</button>&nbsp;&nbsp; */}
                 {
-                    (user) ?
-                        <><button className='btn btn-danger' onClick={logout}>Logout</button><span className='MQHide2'>&nbsp;&nbsp;</span></>
+                    user ?
+                        <button className='btn btn-danger' onClick={logout}>Logout</button>
                         :
                         null
                 }
