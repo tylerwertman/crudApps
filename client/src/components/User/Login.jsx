@@ -8,10 +8,9 @@ import Cookies from 'js-cookie'
 import jwtdecode from 'jwt-decode'
 import { crudAppsContext } from '../../App'
 
-const Login = (props) => {
-    const { setUser } = useContext(crudAppsContext)
+const Login = () => {
+    const { setUser, setPreviousLocation } = useContext(crudAppsContext)
 
-    const { setPreviousLocation } = props
     const navigate = useNavigate()
     const location = useLocation()
     const [errors, setErrors] = useState({})

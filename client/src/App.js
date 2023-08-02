@@ -45,15 +45,15 @@ function App() {
 
 
   return (
-    <crudAppsContext.Provider value={{ darkMode, user, setUser, count, setCount }}>
+    <crudAppsContext.Provider value={{ darkMode, user, setUser, count, setCount, setPreviousLocation }}>
       <div className={darkMode ? "AppDark" : "AppLight"}>
         <BrowserRouter>
           <Nav />
           <ToastContainer transition={Slide} position={"bottom-right"} autoClose={2500} hideProgressBar={false} closeOnClick={true} pauseOnHover={true} draggable={true} progress={undefined} theme={darkMode ? "dark" : "light"} />
           <Routes>
-            <Route path="/" element={<Register setPreviousLocation={setPreviousLocation} />} />
-            <Route path="/login" element={<Login setPreviousLocation={setPreviousLocation} />} />
-            <Route path="/landing" element={<LandingPage previousLocation={previousLocation} setPreviousLocation={setPreviousLocation} />} />
+            <Route path="/" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/landing" element={<LandingPage previousLocation={previousLocation} />} />
             <Route path="/users/:id" element={<UserDetail />} />
             <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} />} />
             <Route path="/bookClub" element={<BookClub />} />

@@ -5,8 +5,8 @@ import { toast } from 'react-toastify'
 import { crudAppsContext } from '../App'
 
 const LandingPage = (props) => {
-    const { darkMode, user } = useContext(crudAppsContext)
-    const { previousLocation, setPreviousLocation } = props
+    const { darkMode, user, setPreviousLocation } = useContext(crudAppsContext)
+    const { previousLocation } = props
     const toastReg = () => toast.success(`Thank you for registering, ${user?.name}!`, { toastId: 1 })
     const toastLogin = () => toast.success(`Welcome back, ${user?.name}`, { toastId: 1 })
 
