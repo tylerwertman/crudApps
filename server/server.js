@@ -6,21 +6,21 @@ const cookieParser = require('cookie-parser')
 const port = 8000
 
 require('dotenv').config()
-require('./server/config/mongoose.config')
+require('./config/mongoose.config')
 
 app.use(cookieParser())
 app.use(cors({ credentials: true, origin: ['http://localhost:3000', 'http://crudapps.tylerw.xyz'] }))
 app.use(express.json(), express.urlencoded({ extended: true }))
 
-require('./server/routes/user.routes')(app)
-require('./server/routes/idea.routes')(app)
-require('./server/routes/book.routes')(app)
-require('./server/routes/pizza.routes')(app)
-require("./server/routes/upload.routes")(app)
+require('./routes/user.routes')(app)
+require('./routes/idea.routes')(app)
+require('./routes/book.routes')(app)
+require('./routes/pizza.routes')(app)
+require("./routes/upload.routes")(app)
 
-app.use(express.static("./server/public"))
+app.use(express.static("./public"))
 
-const server = app.listen(port, () => console.log(`Listening on port: port`))
+const server = app.listen(port, () => console.log(`crudApps listening on port: ${port}`))
 
 const io = socket(server, {
     cors: {

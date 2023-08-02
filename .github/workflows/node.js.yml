@@ -28,8 +28,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: server npm i
-      run: npm i
+    - name: cd server npm i
+      run: |
+        cd /home/tyler/actions-runner/_work/crudApps/crudApps/server
+        npm i
     - name: cd client & npm i
       run: |
         cd /home/tyler/actions-runner/_work/crudApps/crudApps/client
@@ -47,10 +49,10 @@ jobs:
         sudo mv build /var/www/html
         sudo grep -rl localhost /var/www/html | xargs sed -i 's/http:\/\/localhost:8000//g'
     - name: copy .env from ~ into server
-      run: cp ~/.env /home/tyler/actions-runner/_work/crudApps/crudApps/.env
+      run: cp ~/.env /home/tyler/actions-runner/_work/crudApps/crudApps/server/.env
     - name: restart pm2 & nginx
       run: |
-        cd /home/tyler/actions-runner/_work/crudApps/crudApps
+        cd /home/tyler/actions-runner/_work/crudApps/crudApps/server
         pm2 restart all
         sudo service nginx restart
     - name: replace uploaded profile pics
