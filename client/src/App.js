@@ -30,13 +30,11 @@ export const crudAppsContext = createContext()
 function App() {
   const [count, setCount] = useState(0)
   const [user, setUser] = useState(null)
-  const [cookieValue, setCookieValue] = useState(Cookies.get('userToken'))
   const [previousLocation, setPreviousLocation] = useState(null)
   const [darkMode, setDarkMode] = useState(false)
   const [order, setOrder] = useState(Cookies.get('order'))
 
   useEffect(() => {
-    setCookieValue(Cookies.get('userToken'))
     if (Cookies.get('userToken')) setUser(jwtdecode(Cookies.get('userToken')))
     if (Cookies.get('darkMode') === undefined) Cookies.set('darkMode', false.toString(), { expires: 7 })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,7 +53,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/landing" element={<LandingPage previousLocation={previousLocation} />} />
             <Route path="/users/:id" element={<UserDetail />} />
-            <Route path="/users/:id/edit" element={<EditUser cookieValue={cookieValue} setCookieValue={setCookieValue} />} />
+            <Route path="/users/:id/edit" element={<EditUser />} />
             <Route path="/bookClub" element={<BookClub />} />
             <Route path="/books/:id" element={<BookDetail />} />
             <Route path="/books/:id/edit" element={<EditBook />} />

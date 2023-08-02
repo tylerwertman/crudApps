@@ -8,15 +8,14 @@ import Cookies from 'js-cookie'
 import { crudAppsContext } from '../../App'
 
 
-const EditUser = (props) => {
+const EditUser = () => {
     const { setUser, count, setCount } = useContext(crudAppsContext)
-    const { cookieValue, setCookieValue } = props
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneUser, setOneUser] = useState({})
     const [errors, setErrors] = useState({})
     const [selectedFile, setSelectedFile] = useState(null)
-
+    const cookieValue = Cookies.get('userToken')
     const [userInfoEdit, setUserInfoEdit] = useState({
         name: oneUser.name,
         displayName: oneUser.displayName,
@@ -84,7 +83,6 @@ const EditUser = (props) => {
                 .then(res => {
                     navigate(`/users/${id}`)
                     toastEdit()
-                    setCookieValue(Cookies.get('userToken'))
                     setUser(jwtdecode(Cookies.get('userToken')))
                     setCount(count + 1)
                 })
