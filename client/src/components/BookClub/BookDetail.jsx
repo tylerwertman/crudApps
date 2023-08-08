@@ -8,7 +8,7 @@ import { crudAppsContext } from '../../App'
 
 
 const BookDetail = () => {
-    const { darkMode, user } = useContext(crudAppsContext)
+    const { AxiosURL, darkMode, user } = useContext(crudAppsContext)
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneBook, setOneBook] = useState({})
@@ -19,7 +19,7 @@ const BookDetail = () => {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/books/${id}`)
+        axios.get(`${AxiosURL}/books/${id}`)
             .then(res => {
                 setOneBook(res.data.book)
                 console.log(res.data.book._id)
@@ -30,7 +30,7 @@ const BookDetail = () => {
     }, [])
 
     const removeBook = () => {
-        axios.delete(`http://localhost:8000/api/books/${id}`)
+        axios.delete(`${AxiosURL}/books/${id}`)
             .then(res => {
                 navigate("/bookClub")
                 toastDelete()
@@ -44,7 +44,7 @@ const BookDetail = () => {
     }
 
     const favoriteBook = () => {
-        axios.post(`http://localhost:8000/api/books/${id}/favorite`, {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/books/${id}/favorite`, {}, { withCredentials: true })
             .then(res => {
                 setOneBook(res.data.book)
                 toastFav()
@@ -54,7 +54,7 @@ const BookDetail = () => {
 
     const unfavoriteBook = () => {
         if (!bookFavByContainsLoggedInUser) return
-        axios.post(`http://localhost:8000/api/books/${id}/unfavorite`, {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/books/${id}/unfavorite`, {}, { withCredentials: true })
             .then(res => {
                 setOneBook(res.data.book)
                 toastUnfav()

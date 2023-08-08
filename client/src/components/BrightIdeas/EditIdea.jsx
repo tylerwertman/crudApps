@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import withAuth from './WithAuth'
 import { toast } from 'react-toastify'
+import { crudAppsContext } from '../../App'
 
 
 const EditIdea = () => {
-
+    const { AxiosURL } = useContext(crudAppsContext)
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneIdea, setOneIdea] = useState({})
@@ -15,7 +16,7 @@ const EditIdea = () => {
     const toastEdit = () => toast.success(`✏️ You edited ${oneIdea.idea}`, {toastId: 1})
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/ideas/${id}`)
+        axios.get(`${AxiosURL}/ideas/${id}`)
             .then(res => {
                 // console.log(res.data.idea)
                 setOneIdea(res.data.idea)
@@ -27,7 +28,7 @@ const EditIdea = () => {
 
     const editIdea = (e) => {
         e.preventDefault()
-        axios.put(`http://localhost:8000/api/ideas/${id}`, oneIdea)
+        axios.put(`${AxiosURL}/ideas/${id}`, oneIdea)
             .then(res => {
                 navigate(`/ideas/${id}`)
                 toastEdit()

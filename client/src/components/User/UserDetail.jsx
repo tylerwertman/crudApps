@@ -8,7 +8,7 @@ import { crudAppsContext } from '../../App'
 
 
 const UserDetail = () => {
-    const { darkMode, user, setUser, count } = useContext(crudAppsContext)
+    const { AxiosURL, darkMode, user, setUser, count } = useContext(crudAppsContext)
     const { id } = useParams()
     const navigate = useNavigate()
     const [showDeletePopup, setShowDeletePopup] = useState(false)
@@ -31,7 +31,7 @@ const UserDetail = () => {
         }
     }
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/users/${id}`)
+        axios.get(`${AxiosURL}/users/${id}`)
             .then(res => {
                 setOneUser(res.data.user)
             })
@@ -40,11 +40,11 @@ const UserDetail = () => {
     }, [count])
 
     const deleteAccount = () => {
-        axios.delete(`http://localhost:8000/api/users/${id}`)
+        axios.delete(`${AxiosURL}/users/${id}`)
             .then(res => {
                 navigate("/")
                 setUser(null)
-                axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
+                axios.post(`${AxiosURL}/users/logout`, {}, { withCredentials: true })
                     .then(res => {
                         console.log("deleted account")
                         setUser(null)

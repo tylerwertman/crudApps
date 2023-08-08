@@ -9,7 +9,7 @@ import { crudAppsContext } from '../../App'
 
 
 const EditUser = () => {
-    const { setUser, count, setCount } = useContext(crudAppsContext)
+    const { AxiosURL, setUser, count, setCount } = useContext(crudAppsContext)
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneUser, setOneUser] = useState({})
@@ -28,7 +28,7 @@ const EditUser = () => {
     const toastEdit = () => toast.success(`✏️ Successfully edited account`, { toastId: 1 })
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/users/${id}`)
+        axios.get(`${AxiosURL}/users/${id}`)
             .then(res => {
                 // console.log(res.data.user)
                 setOneUser(res.data.user)
@@ -48,9 +48,9 @@ const EditUser = () => {
 
     const handleFileUpload = async () => {
         try {
-            const uploadResponse = await axios.post('http://localhost:8000/api/save', selectedFile)
+            const uploadResponse = await axios.post(`${AxiosURL}/save`, selectedFile)
             const uploadedPhotoUrl = `http://localhost:8000/uploads/${uploadResponse.data.photo}`
-            await axios.patch(`http://localhost:8000/api/users/${id}/addProfilePicture`, { profilePicture: uploadedPhotoUrl }, { headers: { 'Authorization': `${cookieValue}` } })
+            await axios.patch(`${AxiosURL}/users/${id}/addProfilePicture`, { profilePicture: uploadedPhotoUrl }, { headers: { 'Authorization': `${cookieValue}` } })
             navigate(`/users/${id}`)
             setCount(count + 1)
             console.log("Successfully updated profile picture!")
@@ -79,7 +79,7 @@ const EditUser = () => {
     const editUserInfo = (e) => {
         e.preventDefault()
         if (userInfoEdit.name || userInfoEdit.displayName || userInfoEdit.email) {
-            axios.patch(`http://localhost:8000/api/users/${id}/info`, userInfoEdit, { headers: { 'Authorization': `${cookieValue}` } })
+            axios.patch(`${AxiosURL}/users/${id}/info`, userInfoEdit, { headers: { 'Authorization': `${cookieValue}` } })
                 .then(res => {
                     navigate(`/users/${id}`)
                     toastEdit()
@@ -111,7 +111,7 @@ const EditUser = () => {
     const editUserPassword = (e) => {
         e.preventDefault()
         if (userPasswordEdit.password === userPasswordEdit.confirmPassword && userPasswordEdit.password.length > 7) {
-            axios.patch(`http://localhost:8000/api/users/${id}/password`, userPasswordEdit, { headers: { 'Authorization': `${cookieValue}` } })
+            axios.patch(`${AxiosURL}/users/${id}/password`, userPasswordEdit, { headers: { 'Authorization': `${cookieValue}` } })
                 .then((res) => {
                     navigate(`/users/${id}`)
                     setCount(count + 1)

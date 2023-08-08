@@ -9,7 +9,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { crudAppsContext } from '../../App'
 
 const BrightIdeas = () => {
-    const { darkMode, user, count, setCount } = useContext(crudAppsContext)
+    const { AxiosURL, darkMode, user, count, setCount } = useContext(crudAppsContext)
     const [socket] = useState(() => io(':8000'))
     const [ideaList, setIdeaList] = useState([])
     const [oneIdea, setOneIdea] = useState({ idea: "" })
@@ -43,7 +43,7 @@ const BrightIdeas = () => {
 
     // UE for sorting ideas by favorites. The Fav & Unfav FN update count to trigger this UE
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/ideas`)
+        axios.get(`${AxiosURL}/ideas`)
             .then(res => {
                 const sortedIdeas = res.data.idea.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length)
                 setIdeaList(sortedIdeas)
@@ -117,7 +117,7 @@ const BrightIdeas = () => {
 
     const handleAddIdeaSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8000/api/ideas', oneIdea, { withCredentials: true })
+        axios.post(`${AxiosURL}/ideas`, oneIdea, { withCredentials: true })
             .then(res => {
                 const newIdea = res.data.idea
                 const list = [newIdea, ...ideaList]
@@ -142,7 +142,7 @@ const BrightIdeas = () => {
     }
 
     const favoriteIdea = (idea) => {
-        axios.post(`http://localhost:8000/api/ideas/${idea._id}/favorite`, {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/ideas/${idea._id}/favorite`, {}, { withCredentials: true })
             .then(res => {
                 const updatedIdea = res.data.idea
                 const updatedIdeaList = ideaList.map(list => {
@@ -160,7 +160,7 @@ const BrightIdeas = () => {
     }
 
     const unfavoriteIdea = (idea) => {
-        axios.post(`http://localhost:8000/api/ideas/${idea._id}/unfavorite`, {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/ideas/${idea._id}/unfavorite`, {}, { withCredentials: true })
             .then(res => {
                 const updatedIdea = res.data.idea
                 const updatedIdeaList = ideaList.map(list => {
@@ -178,7 +178,7 @@ const BrightIdeas = () => {
     }
 
     const removeIdea = (idea) => {
-        axios.delete(`http://localhost:8000/api/ideas/${idea._id}`)
+        axios.delete(`${AxiosURL}/ideas/${idea._id}`)
             .then(res => {
                 setIdeaList(ideaList.filter(item => item._id !== idea._id))
                 toastDelete(idea.idea)
@@ -213,7 +213,7 @@ const BrightIdeas = () => {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault()
-        axios.get('http://localhost:8000/api/ideas', { params: { search: searchQuery } })
+        axios.get(`${AxiosURL}/ideas`, { params: { search: searchQuery } })
             .then((res) => {
                 const searchedResults = res.data.idea.filter((idea) => idea.idea.toLowerCase().includes(searchQuery.toLowerCase()))
                 setIdeaList(searchedResults)
@@ -229,7 +229,7 @@ const BrightIdeas = () => {
     const returnToAllIdeas = () => {
         setSearchQuery('')
         setSearch(!search)
-        axios.get('http://localhost:8000/api/ideas', { params: { search: "" } })
+        axios.get(`${AxiosURL}/ideas`, { params: { search: "" } })
             .then((res) => {
                 const sortedIdeas = res.data.idea.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length)
                 setIdeaList(sortedIdeas)

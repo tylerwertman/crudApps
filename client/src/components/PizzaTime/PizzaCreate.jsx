@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import { crudAppsContext } from '../../App'
 
 const PizzaCreate = (props) => {
-    const { darkMode } = useContext(crudAppsContext)
+    const { AxiosURL, darkMode } = useContext(crudAppsContext)
     const { order, setOrder } = props
 
     const navigate = useNavigate()
@@ -44,7 +44,7 @@ const PizzaCreate = (props) => {
 
     const checkout = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8000/api/pizzas', pizza, { withCredentials: true })
+        axios.post(`${AxiosURL}/pizzas`, pizza, { withCredentials: true })
             .then(res => {
                 console.log(JSON.stringify([...order, res.data.pizza]))
                 setOrder([...order, res.data.pizza])

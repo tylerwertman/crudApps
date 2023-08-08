@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { crudAppsContext } from '../../App'
 
 const IdeaDetail = () => {
-    const { darkMode, user } = useContext(crudAppsContext)
+    const { AxiosURL, darkMode, user } = useContext(crudAppsContext)
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneIdea, setOneIdea] = useState({})
@@ -17,7 +17,7 @@ const IdeaDetail = () => {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/ideas/${id}`)
+        axios.get(`${AxiosURL}/ideas/${id}`)
             .then(res => {
                 setOneIdea(res.data.idea)
                 console.log(res.data.idea)
@@ -28,7 +28,7 @@ const IdeaDetail = () => {
     }, [])
 
     const removeIdea = () => {
-        axios.delete(`http://localhost:8000/api/ideas/${id}`)
+        axios.delete(`${AxiosURL}/ideas/${id}`)
             .then(res => {
                 navigate("/brightIdeas")
                 toastDelete()
@@ -42,7 +42,7 @@ const IdeaDetail = () => {
     // }
 
     const favoriteIdea = () => {
-        axios.post(`http://localhost:8000/api/ideas/${id}/favorite`, {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/ideas/${id}/favorite`, {}, { withCredentials: true })
             .then(res => {
                 setOneIdea(res.data.idea)
                 toastFav()
@@ -52,7 +52,7 @@ const IdeaDetail = () => {
 
     const unfavoriteIdea = () => {
         if (!ideaFavByContainsLoggedInUser) return
-        axios.post(`http://localhost:8000/api/ideas/${id}/unfavorite`, {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/ideas/${id}/unfavorite`, {}, { withCredentials: true })
             .then(res => {
                 setOneIdea(res.data.idea)
                 toastUnfav()

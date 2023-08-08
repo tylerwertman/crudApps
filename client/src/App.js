@@ -28,6 +28,7 @@ import DarkMode from './components/DarkMode'
 export const crudAppsContext = createContext()
 
 function App() {
+  const AxiosURL = "http://localhost:8000/api"
   const [count, setCount] = useState(0)
   const [user, setUser] = useState(null)
   const [previousLocation, setPreviousLocation] = useState(null)
@@ -43,7 +44,7 @@ function App() {
 
 
   return (
-    <crudAppsContext.Provider value={{ darkMode, user, setUser, count, setCount, setPreviousLocation }}>
+    <crudAppsContext.Provider value={{ AxiosURL, darkMode, user, setUser, count, setCount, setPreviousLocation }}>
       <div className={darkMode ? "AppDark" : "AppLight"}>
         <BrowserRouter>
           <Nav />

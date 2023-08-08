@@ -5,14 +5,14 @@ import { toast } from 'react-toastify'
 import { crudAppsContext } from '../App'
 
 const Nav = () => {
-    const { darkMode, user, setUser } = useContext(crudAppsContext)
+    const { AxiosURL, darkMode, user, setUser } = useContext(crudAppsContext)
     const navigate = useNavigate()
     const toastLogOut = () => toast.error(`Goodbye, ${user.name}`)
 
     // console.log(user)
 
     const logout = () => {
-        axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/users/logout`, {}, { withCredentials: true })
             .then(res => {
                 // console.log(res.data)
                 navigate('/')

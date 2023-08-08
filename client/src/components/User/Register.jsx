@@ -9,7 +9,7 @@ import jwtdecode from 'jwt-decode'
 import { crudAppsContext } from '../../App'
 
 const Register = () => {
-    const { setUser, setPreviousLocation } = useContext(crudAppsContext)
+    const { AxiosURL, setUser, setPreviousLocation } = useContext(crudAppsContext)
     const navigate = useNavigate()
     const location = useLocation()
     const [errors, setErrors] = useState({})
@@ -41,7 +41,7 @@ const Register = () => {
 
     const regSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8000/api/users/register', userInfoReg, { withCredentials: true })
+        axios.post(`${AxiosURL}/users/register`, userInfoReg, { withCredentials: true })
             .then(res => {
                 navigate('/landing')
                 setPreviousLocation(location)

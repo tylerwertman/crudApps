@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import withAuth from '../WithAuth'
 import { toast } from 'react-toastify'
+import { crudAppsContext } from '../../App'
 
 
 const EditBook = () => {
-
+    const { AxiosURL } = useContext(crudAppsContext)
     const { id } = useParams()
     const navigate = useNavigate()
     const [oneBook, setOneBook] = useState({})
     const [errors, setErrors] = useState({})
 
-    const toastEdit = () => toast.success(`✏️ You edited ${oneBook.title}`, {toastId: 1})
+    const toastEdit = () => toast.success(`✏️ You edited ${oneBook.title}`, { toastId: 1 })
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/books/${id}`)
+        axios.get(`${AxiosURL}/books/${id}`)
             .then(res => {
                 // console.log(res.data.book)
                 setOneBook(res.data.book)
@@ -27,7 +28,7 @@ const EditBook = () => {
 
     const editBook = (e) => {
         e.preventDefault()
-        axios.put(`http://localhost:8000/api/books/${id}`, oneBook)
+        axios.put(`${AxiosURL}/books/${id}`, oneBook)
             .then(res => {
                 navigate(`/books/${id}`)
                 toastEdit()
