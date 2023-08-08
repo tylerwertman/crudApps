@@ -8,7 +8,7 @@ import { crudAppsContext } from '../../App'
 
 
 const BookClub = () => {
-    const { darkMode, user, count, setCount } = useContext(crudAppsContext)
+    const { AxiosURL, darkMode, user, count, setCount } = useContext(crudAppsContext)
     const [socket] = useState(() => io(':8000'))
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({ title: "", author: "" })
@@ -33,11 +33,12 @@ const BookClub = () => {
     }, [])
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/books`)
+        axios.get(`${AxiosURL}/books`)
             .then(res => {
                 setBookList(res.data.book)
             })
             .catch(err => console.log(err))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count])
 
     useEffect(() => {
@@ -71,7 +72,7 @@ const BookClub = () => {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8000/api/books', oneBook, { withCredentials: true })
+        axios.post(`${AxiosURL}/books`, oneBook, { withCredentials: true })
             .then(res => {
                 setBookList([...bookList, res.data.book])
                 toastAdded()
@@ -84,7 +85,6 @@ const BookClub = () => {
                     author: ""
                 })
                 socket.emit('bookAdded', res.data.book)
-                setCount(count + 1)
             })
             .catch(err => {
                 console.log(`submit errer`, err)
@@ -99,7 +99,7 @@ const BookClub = () => {
     }
 
     const favoriteBook = (book) => {
-        axios.post(`http://localhost:8000/api/books/${book._id}/favorite`, {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/books/${book._id}/favorite`, {}, { withCredentials: true })
             .then(res => {
                 setCount(count + 1)
                 toastFav(book)
@@ -108,7 +108,7 @@ const BookClub = () => {
     }
 
     const unfavoriteBook = (book) => {
-        axios.post(`http://localhost:8000/api/books/${book._id}/unfavorite`, {}, { withCredentials: true })
+        axios.post(`${AxiosURL}/books/${book._id}/unfavorite`, {}, { withCredentials: true })
             .then(res => {
                 setCount(count + 1)
                 toastUnfav(book)
@@ -117,9 +117,9 @@ const BookClub = () => {
     }
 
     const removeBook = (book) => {
-        axios.delete(`http://localhost:8000/api/books/${book._id}`)
+        axios.delete(`${AxiosURL}/books/${book._id}`)
             .then(res => {
-                setCount(count + 1)
+                setBookList(bookList.filter(item => item._id !== book._id))
                 toastDelete(book)
                 socket.emit('bookDeleted', book)
 

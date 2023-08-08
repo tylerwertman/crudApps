@@ -180,7 +180,7 @@ const BrightIdeas = () => {
     const removeIdea = (idea) => {
         axios.delete(`http://localhost:8000/api/ideas/${idea._id}`)
             .then(res => {
-                setCount(count + 1)
+                setIdeaList(ideaList.filter(item => item._id !== idea._id))
                 toastDelete(idea.idea)
                 socket.emit('ideaDeleted', idea)
                 if ((ideaList - 1) % 5 === 0) setCurrentPage(currentPage - 1)

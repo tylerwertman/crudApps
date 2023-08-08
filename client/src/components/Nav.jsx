@@ -9,7 +9,7 @@ const Nav = () => {
     const navigate = useNavigate()
     const toastLogOut = () => toast.error(`Goodbye, ${user.name}`)
 
-    console.log(user)
+    // console.log(user)
 
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
@@ -36,7 +36,6 @@ const Nav = () => {
     const navToUser = () => {
         console.log(user)
         if (user) navigate(`/users/${user?._id}`)
-        // setCount(count + 1)
     }
 
     return (
