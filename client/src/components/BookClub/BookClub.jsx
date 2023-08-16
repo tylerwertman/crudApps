@@ -122,6 +122,7 @@ const BookClub = () => {
                 setBookList(bookList.filter(item => item._id !== book._id))
                 toastDelete(book)
                 socket.emit('bookDeleted', book)
+                if ((bookList.length - 1) % 5 === 0) setCurrentPage(currentPage - 1)
 
             })
             .catch(err => console.log(err))

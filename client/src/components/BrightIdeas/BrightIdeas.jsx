@@ -183,7 +183,7 @@ const BrightIdeas = () => {
                 setIdeaList(ideaList.filter(item => item._id !== idea._id))
                 toastDelete(idea.idea)
                 socket.emit('ideaDeleted', idea)
-                if ((ideaList - 1) % 5 === 0) setCurrentPage(currentPage - 1)
+                if ((ideaList.length - 1) % 5 === 0) setCurrentPage(currentPage - 1)
 
             })
             .catch(err => console.log(err))
