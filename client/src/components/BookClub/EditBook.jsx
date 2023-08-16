@@ -57,13 +57,13 @@ const EditBook = () => {
             <br />
             <h1>Edit Book Details</h1>
             <form action="" className='col-md-6 mx-auto' onSubmit={editBook}>
-                {oneBook.title?.length < 2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : null}
+                {oneBook.title?.length < 2 ? <p className="text-danger">Title must be at least 2 characters</p> : null}
                 {errors.title ? <p className="text-danger">{errors.title.message}</p> : null}
                 <div className="formgroup">
                     <label htmlFor="name">Book Name: </label>
                     <input type="text" className="form-control" name="title" id="title" value={oneBook.title} onChange={handleChange} />
                 </div>
-                {oneBook.author?.length < 2 ? <p className="text-danger">FE: Author must be at least 2 characters</p> : null}
+                {oneBook.author?.length < 2 ? <p className="text-danger">Author must be at least 2 characters</p> : null}
                 {errors.author ? <p className="text-danger">{errors.author.message}</p> : null}
                 <div className="formgroup">
                     <label htmlFor="name">Book Author: </label>

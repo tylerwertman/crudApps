@@ -56,7 +56,7 @@ const EditIdea = () => {
             <br />
             <h1>Edit Idea Details</h1>
             <form action="" className='col-md-6 mx-auto' onSubmit={editIdea}>
-                {oneIdea.idea?.length < 2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : null}
+                {oneIdea.idea?.length < 2 ? <p className="text-danger">Idea must be at least 2 characters</p> : null}
                 {errors.idea ? <p className="text-danger">{errors.idea.message}</p> : null}
                 <div className="formgroup">
                     <label htmlFor="name">Idea Name: </label>
