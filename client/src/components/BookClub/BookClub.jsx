@@ -4,6 +4,8 @@ import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
 import withAuth from '../WithAuth'
 import { toast } from 'react-toastify'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { crudAppsContext } from '../../App'
 
 
@@ -17,6 +19,8 @@ const BookClub = () => {
     const [sortDirection, setSortDirection] = useState('asc')
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [currentPage, setCurrentPage] = useState(1)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [search, setSearch] = useState(false)
     const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, { toastId: 1 })
     const toastFav = (book) => toast.success(`👍 You favorited ${book.title}`, { toastId: 1 })
     const toastUnfav = (book) => toast.error(`👎 You unfavorited ${book.title}`, { toastId: 1 })
@@ -175,6 +179,37 @@ const BookClub = () => {
         setCurrentPage(pageNumber)
     }
 
+    // SEARCH
+    const handleSearchInputChange = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault()
+        axios.get(`${AxiosURL}/books`, { params: { search: searchQuery } })
+            .then((res) => {
+                const searchedResults = res.data.book.filter((book) => book.title.toLowerCase().includes(searchQuery.toLowerCase()) || book.author.toLowerCase().includes(searchQuery.toLowerCase()))
+                setBookList(searchedResults)
+                const sortedSearchedBooks = searchedResults.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length)
+                setBookList(sortedSearchedBooks)
+                // setSearchResults(sortedBooks)
+                setCurrentPage(1)
+                setSearchQuery("")
+            })
+            .catch((err) => console.log(err))
+    }
+
+    const returnToAllBooks = () => {
+        setSearchQuery('')
+        setSearch(!search)
+        axios.get(`${AxiosURL}/books`, { params: { search: "" } })
+            .then((res) => {
+                const sortedBooks = res.data.book.sort((a, b) => b.favoritedBy.length - a.favoritedBy.length)
+                setBookList(sortedBooks)
+                setCurrentPage(1)
+            })
+            .catch((err) => console.log(err))
+    }
     return (
         <div style={{ marginTop: "0px", marginBottom: "30px" }}>
             <h1>Welcome to the Book Club</h1>
@@ -199,6 +234,19 @@ const BookClub = () => {
                         </div>
                     </form>
                 </div>
+                <h3 className='mt-3' onClick={returnToAllBooks}>{search ? "Search Books" : <>All Books <FontAwesomeIcon icon={faMagnifyingGlass} /></>}</h3>
+                {/* SEARCH */}
+                {search ? <div className='col-sm-8 mx-auto px-4'>
+                    <form onSubmit={handleSearchSubmit}>
+                        <div className="input-group col-10">
+                            <div className="form-floating">
+                                <input type="text" className="form-control custom-input" name="book" value={searchQuery} onChange={handleSearchInputChange} placeholder='Search books!' />
+                                <label className="darkText" htmlFor="book">Search books!</label>
+                            </div>
+                            <button type="submit" className="input-group-text btn btn-success" onSubmit={handleSearchSubmit}>Search!</button>
+                        </div>
+                    </form>
+                </div> : null}
                 <div>
                     <h4>All Books</h4>
                     <table className='mx-auto mb-3' style={windowWidth < 500 ? { width: "280px" } : null}>
