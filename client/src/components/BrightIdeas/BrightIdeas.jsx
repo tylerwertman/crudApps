@@ -288,7 +288,7 @@ const BrightIdeas = () => {
                                 {
                                     idea?.addedBy ?
                                         <><span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, </span><img className="profilePicture" src={`${idea.addedBy?.profilePicture}`} alt="" style={{ width: "40px", height: "40px", padding: "3px" }} /> <Link to={`/users/${idea.addedBy._id}`}>@{idea?.addedBy.displayName}</Link><span> said:</span>&nbsp;</> :
-                                        <span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, <img className="profilePicture" src={`http://localhost:8000/uploads/default.png`} alt="" style={{ width: "40px", height: "40px", padding: "2px" }} /> Deleted User says: </span>
+                                        <span>On {new Date(idea.createdAt).toLocaleString("en-US", options)} at {new Date(idea.createdAt).toLocaleString([], { timeStyle: 'short' })}, <img className="profilePicture" src={`${AxiosURL}/uploads/default.png`} alt="" style={{ width: "40px", height: "40px", padding: "2px" }} /> Deleted User says: </span>
                                 }
                                 <br className="MQHide" />
                                 <p className="idea" style={{ border: "1px solid", padding: "5px 10px" }}>{idea.idea}</p>
