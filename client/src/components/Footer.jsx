@@ -6,7 +6,7 @@ const Footer = () => {
 
     return (
         <footer className={darkMode ? "footerDark" : "footerLight"}>
-            <a href="https://tylerw.xyz">© 2023 Tyler Wertman Developments</a>
+            <a href="https://tylerw.xyz">© {new Date().getFullYear()} Tyler Wertman Developments</a>
         </footer>
     )
 }
